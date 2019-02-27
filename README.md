@@ -120,7 +120,7 @@ See [Backdrop example](#backdrop-example) for example usage.
   backdrop:
     fade: false
     day: white
-    night: #000000
+    night: '#000000'
 ```
 
 
