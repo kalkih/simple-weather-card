@@ -6,11 +6,12 @@ function getStyles(css) {
       align-items: center;
       padding: 16px;
       color: var(--primary-text-color, #000);
-      font-weight: 500;
+      font-weight: 400;
       transition: background: 1s;
       cursor: pointer;
     }
     ha-card[bg] {
+      font-weight: 500;
       background: var(--day-color);
       color: var(--text-dark-color);
     }
