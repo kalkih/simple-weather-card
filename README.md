@@ -5,7 +5,7 @@
 A minimalistic weather card for [Home Assistant](https://github.com/home-assistant/home-assistant) Lovelace UI, inspired by Google Material Design.
 
 
-![Preview Image]()
+![Preview](https://user-images.githubusercontent.com/457678/53588519-61dfdf80-3b8d-11e9-9f0d-f5995ba794ce.png)
 
 ## Install
 
@@ -13,7 +13,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
 1. Download and copy `simple-weather-card.bundle.js` from the [latest release](https://github.com/kalkih/simple-weather-card/releases/latest) into your `config/www` directory.
 
-2. Add a reference to `simple-weather-card.bundle.js` inside your `ui-lovelace.yaml`.
+2. Add a reference to `simple-weather-card.bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor interface.
 
     ```yaml
     resources:
@@ -21,19 +21,17 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
         type: module
     ```
 
-    or if you are using the UI editor paste this open the War editor and insert it at the top of the file.
-
 ### CLI install
 
 1. Move into your `config/www` directory
 
-2. Grab `simple-weather-card.bundle.js`
+2. Download `simple-weather-card.bundle.js`
 
     ```console
     $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.1.0/simple-weather-card.bundle.js
     ```
 
-3. Add a reference to `simple-weather-card.bundle.js` inside your `ui-lovelace.yaml`.
+3. Add a reference to `simple-weather-card.bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor gui.
 
     ```yaml
     resources:
@@ -56,17 +54,15 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 ## Updating
 1. Find your `simple-weather-card.bundle.js` file in `config/www` or wherever you ended up storing it.
 
-2. Replace the local file with the latest one attached in the [latest release](https://github.com/kalkih/simple-weather-card/releases/latest).
+2. Replace the local file with the one found in the [latest release](https://github.com/kalkih/simple-weather-card/releases/latest).
 
-3. Add the new version number to the end of the cards reference url in your `ui-lovelace.yaml` like below.
+3. Add the new version number to the end of the card reference url in your `ui-lovelace.yaml`. This will prevent the browser from loading the old version from cache.
 
     ```yaml
     resources:
       - url: /local/simple-weather-card.bundle.js?v=0.1.0
         type: module
     ```
-
-*You may need to empty the browsers cache if you have problems loading the updated card.*
 
 ## Using the card
 
@@ -93,45 +89,45 @@ See [Backdrop example](#backdrop-example) for example usage.
 ### Example usage
 
 #### Standard card
-![Preview Image]()
+![Standard card example](https://user-images.githubusercontent.com/457678/53588909-517c3480-3b8e-11e9-9d63-d49fa61507e3.png)
 
 ```yaml
 - type: custom:simple-weather-card
   entity: weather.smhi
+  name: in current location
 ```
 
 #### Backdrop example
-![Preview Image]()
+![Backdrop example](https://user-images.githubusercontent.com/457678/53589125-d404f400-3b8e-11e9-8b54-977971fe83ea.png)
 
 ```yaml
 - type: custom:simple-weather-card
   entity: weather.smhi
-  name: at current location
+  name: ' '
   backdrop: true
 ```
 
 #### Custom backdrop example
-![Preview Image]()
+![Custom backdrop example](https://user-images.githubusercontent.com/457678/53589746-7e314b80-3b90-11e9-9ee9-f90bd8c43690.png)
 
 ```yaml
 - type: custom:simple-weather-card
   entity: weather.smhi
-  name: at Home
+  name: at home
   backdrop:
-    fade: false
-    day: white
-    night: '#000000'
+    day: "var(--primary-color)"
+    night: "#40445a"
 ```
 
 
-## Getting errors?
-Make sure you have `javascript_version: latest` in your `configuration.yaml` under `frontend:`.
+## Problems?
+Make sure you have `javascript_version: latest` set in your `configuration.yaml` under `frontend:`.
 
-Make sure you have the latest version of `simple-weather-card.bundle.js`.
+Make sure you got the latest version of `simple-weather-card.bundle.js`.
 
-If you have issues after updating the card, try clearing your browsers cache or restart Home Assistant.
+If you have issues after updating the card, try clearing the browser cache manually.
 
-If you are getting "Custom element doesn't exist: simple-weather-card" or running older browsers try replacing `type: module` with `type: js` in your resource reference, like below.
+If you are getting "Custom element doesn't exist: simple-weather-card", or are running an older browser try replacing `type: module` with `type: js` in the resource reference in `ui-lovelace.yaml` or in the raw config editor.
 
 ## License
 This project is under the MIT license.
