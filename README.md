@@ -85,6 +85,7 @@ See [Backdrop example](#backdrop-example) for example usage.
 | fade | boolean | true | Faded background.
 | day | string | '#a55eea' | Background color (Day).
 | night | string | '#45aaf2' | Background color (Night).
+| text | string | 'var(--text-dark-color)' | Text color.
 
 ### Example usage
 
@@ -103,7 +104,7 @@ See [Backdrop example](#backdrop-example) for example usage.
 ```yaml
 - type: custom:simple-weather-card
   entity: weather.smhi
-  name: ' '
+  name: " "
   backdrop: true
 ```
 

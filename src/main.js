@@ -50,6 +50,7 @@ class SimpleWeatherCard extends LitElement {
       backdrop: {
         day: '#45aaf2',
         night: '#a55eea',
+        text: 'var(--text-dark-color)',
         fade: true,
         ...config.backdrop,
       },
@@ -66,7 +67,7 @@ class SimpleWeatherCard extends LitElement {
         ?bg=${this.config.bg}
         ?fade=${this.config.backdrop.fade}
         ?night=${this.weather.isNight}
-        style="--day-color: ${this.config.backdrop.day}; --night-color: ${this.config.backdrop.night}"
+        style="--day-color: ${this.config.backdrop.day}; --night-color: ${this.config.backdrop.night}; --text-color: ${this.config.backdrop.text};"
         @click=${() => this.moreInfo()}>
         <div class="weather__icon"
           style="background-image: url(${this.weather.icon})">

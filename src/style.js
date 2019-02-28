@@ -13,7 +13,7 @@ function getStyles(css) {
     ha-card[bg] {
       font-weight: 500;
       background: var(--day-color);
-      color: var(--text-dark-color);
+      color: var(--text-color);
     }
     ha-card[bg][night] {
       background: var(--night-color);
