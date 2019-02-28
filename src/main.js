@@ -51,7 +51,7 @@ class SimpleWeatherCard extends LitElement {
         day: '#45aaf2',
         night: '#a55eea',
         text: 'var(--text-dark-color)',
-        fade: true,
+        fade: false,
         ...config.backdrop,
       },
     };
