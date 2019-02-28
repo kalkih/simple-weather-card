@@ -75,7 +75,7 @@ class SimpleWeatherCard extends LitElement {
           <span class="weather__info__title">
             ${this.weather.temp}
             ${this.getUnit()}
-            ${this.weather.name}
+            ${this.name}
           </span>
           <span class="weather__info__state">
             ${this.weather.state}
