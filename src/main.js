@@ -48,8 +48,8 @@ class SimpleWeatherCard extends LitElement {
       bg: config.backdrop ? true : false,
       ...config,
       backdrop: {
-        day: '#03A9F4',
-        night: '#B58BFF',
+        day: '#45aaf2',
+        night: '#a55eea',
         fade: true,
         ...config.backdrop,
       },

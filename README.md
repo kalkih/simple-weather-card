@@ -87,8 +87,8 @@ See [Backdrop example](#backdrop-example) for example usage.
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | fade | boolean | true | Faded background.
-| day | string | '#B58BFF' | Background color (Day).
-| night | string | '#03A9F4' | Background color (Night).
+| day | string | '#a55eea' | Background color (Day).
+| night | string | '#45aaf2' | Background color (Night).
 
 ### Example usage
 
