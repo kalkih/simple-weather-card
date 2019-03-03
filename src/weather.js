@@ -16,6 +16,7 @@ import wind from '../icons/windy.svg';
 const ICONS = {
   "clear-night": clear_night,
   cloudy: cloudy,
+  overcast: cloudy,
   fog: fog,
   hail: mixed_rain,
   lightning: thunder,
