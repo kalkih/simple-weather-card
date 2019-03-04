@@ -1,8 +1,8 @@
 {
   "simple-weather-card.bundle": {
-    "updated_at": "2019-02-28",
-    "version": "0.1.0",
-    "remote_location": "https://github.com/kalkih/simple-weather-card/releases/download/v0.1.0/simple-weather-card.bundle.js",
+    "updated_at": "2019-03-05",
+    "version": "0.2.0",
+    "remote_location": "https://github.com/kalkih/simple-weather-card/releases/download/v0.2.0/simple-weather-card.bundle.js",
     "visit_repo": "https://github.com/kalkih/simple-weather-card",
     "changelog": "https://github.com/kalkih/simple-weather-card/releases/latest"
   }
