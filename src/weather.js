@@ -1,34 +1,35 @@
 import clear_night from '../icons/clear_night.png';
 import cloudy from '../icons/cloudy.png';
 import fog from '../icons/fog.png';
-import thunder from '../icons/thunder.png';
+import lightning from '../icons/lightning.png';
 import storm from '../icons/storm.png';
 import storm_night from '../icons/storm_night.png';
 import mostly_cloudy from '../icons/mostly_cloudy.png';
 import mostly_cloudy_night from '../icons/mostly_cloudy_night.png';
 import heavy_rain from '../icons/heavy_rain.png';
-import rain from '../icons/rain.png';
-import snow from '../icons/snow.png';
+import rainy from '../icons/rainy.png';
+import snowy from '../icons/snowy.png';
 import mixed_rain from '../icons/mixed_rain.png';
-import clear from '../icons/clear.png';
-import wind from '../icons/windy.svg';
+import sunny from '../icons/sunny.png';
+import windy from '../icons/windy.svg';
+import humidity from '../icons/humidity.svg';
 
 const ICONS = {
   "clear-night": clear_night,
-  cloudy: cloudy,
+  cloudy,
   overcast: cloudy,
-  fog: fog,
+  fog,
   hail: mixed_rain,
-  lightning: thunder,
+  lightning,
   "lightning-rainy": storm,
   partlycloudy: mostly_cloudy,
   pouring: heavy_rain,
-  rainy: rain,
-  snowy: snow,
+  rainy,
+  snowy,
   "snowy-rainy": mixed_rain,
-  sunny: clear,
-  windy: wind,
-  "windy-variant": wind,
+  sunny,
+  windy,
+  "windy-variant": windy,
 };
 
 const ICONS_NIGHT = {
