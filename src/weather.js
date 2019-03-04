@@ -30,6 +30,7 @@ const ICONS = {
   sunny,
   windy,
   "windy-variant": windy,
+  humidity,
 };
 
 const ICONS_NIGHT = {
@@ -67,12 +68,16 @@ export default class WeatherEntity {
     return this.forecast[0].templow;
   }
 
-  get wind() {
-    return this.attr.wind_speed;
+  get wind_speed() {
+    return this.attr.wind_speed || 0;
   }
 
-  get rain() {
-    return this.forecast[0].precipitation;
+  get precipitation() {
+    return this.forecast[0].precipitation || 0;
+  }
+
+  get humidity() {
+    return this.attr.humidity || 0;
   }
 
   get isNight() {

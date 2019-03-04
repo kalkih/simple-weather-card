@@ -11,6 +11,12 @@ const UNITS = {
   fahrenheit: '°F',
 }
 
+const INFO = {
+  precipitation: { icon: 'rainy', unit: 'length' },
+  humidity: { icon: 'humidity', unit: '%' },
+  wind_speed: { icon: 'windy', unit: 'speed' },
+}
+
 class SimpleWeatherCard extends LitElement {
   static get properties() {
     return {
@@ -46,6 +52,7 @@ class SimpleWeatherCard extends LitElement {
 
     this.config = {
       bg: config.backdrop ? true : false,
+      secondary_info: 'precipitation',
       ...config,
       backdrop: {
         day: '#45aaf2',
@@ -87,13 +94,19 @@ class SimpleWeatherCard extends LitElement {
             ${this.weather.high}${this.getUnit()} / ${this.weather.low}${this.getUnit()}
           </span>
           <span>
-            <div class="weather__icon weather__icon--small"
-              style="background-image: url(${this.weather.getIcon('rainy')})">
-            </div>
-            ${this.weather.rain} ${this.getUnit('length')}
+            ${this.renderSecondaryInfo(this.config.secondary_info)}
           </span>
         </div>
       </ha-card>
+    `;
+  }
+
+  renderSecondaryInfo(type) {
+    return html`
+      <div class="weather__icon weather__icon--small"
+        style="background-image: url(${this.weather.getIcon(INFO[type].icon)})">
+      </div>
+      ${this.weather[type]} ${this.getUnit(INFO[type].unit)}
     `;
   }
 
@@ -104,11 +117,14 @@ class SimpleWeatherCard extends LitElement {
   }
 
   getUnit(unit = 'temperature') {
-    const res = this.hass.config.unit_system[unit];
+    const target = unit === 'speed' ? 'length' : unit;
+    const res = this.hass.config.unit_system[target];
     if (unit === 'temperature')
       return res || UNITS.celsius;
     else if (unit === 'length')
       return res === 'km' ? 'mm' : 'in';
+    else if (unit === 'speed')
+      return res ? `${res}/h` : 'km/h';
     return unit;
   }
 }

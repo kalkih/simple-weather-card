@@ -38,7 +38,6 @@ function getStyles(css) {
       width: 1em;
       flex: initial;
       margin: 0 .4em;
-      margin-top: 4px;
     }
     .weather__info {
       display: flex;

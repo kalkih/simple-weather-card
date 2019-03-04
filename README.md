@@ -74,6 +74,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 | type | string | **required** | v0.1.0 | `custom:simple-weather-card`
 | entity | string | **required** | v0.1.0 | The entity_id from an entity within the `weather` domain.
 | name | string | optional | v0.1.0 | Set a custom name.
+| secondary_info | string | `precipitation` | v0.2.0 | Secondary info displayed, `precipitation`, `humidity`, `wind_speed`.
 | backdrop | boolean/object | false | v0.1.0 | Colored background, takes `true/false` or a [backdrop object](#backdrop-object-options).
 
 
