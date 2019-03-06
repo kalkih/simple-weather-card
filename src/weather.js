@@ -45,11 +45,15 @@ export default class WeatherEntity {
     this.hass = hass;
     this.entity = entity;
     this.attr = entity.attributes;
-    this.forecast = entity.attributes.forecast;
+    this.forecast = entity.attributes.forecast || [[]];
   }
 
   get state() {
     return this.translation('state.weather.' + this.entity.state, this.entity.state);
+  }
+
+  get hasState() {
+    return (this.entity.state && this.entity.state !== 'unknown')
   }
 
   get temp() {
@@ -61,11 +65,11 @@ export default class WeatherEntity {
   }
 
   get high() {
-    return this.forecast[0].temperature;
+    return this.forecast[0].temperature || 0;
   }
 
   get low() {
-    return this.forecast[0].templow;
+    return this.forecast[0].templow || 0;
   }
 
   get wind_speed() {

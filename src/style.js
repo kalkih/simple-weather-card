@@ -31,6 +31,7 @@ function getStyles(css) {
       background-repeat: no-repeat;
       flex: 0 0 40px;
       color: white;
+      margin-right: 16px;
     }
     .weather__icon--small {
       display: inline-block;
@@ -43,7 +44,6 @@ function getStyles(css) {
       display: flex;
       flex-flow: column;
       justify-content: space-between;
-      margin-left: 16px;
       min-height: 42px;
       min-width: 0;
     }

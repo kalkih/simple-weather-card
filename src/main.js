@@ -76,9 +76,7 @@ class SimpleWeatherCard extends LitElement {
         ?night=${this.weather.isNight}
         style="--day-color: ${this.config.backdrop.day}; --night-color: ${this.config.backdrop.night}; --text-color: ${this.config.backdrop.text};"
         @click=${() => this.moreInfo()}>
-        <div class="weather__icon"
-          style="background-image: url(${this.weather.icon})">
-        </div>
+        ${this.renderIcon()}
         <div class="weather__info">
           <span class="weather__info__title">
             ${this.weather.temp}
@@ -99,6 +97,14 @@ class SimpleWeatherCard extends LitElement {
         </div>
       </ha-card>
     `;
+  }
+
+  renderIcon() {
+    return this.weather.hasState ? html`
+      <div class="weather__icon"
+        style="background-image: url(${this.weather.icon})">
+      </div>
+    ` : '';
   }
 
   renderSecondaryInfo(type) {
