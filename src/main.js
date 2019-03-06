@@ -88,9 +88,7 @@ class SimpleWeatherCard extends LitElement {
           </span>
         </div>
         <div class="weather__info weather__info--add">
-          <span>
-            ${this.weather.high}${this.getUnit()} / ${this.weather.low}${this.getUnit()}
-          </span>
+          ${this.renderExtrema(this.weather.high, this.weather.low)}
           <span>
             ${this.renderSecondaryInfo(this.config.secondary_info)}
           </span>
@@ -104,6 +102,16 @@ class SimpleWeatherCard extends LitElement {
       <div class="weather__icon"
         style="background-image: url(${this.weather.icon})">
       </div>
+    ` : '';
+  }
+
+  renderExtrema(high, low) {
+    return (high || low) ? html`
+    <span>
+      ${high ? high + this.getUnit(): ''}
+      ${(high && low) ? ' / ' : ''}
+      ${low ? low + this.getUnit(): ''}
+    </span>
     ` : '';
   }
 

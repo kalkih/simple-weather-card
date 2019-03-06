@@ -65,11 +65,11 @@ export default class WeatherEntity {
   }
 
   get high() {
-    return this.forecast[0].temperature || 0;
+    return this.forecast[0].temperature;
   }
 
   get low() {
-    return this.forecast[0].templow || 0;
+    return this.forecast[0].templow;
   }
 
   get wind_speed() {
