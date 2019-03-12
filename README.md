@@ -17,7 +17,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card.bundle.js?v=0.2.0
+      - url: /local/simple-weather-card.bundle.js?v=0.3.0
         type: module
     ```
 
@@ -28,14 +28,14 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 2. Download `simple-weather-card.bundle.js`
 
     ```console
-    $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.2.0/simple-weather-card.bundle.js
+    $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.3.0/simple-weather-card.bundle.js
     ```
 
 3. Add a reference to `simple-weather-card.bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor gui.
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card.bundle.js?v=0.2.0
+      - url: /local/simple-weather-card.bundle.js?v=0.3.0
         type: module
     ```
 
@@ -60,7 +60,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card.bundle.js?v=0.2.0
+      - url: /local/simple-weather-card.bundle.js?v=0.3.0
         type: module
     ```
 
@@ -75,7 +75,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 | entity | string | **required** | v0.1.0 | The entity_id from an entity within the `weather` domain.
 | name | string | optional | v0.1.0 | Set a custom name.
 | secondary_info | string | `precipitation` | v0.2.0 | Secondary info displayed, `precipitation`, `humidity`, `wind_speed`.
-| backdrop | boolean/object | false | v0.1.0 | Colored background, takes `true/false` or a [backdrop object](#backdrop-object-options).
+| backdrop | boolean/object | `false` | v0.1.0 | Colored background, takes `true/false` or a [backdrop object](#backdrop-object-options).
 
 
 #### Backdrop object options
@@ -83,7 +83,7 @@ See [Backdrop example](#backdrop-example) for example usage.
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-| fade | boolean | false | Faded background.
+| fade | boolean | `false` | Faded background.
 | day | string | '#45aaf2' | Background color (Day).
 | night | string | '#a55eea' | Background color (Night).
 | text | string | 'var(--text-dark-color)' | Text color.
