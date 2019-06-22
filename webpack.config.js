@@ -1,7 +1,7 @@
 module.exports = {
   entry: './src/main.js',
   output: {
-    filename: 'simple-weather-card.bundle.js'
+    filename: 'simple-weather-card-bundle.js'
   },
   module: {
     rules: [
