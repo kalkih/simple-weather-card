@@ -18,12 +18,18 @@ const INFO = {
 }
 
 class SimpleWeatherCard extends LitElement {
+  constructor () {
+    super();
+    this.custom = {};
+  }
+
   static get properties() {
     return {
       _hass: { type: Object },
       config: { type: Object },
       entity: { type: Object },
       weather: { type: Object },
+      custom: { type: Object },
     };
   }
 
@@ -32,11 +38,26 @@ class SimpleWeatherCard extends LitElement {
   }
 
   set hass(hass) {
+    const { custom, entity } = this.config
+
     this._hass = hass;
-    const entity = hass.states[this.config.entity];
-    if (entity && this.entity !== entity) {
-      this.entity = entity;
-      this.weather = new WeatherEntity(hass, entity);
+    const entityObj = hass.states[entity];
+    if (entityObj && this.entity !== entityObj) {
+      this.entity = entityObj;
+      this.weather = new WeatherEntity(hass, entityObj);
+    }
+    const newCustom = {};
+    custom.forEach(ele => {
+      const [key, sensor] = Object.entries(ele)[0]
+      if (hass.states[sensor].state !== this.custom[key]) {
+        newCustom[key] = hass.states[sensor].state;
+      }
+    });
+    if (Object.entries(newCustom).length > 0 ) {
+      this.custom = {
+        ...this.custom,
+        ...newCustom,
+      }
     }
   }
 
@@ -53,6 +74,7 @@ class SimpleWeatherCard extends LitElement {
     this.config = {
       bg: config.backdrop ? true : false,
       secondary_info: 'precipitation',
+      custom: [],
       ...config,
       backdrop: {
         day: '#45aaf2',
@@ -65,7 +87,7 @@ class SimpleWeatherCard extends LitElement {
   }
 
   shouldUpdate(changedProps) {
-    return changedProps.has('entity');
+    return changedProps.has('entity', 'custom');
   }
 
   render() {
@@ -79,16 +101,19 @@ class SimpleWeatherCard extends LitElement {
         ${this.renderIcon()}
         <div class="weather__info">
           <span class="weather__info__title">
-            ${this.weather.temp}
+            ${this.custom.temp || this.weather.temp}
             ${this.getUnit()}
             ${this.name}
           </span>
           <span class="weather__info__state">
-            ${this.weather.state}
+            ${this.custom.state || this.weather.state}
           </span>
         </div>
         <div class="weather__info weather__info--add">
-          ${this.renderExtrema(this.weather.high, this.weather.low)}
+          ${this.renderExtrema(
+            this.custom.high || this.weather.high,
+            this.custom.low || this.weather.low
+          )}
           <span>
             ${this.renderSecondaryInfo(this.config.secondary_info)}
           </span>
@@ -121,7 +146,7 @@ class SimpleWeatherCard extends LitElement {
       <div class="weather__icon weather__icon--small"
         style="background-image: url(${this.weather.getIcon(INFO[type].icon)})">
       </div>
-      ${this.weather[type]} ${this.getUnit(INFO[type].unit)}
+      ${this.custom[type] || this.weather[type]} ${this.getUnit(INFO[type].unit)}
     `;
   }
 
