@@ -11,13 +11,15 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
 ### Simple install
 
-1. Download and copy `simple-weather-card.bundle.js` from the [latest release](https://github.com/kalkih/simple-weather-card/releases/latest) into your `config/www` directory.
+*This card is available in [HACS](https://github.com/custom-components/hacs) (Home Assistant Community Store)*
 
-2. Add a reference to `simple-weather-card.bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor interface.
+1. Download and copy `simple-weather-card-bundle.js` from the [latest release](https://github.com/kalkih/simple-weather-card/releases/latest) into your `config/www` directory.
+
+2. Add a reference to `simple-weather-card-bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor interface.
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card.bundle.js?v=0.3.0
+      - url: /local/simple-weather-card-bundle.js?v=0.4.0
         type: module
     ```
 
@@ -25,17 +27,17 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
 1. Move into your `config/www` directory
 
-2. Download `simple-weather-card.bundle.js`
+2. Download `simple-weather-card-bundle.js`
 
     ```console
-    $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.3.0/simple-weather-card.bundle.js
+    $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.4.0/simple-weather-card-bundle.js
     ```
 
-3. Add a reference to `simple-weather-card.bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor gui.
+3. Add a reference to `simple-weather-card-bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor gui.
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card.bundle.js?v=0.3.0
+      - url: /local/simple-weather-card-bundle.js?v=0.4.0
         type: module
     ```
 
@@ -52,7 +54,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
     ```
 
 ## Updating
-1. Find your `simple-weather-card.bundle.js` file in `config/www` or wherever you ended up storing it.
+1. Find your `simple-weather-card-bundle.js` file in `config/www` or wherever you ended up storing it.
 
 2. Replace the local file with the one found in the [latest release](https://github.com/kalkih/simple-weather-card/releases/latest).
 
@@ -60,7 +62,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card.bundle.js?v=0.3.0
+      - url: /local/simple-weather-card-bundle.js?v=0.4.0
         type: module
     ```
 
@@ -75,7 +77,8 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 | entity | string | **required** | v0.1.0 | The entity_id from an entity within the `weather` domain.
 | name | string | optional | v0.1.0 | Set a custom name.
 | secondary_info | string | `precipitation` | v0.2.0 | Secondary info displayed, `precipitation`, `humidity`, `wind_speed`.
-| backdrop | boolean/object | `false` | v0.1.0 | Colored background, takes `true/false` or a [backdrop object](#backdrop-object-options).
+| backdrop | boolean/object | `false` | v0.1.0 | Colored background, accepts `true/false` or a [Backdrop object](#backdrop-object-options).
+| custom | array | optional` | v0.4.0 | Override weather information with custom sensors, see [Custom option](#custom-option)
 
 
 #### Backdrop object options
@@ -87,6 +90,18 @@ See [Backdrop example](#backdrop-example) for example usage.
 | day | string | '#45aaf2' | Background color (Day).
 | night | string | '#a55eea' | Background color (Night).
 | text | string | 'var(--text-dark-color)' | Text color.
+
+#### Custom option array
+See [Custom example](#custom-sensors-example) for example usage.
+Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity` and `wind_speed`.
+
+```yaml
+custom:
+  - temp: sensor.home_temp
+  - high: sensor.home_high_temp
+  - low: sensor.home_low_temp
+```
+
 
 ### Example usage
 
@@ -121,11 +136,23 @@ See [Backdrop example](#backdrop-example) for example usage.
     night: "#40445a"
 ```
 
+#### Custom sensors example
+
+```yaml
+- type: custom:simple-weather-card
+  entity: weather.smhi
+  name: Home
+  custom:
+    - temp: sensor.home_temp
+    - high: sensor.home_high_temp
+    - low: sensor.home_low_temp
+```
+
 
 ## Problems?
 Make sure you have `javascript_version: latest` set in your `configuration.yaml` under `frontend:`.
 
-Make sure you got the latest version of `simple-weather-card.bundle.js`.
+Make sure you got the latest version of `simple-weather-card-bundle.js`.
 
 If you have issues after updating the card, try clearing the browser cache manually.
 
