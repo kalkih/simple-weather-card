@@ -7,7 +7,7 @@ function getStyles(css) {
       padding: 16px;
       color: var(--primary-text-color, #000);
       font-weight: 400;
-      transition: background: 1s;
+      transition: background 1s;
       cursor: pointer;
     }
     ha-card[bg] {
