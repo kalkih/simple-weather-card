@@ -2,7 +2,7 @@ import WeatherEntity from './weather';
 import style from './style';
 
 const LitElement = window.LitElement || Object.getPrototypeOf(
-  customElements.get("home-assistant-main"),
+  customElements.get("hui-view"),
 );
 const { html, css } = LitElement.prototype;
 
