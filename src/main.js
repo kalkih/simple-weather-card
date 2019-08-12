@@ -50,7 +50,10 @@ class SimpleWeatherCard extends LitElement {
     const newCustom = {};
     custom.forEach(ele => {
       const [key, sensor] = Object.entries(ele)[0]
-      if (hass.states[sensor].state !== this.custom[key]) {
+      if (
+        hass.states[sensor]
+        && hass.states[sensor].state !== this.custom[key]
+      ) {
         newCustom[key] = hass.states[sensor].state;
       }
     });
