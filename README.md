@@ -78,7 +78,8 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 | name | string | optional | v0.1.0 | Set a custom name.
 | secondary_info | string | `precipitation` | v0.2.0 | Secondary info displayed, `precipitation`, `humidity`, `wind_speed`.
 | backdrop | boolean/object | `false` | v0.1.0 | Colored background, accepts `true/false` or a [Backdrop object](#backdrop-object-options).
-| custom | array | optional` | v0.4.0 | Override weather information with custom sensors, see [Custom option](#custom-option)
+| custom | array | optional | v0.4.0 | Override weather information with custom sensors, see [Custom option](#custom-option)
+| tap_action | [action object](#action-object-options) | optional | v0.5.0 | Action on click/tap
 
 
 #### Backdrop object options
@@ -94,6 +95,15 @@ See [Backdrop example](#backdrop-example) for example usage.
 #### Custom option array
 See [Custom example](#custom-sensors-example) for example usage.
 Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity` and `wind_speed`.
+
+#### action object options
+
+| Name | Type | Default | Options | Description |
+|------|------|---------|-------------|-------------|
+| action | string | `more-info` | `more-info`, `navigate`, `call-service`, `none` | Action to perform
+| service | string | none | Any service | Service to call (e.g. `media_player.toggle`) when `action` is defined as `call-service`
+| service_data | object | none | Any service data | Service data to include with the service call (e.g. `entity_id: media_player.office`) 
+| navigation_path | string | none | Any path | Path to navigate to (e.g. `/lovelace/0/`) when `action` is defined as `navigate`
 
 ```yaml
 custom:

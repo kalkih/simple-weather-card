@@ -1,5 +1,6 @@
 import WeatherEntity from './weather';
 import style from './style';
+import { handleClick } from './handleClick';
 
 const LitElement = window.LitElement || Object.getPrototypeOf(
   customElements.get("hui-view"),
@@ -75,6 +76,9 @@ class SimpleWeatherCard extends LitElement {
       bg: config.backdrop ? true : false,
       secondary_info: 'precipitation',
       custom: [],
+      tap_action: {
+        action: 'more-info',
+      },
       ...config,
       backdrop: {
         day: '#45aaf2',
@@ -97,7 +101,7 @@ class SimpleWeatherCard extends LitElement {
         ?fade=${this.config.backdrop.fade}
         ?night=${this.weather.isNight}
         style="--day-color: ${this.config.backdrop.day}; --night-color: ${this.config.backdrop.night}; --text-color: ${this.config.backdrop.text};"
-        @click=${() => this.moreInfo()}>
+        @click=${(e) => this.handleTap(e)}>
         ${this.renderIcon()}
         <div class="weather__info">
           <span class="weather__info__title">
@@ -150,10 +154,8 @@ class SimpleWeatherCard extends LitElement {
     `;
   }
 
-  moreInfo() {
-    const e = new Event('hass-more-info', { composed: true });
-    e.detail = { entityId: this.config.entity };
-    this.dispatchEvent(e);
+  handleTap() {
+    handleClick(this, this._hass, this.config, this.config.tap_action)
   }
 
   getUnit(unit = 'temperature') {
