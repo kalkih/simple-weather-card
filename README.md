@@ -94,7 +94,7 @@ See [Backdrop example](#backdrop-example) for example usage.
 
 #### Custom option array
 See [Custom example](#custom-sensors-example) for example usage.
-Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity` and `wind_speed`.
+Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity`, `icon-state` and `wind_speed`.
 
 #### action object options
 
