@@ -160,7 +160,7 @@ class SimpleWeatherCard extends LitElement {
 
   getUnit(unit = 'temperature') {
     const target = unit === 'speed' ? 'length' : unit;
-    const res = this.hass.config.unit_system[target];
+    const res = this._hass.config.unit_system[target];
     if (unit === 'temperature')
       return res || UNITS.celsius;
     else if (unit === 'length')
