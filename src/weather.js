@@ -40,6 +40,25 @@ const ICONS_NIGHT = {
   "lightning-rainy": storm_night,
 }
 
+const DIRECTION = [
+  "N",
+  "NNE",
+  "NE",
+  "ENE",
+  "E",
+  "ESE",
+  "SE",
+  "SSE",
+  "S",
+  "SSW",
+  "SW",
+  "WSW",
+  "W",
+  "WNW",
+  "NW",
+  "NNW",
+]
+
 export default class WeatherEntity {
   constructor(hass, entity) {
     this.hass = hass;
@@ -49,7 +68,7 @@ export default class WeatherEntity {
   }
 
   get state() {
-    return this.translation('state.weather.' + this.entity.state, this.entity.state);
+    return this.toLocale('state.weather.' + this.entity.state, this.entity.state);
   }
 
   get hasState() {
@@ -76,6 +95,12 @@ export default class WeatherEntity {
     return this.attr.wind_speed || 0;
   }
 
+  get wind_bearing() {
+    return this.attr.wind_bearing
+      ? this.degToDirection(this.attr.wind_bearing)
+      : this.toLocale('state.default.unknown');
+  }
+
   get precipitation() {
     return this.forecast[0].precipitation || 0;
   }
@@ -88,7 +113,7 @@ export default class WeatherEntity {
     return this.hass.states['sun.sun']
       ? this.hass.states['sun.sun'].state === 'below_horizon'
       : false;
-  };
+  }
 
   get icon() {
     const state = this.entity.state.toLowerCase();
@@ -99,9 +124,14 @@ export default class WeatherEntity {
     return ICONS[icon];
   }
 
-  translation(string, fallback = 'unknown') {
+  toLocale(string, fallback = 'unknown') {
     const lang = this.hass.selectedLanguage || this.hass.language;
     const resources = this.hass.resources[lang];
     return (resources && resources[string] ? resources[string] : fallback);
+  }
+
+  degToDirection (deg) {
+    const dir = Math.floor((deg / 22.5) + .5);
+    return DIRECTION[(dir % 16)];
   }
 }
