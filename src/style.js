@@ -37,6 +37,7 @@ function getStyles(css) {
       display: inline-block;
       height: 1em;
       width: 1em;
+      min-width: 1em;
       flex: initial;
       margin: 0 .4em;
     }

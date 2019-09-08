@@ -78,7 +78,7 @@ class SimpleWeatherCard extends LitElement {
 
     this.config = {
       bg: config.backdrop ? true : false,
-      secondary_info: 'precipitation',
+      secondary_info: ['precipitation'],
       custom: [],
       tap_action: {
         action: 'more-info',
@@ -92,6 +92,9 @@ class SimpleWeatherCard extends LitElement {
         ...config.backdrop,
       },
     };
+
+    if (typeof config.secondary_info === 'string')
+      this.config.secondary_info = [config.secondary_info];
   }
 
   shouldUpdate(changedProps) {
@@ -151,12 +154,14 @@ class SimpleWeatherCard extends LitElement {
     ` : '';
   }
 
-  renderSecondaryInfo(type) {
+  renderSecondaryInfo(attrs) {
     return html`
-      <div class="weather__icon weather__icon--small"
-        style="background-image: url(${this.weather.getIcon(INFO[type].icon)})">
-      </div>
-      ${this.custom[type] || this.weather[type]} ${this.getUnit(INFO[type].unit)}
+      ${attrs.map(attr => html`
+        <div class="weather__icon weather__icon--small"
+          style="background-image: url(${this.weather.getIcon(INFO[attr].icon)})">
+        </div>
+        ${this.custom[attr] || this.weather[attr]} ${this.getUnit(INFO[attr].unit)}
+      `)}
     `;
   }
 
