@@ -3,7 +3,7 @@ export const handleClick = (node, hass, config, actionConfig) => {
   switch (actionConfig.action) {
     case 'more-info':
       e = new Event('hass-more-info', { composed: true });
-      e.detail = { entityId: config.entity };
+      e.detail = { entityId: actionConfig.entity || config.entity };
       node.dispatchEvent(e);
       break;
     case 'navigate':
