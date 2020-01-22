@@ -8,8 +8,8 @@
 ## Features
 * Minimalistic & compact design
 * Custom day/night background
-* Beautiful weather icons
-* Customizable secondary info (wind speed, precipitatio, humidity)
+* Clean and minimalistic weather icons
+* Customizable weather information (wind speed, precipitatio, humidity & more)
 * more...
 
 <br/>
