@@ -7,11 +7,12 @@ function getStyles(css) {
       padding: 16px;
       color: var(--primary-text-color, #000);
       font-weight: 400;
+      font-weight: var(--swc-font-weight, 400);
       transition: background 1s;
       cursor: pointer;
     }
     ha-card[bg] {
-      font-weight: 500;
+      font-weight: var(--swc-font-weight, 500);
       background: var(--day-color);
       color: var(--text-color);
     }
