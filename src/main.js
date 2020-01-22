@@ -103,7 +103,7 @@ class SimpleWeatherCard extends LitElement {
   }
 
   shouldUpdate(changedProps) {
-    return changedProps.has('entity', 'custom');
+    return ['entity', 'custom'].some(prop => changedProps.has(prop))
   }
 
   render() {
