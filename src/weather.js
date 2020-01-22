@@ -105,6 +105,10 @@ export default class WeatherEntity {
     return this.forecast[0].precipitation || 0;
   }
 
+  get precipitation_probability() {
+    return this.forecast[0].precipitation_probability || 0;
+  }
+
   get humidity() {
     return this.attr.humidity || 0;
   }

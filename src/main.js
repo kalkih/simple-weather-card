@@ -14,6 +14,7 @@ const UNITS = {
 
 const INFO = {
   precipitation: { icon: 'rainy', unit: 'length' },
+  precipitation_probability: { icon: 'rainy', unit: '%' },
   humidity: { icon: 'humidity', unit: '%' },
   wind_speed: { icon: 'windy', unit: 'speed' },
   wind_bearing: { icon: 'windy', unit: '' },
