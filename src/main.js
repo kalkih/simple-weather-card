@@ -52,11 +52,15 @@ class SimpleWeatherCard extends LitElement {
     const newCustom = {};
     custom.forEach(ele => {
       const [key, sensor] = Object.entries(ele)[0]
-      if (
-        hass.states[sensor]
-        && hass.states[sensor].state !== this.custom[key]
-      ) {
-        newCustom[key] = hass.states[sensor].state;
+      if (hass.states[sensor]) {
+        const entry = hass.states[sensor];
+        const { state } = this.custom[key] || {}
+        if (state !== entry.state) {
+          newCustom[key] = {
+            state: entry.state,
+            unit: entry.attributes.unit_of_measurement,
+          }
+        }
       }
     });
     if (Object.entries(newCustom).length > 0 ) {
@@ -123,8 +127,7 @@ class SimpleWeatherCard extends LitElement {
         ${this.renderIcon()}
         <div class="weather__info">
           <span class="weather__info__title">
-            ${this.custom.temp || this.weather.temp}
-            ${this.getUnit()}
+            ${this.renderAttr('temp')}
             ${this.name}
           </span>
           <span class="weather__info__state">
@@ -155,9 +158,9 @@ class SimpleWeatherCard extends LitElement {
     const low = this.custom.low || this.weather.low;
     return (high || low) ? html`
       <span class="weather__info__item">
-        ${high ? high + this.getUnit(): ''}
+        ${this.renderAttr('low')}
         ${(high && low) ? ' / ' : ''}
-        ${low ? low + this.getUnit(): ''}
+        ${this.renderAttr('low')}
       </span>
     ` : '';
   }
@@ -177,8 +180,20 @@ class SimpleWeatherCard extends LitElement {
         <div class="weather__icon weather__icon--small"
           style="background-image: url(${this.weather.getIcon(INFO[attr].icon)})">
         </div>
-        ${this.custom[attr] || this.weather[attr]} ${this.getUnit(INFO[attr].unit)}
+        ${this.renderAttr(attr)}
       </span>
+    `;
+  }
+
+  renderAttr(attr, uom = true) {
+    const state = this.custom[attr] ? this.custom[attr].state : this.weather[attr]
+    const { unit } = this.custom[attr] && this.custom[attr].unit
+      ? this.custom[attr]
+      : INFO[attr] || {};
+
+    return html`
+      ${state}
+      ${uom ? this.getUnit(unit) : ''}
     `;
   }
 
