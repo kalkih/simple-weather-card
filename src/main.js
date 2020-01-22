@@ -79,6 +79,7 @@ class SimpleWeatherCard extends LitElement {
 
     this.config = {
       bg: config.backdrop ? true : false,
+      primary_info: ['extrema'],
       secondary_info: ['precipitation'],
       custom: [],
       tap_action: {
@@ -93,6 +94,9 @@ class SimpleWeatherCard extends LitElement {
         ...config.backdrop,
       },
     };
+
+    if (typeof config.primary_info === 'string')
+      this.config.primary_info = [config.primary_info];
 
     if (typeof config.secondary_info === 'string')
       this.config.secondary_info = [config.secondary_info];
@@ -122,13 +126,8 @@ class SimpleWeatherCard extends LitElement {
           </span>
         </div>
         <div class="weather__info weather__info--add">
-          ${this.renderExtrema(
-            this.custom.high || this.weather.high,
-            this.custom.low || this.weather.low
-          )}
-          <span>
-            ${this.renderSecondaryInfo(this.config.secondary_info)}
-          </span>
+          ${this.renderInfoRow(this.config.primary_info)}
+          ${this.renderInfoRow(this.config.secondary_info)}
         </div>
       </ha-card>
     `;
@@ -145,24 +144,35 @@ class SimpleWeatherCard extends LitElement {
     ` : '';
   }
 
-  renderExtrema(high, low) {
+  renderExtrema() {
+    const high = this.custom.high || this.weather.high;
+    const low = this.custom.low || this.weather.low;
     return (high || low) ? html`
-    <span>
-      ${high ? high + this.getUnit(): ''}
-      ${(high && low) ? ' / ' : ''}
-      ${low ? low + this.getUnit(): ''}
-    </span>
+      <span class="weather__info__item">
+        ${high ? high + this.getUnit(): ''}
+        ${(high && low) ? ' / ' : ''}
+        ${low ? low + this.getUnit(): ''}
+      </span>
     ` : '';
   }
 
-  renderSecondaryInfo(attrs) {
+  renderInfoRow(attrs) {
     return html`
-      ${attrs.map(attr => html`
+      <div class="weather__info__row">
+        ${attrs.map(attr => this.renderInfo(attr))}
+      </div>
+    `;
+  }
+
+  renderInfo(attr) {
+    if (attr === 'extrema') return this.renderExtrema();
+    return html`
+      <span class="weather__info__item">
         <div class="weather__icon weather__icon--small"
           style="background-image: url(${this.weather.getIcon(INFO[attr].icon)})">
         </div>
         ${this.custom[attr] || this.weather[attr]} ${this.getUnit(INFO[attr].unit)}
-      `)}
+      </span>
     `;
   }
 

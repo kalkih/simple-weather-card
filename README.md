@@ -76,11 +76,23 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 | type | string | **required** | v0.1.0 | `custom:simple-weather-card`
 | entity | string | **required** | v0.1.0 | The entity_id from an entity within the `weather` domain.
 | name | string | optional | v0.1.0 | Set a custom name.
-| secondary_info | array/string | `precipitation` | v0.2.0 | Secondary info, one or multiple of the following: `precipitation`, `humidity`, `wind_speed`, `wind_bearing`.
+| primary_info | array/string | `extrema` | v0.7.0 | Primary card information, one or more [weather attributes](#weather-attributes)
+| secondary_info | array/string | `precipitation` | v0.2.0 | Secondary card information, one or more [weather attributes](#weather-attributes)
 | backdrop | boolean/object | `false` | v0.1.0 | Colored background, accepts `true/false` or a [Backdrop object](#backdrop-object-options).
 | custom | array | optional | v0.4.0 | Override weather information with custom sensors, see [Custom option](#custom-option-array).
 | tap_action | [action object](#action-object-options) | optional | v0.5.0 | Action on click/tap.
 
+
+#### Weather attributes
+
+| Name |  Description |
+|------|--------------|
+| extrema | Forecast high and low temperature |
+| precipitation | Forecast precipitation |
+| precipitation_probability | Probability of precipitation |
+| humidity | Current humidity |
+| wind_speed | Current wind speed |
+| wind_bearing | Current wind direction |
 
 #### Backdrop object options
 See [Backdrop example](#backdrop-example) for example usage.
@@ -94,7 +106,7 @@ See [Backdrop example](#backdrop-example) for example usage.
 
 #### Custom option array
 See [Custom example](#custom-sensors-example) for example usage.
-Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity`, `icon-state`, `wind_speed` & `wind_bearing`.
+Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity`, `icon-state`, `wind_speed`, `wind_bearing` & `precipitation_probability`.
 
 #### action object options
 
@@ -147,12 +159,25 @@ custom:
     night: "#40445a"
 ```
 
+#### Customize weather information example
+![Customize weather information example](https://user-images.githubusercontent.com/457678/72923722-ead8aa00-3d4f-11ea-956f-05b706e00827.png)
+
+```yaml
+- type: custom:simple-weather-card
+  entity: weather.smhi
+  primary_info:
+    - wind_bearing
+    - humidity
+  secondary_info:
+    - precipitation
+    - precipitation_probability
+```
+
 #### Custom sensors example
 
 ```yaml
 - type: custom:simple-weather-card
   entity: weather.smhi
-  name: Home
   custom:
     - temp: sensor.home_temp
     - high: sensor.home_high_temp

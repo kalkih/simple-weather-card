@@ -6,7 +6,6 @@ function getStyles(css) {
       align-items: center;
       padding: 16px;
       color: var(--primary-text-color, #000);
-      font-weight: 400;
       font-weight: var(--swc-font-weight, 400);
       transition: background 1s;
       cursor: pointer;
@@ -40,7 +39,7 @@ function getStyles(css) {
       width: 1em;
       min-width: 1em;
       flex: initial;
-      margin: 0 .4em;
+      margin: 0 .2em;
     }
     .weather__info {
       display: flex;
@@ -49,19 +48,29 @@ function getStyles(css) {
       min-height: 42px;
       min-width: 0;
     }
-    .weather__info > span {
+    .weather__info__row {
       display: flex;
       align-items: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       max-width: 100%;
+    }
+    .weather__info__item {
+      padding-left: 8px;
+      display: flex;
+      align-items: center;
     }
     .weather__info--add {
       padding-left: 8px;
       margin-left: auto;
       align-items: flex-end;
-    }`;
+    }
+    .weather__info__state,
+    .weather__info__title,
+    .weather__info__row {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  `;
 }
 
 export default getStyles;
