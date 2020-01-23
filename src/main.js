@@ -105,10 +105,10 @@ class SimpleWeatherCard extends LitElement {
     if (typeof config.secondary_info === 'string')
       this.config.secondary_info = [config.secondary_info];
 
-    if (!config.primary_info)
+    if (!this.config.primary_info)
       this.config.primary_info = [];
 
-    if (!config.secondary_info)
+    if (!this.config.secondary_info)
       this.config.secondary_info = [];
   }
 
