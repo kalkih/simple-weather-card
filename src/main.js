@@ -131,7 +131,7 @@ class SimpleWeatherCard extends LitElement {
             ${this.name}
           </span>
           <span class="weather__info__state">
-            ${this.custom.state || this.weather.state}
+            ${this.renderAttr('state', false)}
           </span>
         </div>
         <div class="weather__info weather__info--add">
