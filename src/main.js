@@ -186,7 +186,8 @@ class SimpleWeatherCard extends LitElement {
   }
 
   renderAttr(attr, uom = true) {
-    const state = this.custom[attr] ? this.custom[attr].state : this.weather[attr]
+    const state = this.custom[attr] ? this.custom[attr].state : this.weather[attr];
+    if (!state && state !== 0) return;
     const { unit } = this.custom[attr] && this.custom[attr].unit
       ? this.custom[attr]
       : INFO[attr] || {};
