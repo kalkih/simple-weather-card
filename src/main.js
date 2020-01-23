@@ -160,7 +160,7 @@ class SimpleWeatherCard extends LitElement {
       <span class="weather__info__item">
         ${this.renderAttr('low')}
         ${(high && low) ? ' / ' : ''}
-        ${this.renderAttr('low')}
+        ${this.renderAttr('high')}
       </span>
     ` : '';
   }
