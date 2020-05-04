@@ -15,6 +15,7 @@ import windy from '../icons/windy.svg';
 import humidity from '../icons/humidity.svg';
 
 const ICONS = {
+  "clear-day": sunny,
   "clear-night": clear_night,
   cloudy,
   overcast: cloudy,
@@ -22,12 +23,18 @@ const ICONS = {
   hail: mixed_rain,
   lightning,
   "lightning-rainy": storm,
+  "partly-cloudy-day": mostly_cloudy,
+  "partly-cloudy-night": mostly_cloudy_night,
   partlycloudy: mostly_cloudy,
   pouring: heavy_rain,
+  "rain": rainy,
   rainy,
+  "sleet": mixed_rain,
+  "snow": snowy,
   snowy,
   "snowy-rainy": mixed_rain,
   sunny,
+  "wind": windy,
   windy,
   "windy-variant": windy,
   humidity,
