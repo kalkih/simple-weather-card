@@ -9,9 +9,9 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
 ## Install
 
-### Simple install
-
 *This card is available in [HACS](https://github.com/custom-components/hacs) (Home Assistant Community Store)*
+
+### Manual install
 
 1. Download and copy `simple-weather-card-bundle.js` from the [latest release](https://github.com/kalkih/simple-weather-card/releases/latest) into your `config/www` directory.
 
@@ -19,7 +19,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card-bundle.js?v=0.7.2
+      - url: /local/simple-weather-card-bundle.js?v=0.8.0
         type: module
     ```
 
@@ -30,27 +30,15 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 2. Download `simple-weather-card-bundle.js`
 
     ```console
-    $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.7.2/simple-weather-card-bundle.js
+    $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.8.0/simple-weather-card-bundle.js
     ```
 
 3. Add a reference to `simple-weather-card-bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor gui.
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card-bundle.js?v=0.7.2
+      - url: /local/simple-weather-card-bundle.js?v=0.8.0
         type: module
-    ```
-
-### *(Optional)* Add to custom updater
-
-1. Make sure you've the [custom_updater](https://github.com/custom-components/custom_updater) component installed and working.
-
-2. Add a new reference under `card_urls` in your `custom_updater` configuration in `configuration.yaml`.
-
-    ```yaml
-    custom_updater:
-      card_urls:
-        - https://raw.githubusercontent.com/kalkih/simple-weather-card/master/tracker.json
     ```
 
 ## Updating
@@ -62,7 +50,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card-bundle.js?v=0.7.2
+      - url: /local/simple-weather-card-bundle.js?v=0.8.0
         type: module
     ```
 
@@ -109,7 +97,14 @@ See [Backdrop example](#backdrop-example) for example usage.
 See [Custom example](#custom-sensors-example) for example usage.
 Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity`, `icon-state`, `wind_speed`, `wind_bearing`, `pressure` & `precipitation_probability`.
 
-#### action object options
+```yaml
+custom:
+  - temp: sensor.home_temp
+  - high: sensor.home_high_temp
+  - low: sensor.home_low_temp
+```
+
+#### Action object options
 
 | Name | Type | Default | Options | Description |
 |------|------|---------|-------------|-------------|
@@ -118,13 +113,6 @@ Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity
 | service_data | object | none | Any service data | Service data to include with the service call (e.g. `entity_id: media_player.office`) 
 | navigation_path | string | none | Any path | Path to navigate to (e.g. `/lovelace/0/`) when `action` is defined as `navigate`
 | entity | string | none | Any entity id | Override default entity of more-info, when `action` is defined as `more-info`
-
-```yaml
-custom:
-  - temp: sensor.home_temp
-  - high: sensor.home_high_temp
-  - low: sensor.home_low_temp
-```
 
 
 ### Example usage
