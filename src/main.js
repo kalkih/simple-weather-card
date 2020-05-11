@@ -144,7 +144,7 @@ class SimpleWeatherCard extends LitElement {
 
   renderIcon() {
     const icon = this.custom['icon-state']
-      ? this.weather.getIcon(this.custom['icon-state'])
+      ? this.weather.getIcon(this.custom['icon-state'].state)
       : this.weather.icon
     return this.weather.hasState && icon ? html`
       <div class="weather__icon"
