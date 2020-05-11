@@ -18,6 +18,7 @@ const INFO = {
   humidity: { icon: 'humidity', unit: '%' },
   wind_speed: { icon: 'windy', unit: 'speed' },
   wind_bearing: { icon: 'windy', unit: '' },
+  pressure: { icon: 'pressure', unit: 'hPa' },
 }
 
 class SimpleWeatherCard extends LitElement {

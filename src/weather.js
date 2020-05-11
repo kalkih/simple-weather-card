@@ -13,6 +13,7 @@ import mixed_rain from '../icons/mixed_rain.png';
 import sunny from '../icons/sunny.png';
 import windy from '../icons/windy.svg';
 import humidity from '../icons/humidity.svg';
+import pressure from '../icons/pressure.svg';
 
 const ICONS = {
   "clear-day": sunny,
@@ -38,6 +39,7 @@ const ICONS = {
   windy,
   "windy-variant": windy,
   humidity,
+  pressure
 };
 
 const ICONS_NIGHT = {
@@ -100,6 +102,10 @@ export default class WeatherEntity {
 
   get wind_speed() {
     return this.attr.wind_speed || 0;
+  }
+
+  get pressure() {
+    return this.attr.pressure || 0;
   }
 
   get wind_bearing() {
