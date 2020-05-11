@@ -77,7 +77,7 @@ export default class WeatherEntity {
   }
 
   get state() {
-    return this.toLocale('state.weather.' + this.entity.state, this.entity.state);
+    return this.toLocale('component.weather.state._.' + this.entity.state, this.entity.state);
   }
 
   get hasState() {
