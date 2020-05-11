@@ -93,6 +93,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 | humidity | Current humidity |
 | wind_speed | Current wind speed |
 | wind_bearing | Current wind direction |
+| pressure | Current air pressure |
 
 #### Backdrop object options
 See [Backdrop example](#backdrop-example) for example usage.
@@ -106,7 +107,7 @@ See [Backdrop example](#backdrop-example) for example usage.
 
 #### Custom option array
 See [Custom example](#custom-sensors-example) for example usage.
-Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity`, `icon-state`, `wind_speed`, `wind_bearing` & `precipitation_probability`.
+Possible entries are: `temp`, `high`, `low`, `state`, `precipitation`, `humidity`, `icon-state`, `wind_speed`, `wind_bearing`, `pressure` & `precipitation_probability`.
 
 #### action object options
 
