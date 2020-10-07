@@ -2,9 +2,8 @@ import WeatherEntity from './weather';
 import style from './style';
 import { handleClick } from './handleClick';
 
-const LitElement = window.LitElement || Object.getPrototypeOf(
-  customElements.get("hui-view"),
-);
+const LitElement = window.LitElement
+  || Object.getPrototypeOf(customElements.get("home-assistant") || customElements.get("hui-view"))
 const { html, css } = LitElement.prototype;
 
 const UNITS = {
