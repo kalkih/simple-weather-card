@@ -19,7 +19,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card-bundle.js?v=0.8.0
+      - url: /local/simple-weather-card-bundle.js?v=0.8.1
         type: module
     ```
 
@@ -30,14 +30,14 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 2. Download `simple-weather-card-bundle.js`
 
     ```console
-    $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.8.0/simple-weather-card-bundle.js
+    $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.8.1/simple-weather-card-bundle.js
     ```
 
 3. Add a reference to `simple-weather-card-bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor gui.
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card-bundle.js?v=0.8.0
+      - url: /local/simple-weather-card-bundle.js?v=0.8.1
         type: module
     ```
 
@@ -50,7 +50,7 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
     ```yaml
     resources:
-      - url: /local/simple-weather-card-bundle.js?v=0.8.0
+      - url: /local/simple-weather-card-bundle.js?v=0.8.1
         type: module
     ```
 
