@@ -115,7 +115,7 @@ export default class WeatherEntity {
   }
 
   get precipitation() {
-    return this.forecast[0].precipitation || 0;
+    return Math.round( (this.forecast[0].precipitation || 0) *100)/100;
   }
 
   get precipitation_probability() {
