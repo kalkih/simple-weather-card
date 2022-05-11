@@ -109,7 +109,7 @@ export default class WeatherEntity {
   }
 
   get wind_bearing() {
-    return this.attr.wind_bearing
+    return this.attr.wind_bearing !== "undefined"
       ? this.degToDirection(this.attr.wind_bearing)
       : this.toLocale('state.default.unknown');
   }
