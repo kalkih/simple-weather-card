@@ -1,6 +1,4 @@
-import WeatherEntity from './weather';
-import style from './style';
-import { handleClick } from './handleClick';
+import { customElement } from "lit/decorators.js";
 
 const LitElement = window.LitElement
   || Object.getPrototypeOf(customElements.get("ha-panel-lovelace") || customElements.get("hc-lovelace"))
@@ -20,11 +18,14 @@ const INFO = {
   pressure: { icon: 'pressure', unit: 'hPa' },
 }
 
+@customElement("simple-weather-card")
 class SimpleWeatherCard extends LitElement {
-  constructor () {
+  constructor() {
     super();
     this.custom = {};
   }
+
+  static styles = style(css);
 
   static get properties() {
     return {
@@ -36,12 +37,8 @@ class SimpleWeatherCard extends LitElement {
     };
   }
 
-  static get styles() {
-    return style(css);
-  }
-
   set hass(hass) {
-    const { custom, entity } = this.config
+    const { custom, entity } = this.config;
 
     this._hass = hass;
     const entityObj = hass.states[entity];

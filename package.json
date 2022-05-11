@@ -18,7 +18,9 @@
   "author": "Karl Kihlström <mrkihlstrom@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.3.4",
+    "@babel/core": "^7.17.10",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-decorators": "^7.17.9",
     "@babel/plugin-transform-template-literals": "^7.2.0",
     "@babel/preset-env": "^7.3.4",
     "babel-loader": "^8.0.5",
@@ -29,5 +31,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch"
+  },
+  "dependencies": {
+    "lit": "^2.2.3"
   }
 }
