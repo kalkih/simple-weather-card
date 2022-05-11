@@ -225,3 +225,12 @@ class SimpleWeatherCard extends LitElement {
     return unit;
   }
 }
+
+// Configures the preview in the Lovelace card picker
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: 'simple-weather-card',
+  name: 'Simple Weather Card',
+  preview: false,
+  description: 'A minimalistic weather card for Home Assistant',
+});
