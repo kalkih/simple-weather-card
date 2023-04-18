@@ -77,6 +77,9 @@ export default class WeatherEntity {
   }
 
   get state() {
+    if (useComponentEntityTranslations()) {
+      return this.toLocale('component.weather.entity_component._.state.' + this.entity.state, this.entity.state);
+    }
     return this.toLocale('component.weather.state._.' + this.entity.state, this.entity.state);
   }
 
@@ -145,6 +148,10 @@ export default class WeatherEntity {
     const lang = this.hass.selectedLanguage || this.hass.language;
     const resources = this.hass.resources[lang];
     return (resources && resources[string] ? resources[string] : fallback);
+  }
+  
+  useComponentEntityTranslations() {
+    return Number(this.hass.connection.haVersion.replaceAll(".", "")) >= 202340;
   }
 
   degToDirection (deg) {
