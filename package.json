@@ -1,6 +1,6 @@
 {
   "name": "simple-weather-card",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "A minimalistic and customizable graph card for Home Assistant Lovelace UI",
   "keywords": [
     "home-assistant",
