@@ -1,19 +1,19 @@
-import clear_night from '../icons/clear_night.png';
-import cloudy from '../icons/cloudy.png';
-import fog from '../icons/fog.png';
-import lightning from '../icons/lightning.png';
-import storm from '../icons/storm.png';
-import storm_night from '../icons/storm_night.png';
-import mostly_cloudy from '../icons/mostly_cloudy.png';
-import mostly_cloudy_night from '../icons/mostly_cloudy_night.png';
-import heavy_rain from '../icons/heavy_rain.png';
-import rainy from '../icons/rainy.png';
-import snowy from '../icons/snowy.png';
-import mixed_rain from '../icons/mixed_rain.png';
-import sunny from '../icons/sunny.png';
-import windy from '../icons/windy.svg';
-import humidity from '../icons/humidity.svg';
-import pressure from '../icons/pressure.svg';
+import clear_night from "../icons/clear_night.png";
+import cloudy from "../icons/cloudy.png";
+import fog from "../icons/fog.png";
+import lightning from "../icons/lightning.png";
+import storm from "../icons/storm.png";
+import storm_night from "../icons/storm_night.png";
+import mostly_cloudy from "../icons/mostly_cloudy.png";
+import mostly_cloudy_night from "../icons/mostly_cloudy_night.png";
+import heavy_rain from "../icons/heavy_rain.png";
+import rainy from "../icons/rainy.png";
+import snowy from "../icons/snowy.png";
+import mixed_rain from "../icons/mixed_rain.png";
+import sunny from "../icons/sunny.png";
+import windy from "../icons/windy.svg";
+import humidity from "../icons/humidity.svg";
+import pressure from "../icons/pressure.svg";
 
 const ICONS = {
   "clear-day": sunny,
@@ -28,18 +28,18 @@ const ICONS = {
   "partly-cloudy-night": mostly_cloudy_night,
   partlycloudy: mostly_cloudy,
   pouring: heavy_rain,
-  "rain": rainy,
+  rain: rainy,
   rainy,
-  "sleet": mixed_rain,
-  "snow": snowy,
+  sleet: mixed_rain,
+  snow: snowy,
   snowy,
   "snowy-rainy": mixed_rain,
   sunny,
-  "wind": windy,
+  wind: windy,
   windy,
   "windy-variant": windy,
   humidity,
-  pressure
+  pressure,
 };
 
 const ICONS_NIGHT = {
@@ -47,7 +47,7 @@ const ICONS_NIGHT = {
   sunny: clear_night,
   partlycloudy: mostly_cloudy_night,
   "lightning-rainy": storm_night,
-}
+};
 
 const DIRECTION = [
   "N",
@@ -66,7 +66,7 @@ const DIRECTION = [
   "WNW",
   "NW",
   "NNW",
-]
+];
 
 export default class WeatherEntity {
   constructor(hass, entity) {
@@ -77,14 +77,20 @@ export default class WeatherEntity {
   }
 
   get state() {
-    if (useComponentEntityTranslations()) {
-      return this.toLocale('component.weather.entity_component._.state.' + this.entity.state, this.entity.state);
+    if (this.useComponentEntityTranslations()) {
+      return this.toLocale(
+        "component.weather.entity_component._.state." + this.entity.state,
+        this.entity.state
+      );
     }
-    return this.toLocale('component.weather.state._.' + this.entity.state, this.entity.state);
+    return this.toLocale(
+      "component.weather.state._." + this.entity.state,
+      this.entity.state
+    );
   }
 
   get hasState() {
-    return (this.entity.state && this.entity.state !== 'unknown')
+    return this.entity.state && this.entity.state !== "unknown";
   }
 
   get temp() {
@@ -114,11 +120,11 @@ export default class WeatherEntity {
   get wind_bearing() {
     return this.attr.wind_bearing !== "undefined"
       ? this.degToDirection(this.attr.wind_bearing)
-      : this.toLocale('state.default.unknown');
+      : this.toLocale("state.default.unknown");
   }
 
   get precipitation() {
-    return Math.round( (this.forecast[0].precipitation || 0) *100)/100;
+    return Math.round((this.forecast[0].precipitation || 0) * 100) / 100;
   }
 
   get precipitation_probability() {
@@ -130,8 +136,8 @@ export default class WeatherEntity {
   }
 
   get isNight() {
-    return this.hass.states['sun.sun']
-      ? this.hass.states['sun.sun'].state === 'below_horizon'
+    return this.hass.states["sun.sun"]
+      ? this.hass.states["sun.sun"].state === "below_horizon"
       : false;
   }
 
@@ -140,22 +146,22 @@ export default class WeatherEntity {
     return this.isNight ? ICONS_NIGHT[state] : ICONS[state];
   }
 
-  getIcon (icon) {
+  getIcon(icon) {
     return ICONS[icon];
   }
 
-  toLocale(string, fallback = 'unknown') {
+  toLocale(string, fallback = "unknown") {
     const lang = this.hass.selectedLanguage || this.hass.language;
     const resources = this.hass.resources[lang];
-    return (resources && resources[string] ? resources[string] : fallback);
+    return resources && resources[string] ? resources[string] : fallback;
   }
-  
+
   useComponentEntityTranslations() {
     return Number(this.hass.connection.haVersion.replaceAll(".", "")) >= 202340;
   }
 
-  degToDirection (deg) {
-    const dir = Math.floor((deg / 22.5) + .5);
-    return DIRECTION[(dir % 16)];
+  degToDirection(deg) {
+    const dir = Math.floor(deg / 22.5 + 0.5);
+    return DIRECTION[dir % 16];
   }
 }
