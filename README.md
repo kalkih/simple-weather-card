@@ -18,7 +18,7 @@ _This card is available in [HACS](https://github.com/custom-components/hacs) (Ho
 
    ```yaml
    resources:
-     - url: /local/simple-weather-card-bundle.js?v=0.8.4
+     - url: /local/simple-weather-card-bundle.js?v=0.8.5
        type: module
    ```
 
@@ -29,14 +29,14 @@ _This card is available in [HACS](https://github.com/custom-components/hacs) (Ho
 2. Download `simple-weather-card-bundle.js`
 
    ```console
-   $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.8.4/simple-weather-card-bundle.js
+   $ wget https://github.com/kalkih/simple-weather-card/releases/download/v0.8.5/simple-weather-card-bundle.js
    ```
 
 3. Add a reference to `simple-weather-card-bundle.js` inside your `ui-lovelace.yaml` or through the raw config editor gui.
 
    ```yaml
    resources:
-     - url: /local/simple-weather-card-bundle.js?v=0.8.4
+     - url: /local/simple-weather-card-bundle.js?v=0.8.5
        type: module
    ```
 
@@ -50,7 +50,7 @@ _This card is available in [HACS](https://github.com/custom-components/hacs) (Ho
 
    ```yaml
    resources:
-     - url: /local/simple-weather-card-bundle.js?v=0.8.4
+     - url: /local/simple-weather-card-bundle.js?v=0.8.5
        type: module
    ```
 
