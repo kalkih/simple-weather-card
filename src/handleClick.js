@@ -18,5 +18,14 @@ export const handleClick = (node, hass, config, actionConfig) => {
       const [ domain, service ] = actionConfig.service.split(".", 2);
       const serviceData = { ...actionConfig.service_data };
       hass.callService(domain, service, serviceData);
+      break;
+    case "fire-dom-event":
+      const event = new Event('ll-custom', {
+        composed: true,
+        bubbles: true,
+      });
+      event.detail = actionConfig;
+      node.dispatchEvent(event);
+      break;
   }
 };
