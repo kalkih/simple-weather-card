@@ -31,6 +31,14 @@ class SimpleWeatherCard extends LitElement {
     this.custom = {};
   }
 
+
+  connectedCallback() {
+    super.connectedCallback();
+    if (this._hass && this.config && !this.entity) {
+      this.hass = this._hass; // Trigger setter logic
+    }
+  }
+
   static styles = style(css);
 
   static get properties() {
@@ -47,8 +55,11 @@ class SimpleWeatherCard extends LitElement {
     const { custom, entity } = this.config;
 
     this._hass = hass;
-    const entityObj = hass.states[entity];
-    if (entityObj && this.entity !== entityObj) {
+    const entityObj = hass && hass.states && hass.states[entity];
+    if (!entityObj) return;
+
+    if (this.entity !== entityObj) {
+
       this.entity = entityObj;
       this.weather = new WeatherEntity(hass, entityObj);
     }
