@@ -151,9 +151,7 @@ export default class WeatherEntity {
   }
 
   toLocale(string, fallback = "unknown") {
-    const lang = this.hass.selectedLanguage || this.hass.language;
-    const resources = this.hass.resources[lang];
-    return resources && resources[string] ? resources[string] : fallback;
+    return this.hass.localize(string) || fallback;
   }
 
   useComponentEntityTranslations() {

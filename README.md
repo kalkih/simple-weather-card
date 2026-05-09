@@ -6,6 +6,13 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 
 ![Preview](https://user-images.githubusercontent.com/457678/53588519-61dfdf80-3b8d-11e9-9f0d-f5995ba794ce.png)
 
+## Recompile
+git clone https://github.com/jdeath/simple-weather-card.git
+cd simple-weather-card
+npm install
+npm run build
+copy dist/simple-weather-card-bundle.js to \\HomeAssistantIP\config\www\community\simple-weather-card\
+
 ## Install
 
 _This card is available in [HACS](https://github.com/custom-components/hacs) (Home Assistant Community Store)_
