@@ -64,7 +64,7 @@ _This card is available in [HACS](https://github.com/custom-components/hacs) (Ho
 | -------------- | --------------------------------------- | --------------- | ------ | -------------------------------------------------------------------------------------------- |
 | type           | string                                  | **required**    | v0.1.0 | `custom:simple-weather-card`                                                                 |
 | entity         | string                                  | **required**    | v0.1.0 | The entity_id from an entity within the `weather` domain.                                    |
-| name           | string                                  | optional        | v0.1.0 | Set a custom name.                                                                           |
+| name           | string / list                           | optional        | v0.1.0 | Set a custom name. Accepts a [structured name](#structured-names) on Home Assistant 2026.4 and later. |
 | primary_info   | array/string                            | `extrema`       | v0.7.0 | Primary card information, one or more [weather attributes](#weather-attributes)              |
 | secondary_info | array/string                            | `precipitation` | v0.2.0 | Secondary card information, one or more [weather attributes](#weather-attributes)            |
 | backdrop       | boolean/object                          | `false`         | v0.1.0 | Colored background, accepts `true/false` or a [Backdrop object](#backdrop-object-options).   |
@@ -177,6 +177,29 @@ custom:
     - high: sensor.home_high_temp
     - low: sensor.home_low_temp
 ```
+
+### Structured names
+
+*Requires Home Assistant 2026.4 or later. On earlier versions a structured `name` falls back to the entity's friendly name.*
+
+Home Assistant composes an entity's display name out of its registry context
+(entity, device, area, floor) rather than one `friendly_name` string. `name` can
+be a list of those parts instead of a plain string, so it keeps following renames
+and matches what the built-in cards show:
+
+```yaml
+type: custom:simple-weather-card
+entity: weather.home
+name:
+  - type: area
+  - type: entity
+```
+
+Available part types are `entity`, `device`, `area`, `floor`, and
+`text` (a literal, written as `{type: text, text: 'Outside'}`). Parts that resolve
+to nothing are dropped. A plain string `name` keeps working exactly as before.
+
+See the [Home Assistant developer documentation](https://developers.home-assistant.io/docs/frontend/data#hassformatentitynamestateobj-name-options) for details.
 
 ## Problems?
 

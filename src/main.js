@@ -1,4 +1,5 @@
 import WeatherEntity from "./weather";
+import { computeEntityName, entityNamesChanged } from "./entity-name";
 import style from "./style";
 import { handleClick } from "./handleClick";
 import { customElement } from "lit/decorators.js";
@@ -79,7 +80,7 @@ class SimpleWeatherCard extends LitElement {
   }
 
   get name() {
-    return this.config.name || this.weather.name;
+    return computeEntityName(this._hass, this.entity, this.config.name);
   }
 
   setConfig(config) {
@@ -115,7 +116,10 @@ class SimpleWeatherCard extends LitElement {
   }
 
   shouldUpdate(changedProps) {
-    return ["entity", "custom"].some((prop) => changedProps.has(prop));
+    if (["entity", "custom"].some((prop) => changedProps.has(prop))) {
+      return true;
+    }
+    return entityNamesChanged(changedProps.get("_hass"), this._hass);
   }
 
   render() {
