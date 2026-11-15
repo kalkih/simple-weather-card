@@ -54,10 +54,12 @@ export class SimpleWeatherCard extends LitElement {
   @state() private weather?: WeatherEntity;
   @state() private custom: CustomMap = {};
 
+  @state() private config!: NormalizedConfig;
+
   private _hass?: HomeAssistant;
-  private config!: NormalizedConfig;
   private _forecast: ForecastEntry[] = [];
-  private _forecastUnsubscribe?: () => void;
+  private _forecastSubscription?: Promise<() => void>;
+  private _subscribedTo?: string;
 
   static styles = getStyles();
 
@@ -78,9 +80,11 @@ export class SimpleWeatherCard extends LitElement {
 
     this._hass = hass;
     const entityObj = hass.states[entity];
+    if (entityObj && this.isConnected) {
+      this._subscribeForecasts();
+    }
     if (entityObj && this.entity !== entityObj) {
       this.entity = entityObj;
-      this._subscribeForecasts(entity);
       this.weather = new WeatherEntity(hass, entityObj, this._forecast);
     }
     const newCustom: CustomMap = {};
@@ -105,20 +109,39 @@ export class SimpleWeatherCard extends LitElement {
     return this._hass!;
   }
 
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this._forecastUnsubscribe?.();
-    this._forecastUnsubscribe = undefined;
+  connectedCallback(): void {
+    super.connectedCallback();
+    if (this._hass && this.entity) {
+      this._subscribeForecasts();
+    }
   }
 
-  private _subscribeForecasts(entityId: string): void {
-    this._forecastUnsubscribe?.();
-    this._forecastUnsubscribe = undefined;
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._unsubscribeForecasts();
+  }
 
-    this._hass!.connection.subscribeMessage<{
+  private _unsubscribeForecasts(): void {
+    this._forecastSubscription?.then((unsub) => unsub()).catch(() => {});
+    this._forecastSubscription = undefined;
+    this._subscribedTo = undefined;
+  }
+
+  private _subscribeForecasts(): void {
+    const { entity, forecast_type } = this.config;
+    const key = `${entity}:${forecast_type}`;
+    if (this._subscribedTo === key) return;
+
+    this._unsubscribeForecasts();
+    this._subscribedTo = key;
+    this._forecast = [];
+
+    const subscription = this._hass!.connection.subscribeMessage<{
       forecast: ForecastEntry[] | null;
     }>(
       (msg) => {
+        // Ignore messages from a subscription that has been replaced
+        if (this._forecastSubscription !== subscription) return;
         this._forecast = msg.forecast ?? [];
         if (this.entity) {
           this.weather = new WeatherEntity(
@@ -130,11 +153,16 @@ export class SimpleWeatherCard extends LitElement {
       },
       {
         type: "weather/subscribe_forecast",
-        forecast_type: this.config.forecast_type,
-        entity_id: entityId,
+        forecast_type,
+        entity_id: entity,
       },
-    ).then((unsub) => {
-      this._forecastUnsubscribe = unsub;
+    );
+    this._forecastSubscription = subscription;
+    subscription.catch(() => {
+      if (this._forecastSubscription === subscription) {
+        this._forecastSubscription = undefined;
+        this._subscribedTo = undefined;
+      }
     });
   }
 
@@ -168,14 +196,14 @@ export class SimpleWeatherCard extends LitElement {
       card_mod: config.card_mod,
       uix: config.uix,
     };
-    if (this._hass && this.entity) {
-      this._subscribeForecasts(this.config.entity);
+    if (this._hass) {
+      // Re-run the hass setter to pick up a changed entity or forecast type
+      this.hass = this._hass;
     }
-    this.requestUpdate();
   }
 
   protected shouldUpdate(changedProps: Map<string, unknown>): boolean {
-    return ["entity", "custom", "weather"].some((prop) =>
+    return ["config", "entity", "custom", "weather"].some((prop) =>
       changedProps.has(prop),
     );
   }
@@ -347,7 +375,7 @@ export class SimpleWeatherCard extends LitElement {
     if (attr === "precipitation_and_probability")
       return this.renderPrecipitation();
     if (attr === "wind") return this.renderWind();
-    const { icon } = INFO[attr];
+    const icon = INFO[attr]?.icon;
     const value = this.custom[attr]?.state ?? this.weather?.getAttribute(attr);
     if (value === undefined || value === "") return "";
     return html`
@@ -435,7 +463,7 @@ export class SimpleWeatherCard extends LitElement {
   }
 
   private handleTap(): void {
-    handleClick(this, this._hass!, this.config, this.config.tap_action);
+    handleClick(this, this.config);
   }
 
   private getUnit(unit = "temperature"): string {

@@ -101,13 +101,19 @@ custom:
 
 #### Action object options
 
-| Name            | Type   | Default     | Options                                         | Description                                                                             |
-|-----------------|--------|-------------|-------------------------------------------------|-----------------------------------------------------------------------------------------|
-| action          | string | `more-info` | `more-info`, `navigate`, `call-service`, `none` | Action to perform                                                                       |
-| service         | string | none        | Any service                                     | Service to call (e.g. `media_player.toggle`) when `action` is defined as `call-service` |
-| service_data    | object | none        | Any service data                                | Service data to include with the service call (e.g. `entity_id: media_player.office`)   |
-| navigation_path | string | none        | Any path                                        | Path to navigate to (e.g. `/lovelace/0/`) when `action` is defined as `navigate`        |
-| entity          | string | none        | Any entity id                                   | Override default entity of more-info, when `action` is defined as `more-info`           |
+Actions are handled by Home Assistant, so all [standard actions](https://www.home-assistant.io/dashboards/actions/) are supported.
+
+| Name            | Type   | Default     | Options                                                                          | Description                                                                                |
+|-----------------|--------|-------------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| action          | string | `more-info` | `more-info`, `toggle`, `navigate`, `url`, `perform-action`, `assist`, `none`     | Action to perform                                                                          |
+| perform_action  | string | none        | Any action                                                                       | Action to call (e.g. `media_player.toggle`) when `action` is defined as `perform-action`   |
+| data            | object | none        | Any action data                                                                  | Data to include with the action call                                                       |
+| target          | object | none        | Any target                                                                       | Target of the action call (e.g. `entity_id: media_player.office`)                          |
+| navigation_path | string | none        | Any path                                                                         | Path to navigate to (e.g. `/lovelace/0/`) when `action` is defined as `navigate`           |
+| url_path        | string | none        | Any URL                                                                          | URL to open when `action` is defined as `url`                                              |
+| entity          | string | none        | Any entity id                                                                    | Override default entity of more-info, when `action` is defined as `more-info`              |
+
+The legacy `call-service` action with `service` and `service_data` is still supported.
 
 ### Example usage
 

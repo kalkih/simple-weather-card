@@ -1,38 +1,18 @@
-import { HomeAssistant, NormalizedConfig, TapAction } from "./types";
+import { NormalizedConfig } from "./types";
 
-export const handleClick = (
-  node: Element,
-  hass: HomeAssistant,
-  config: NormalizedConfig,
-  actionConfig: TapAction,
-): void => {
-  switch (actionConfig.action) {
-    case "more-info": {
-      const e = new CustomEvent("hass-more-info", {
-        composed: true,
-        detail: { entityId: actionConfig.entity || config.entity },
-      });
-      node.dispatchEvent(e);
-      break;
-    }
-    case "navigate": {
-      if (!actionConfig.navigation_path) return;
-      history.pushState(null, "", actionConfig.navigation_path);
-      const e = new CustomEvent("location-changed", {
-        composed: true,
-        detail: { replace: false },
-      });
-      window.dispatchEvent(e);
-      break;
-    }
-    case "perform_action":
-    case "call-service": {
-      const action = actionConfig.perform_action;
-      if (!action) return;
-      const [domain, service] = action.split(".", 2);
-      const serviceData = actionConfig.data;
-      hass.callService(domain, service, { ...serviceData });
-      break;
-    }
-  }
+// Hand the action over to Home Assistant, so every action type the
+// tap action editor offers (perform-action, toggle, url, assist, ...) works
+export const handleClick = (node: Element, config: NormalizedConfig): void => {
+  // Older configs may use `perform_action`, which Home Assistant doesn't know
+  const tapAction =
+    config.tap_action.action === "perform_action"
+      ? { ...config.tap_action, action: "perform-action" }
+      : config.tap_action;
+  node.dispatchEvent(
+    new CustomEvent("hass-action", {
+      bubbles: true,
+      composed: true,
+      detail: { config: { ...config, tap_action: tapAction }, action: "tap" },
+    }),
+  );
 };
