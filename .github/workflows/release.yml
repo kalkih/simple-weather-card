@@ -26,6 +26,12 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Lint
+        run: yarn lint
+
       - name: Set version
         run: |
           TAG="${{ github.ref_name }}"
@@ -33,7 +39,11 @@ jobs:
           echo "export const version = '${TAG}';" > src/var/version.ts
           jq --arg v "$PKG_VERSION" '.version = $v' package.json > tmp.json && mv tmp.json package.json
 
-      - run: yarn build
+      - name: Build
+        run: yarn build
+
+      - name: Smoke test
+        run: yarn test
 
       - name: Detect prerelease
         id: prerelease
