@@ -248,3 +248,74 @@ test("manages the forecast subscription", async () => {
   assert.equal(activeSubscriptions().length, 1, "not resubscribed");
   card.remove();
 });
+
+const iconUrl = (card) =>
+  /url\('([^']*)'\)/.exec($(card, ".weather__icon").getAttribute("style"))?.[1];
+
+test("inlines SVG icons as valid text data URIs", async () => {
+  subscriptions = [];
+  const card = await createCard({ animated_icons: true });
+  const url = iconUrl(card);
+  const prefix = "data:image/svg+xml,";
+  assert.ok(url?.startsWith(prefix), `unexpected icon url: ${url}`);
+  const svg = decodeURIComponent(url.slice(prefix.length));
+  const doc = new DOMParser().parseFromString(svg, "image/svg+xml");
+  assert.equal(doc.documentElement.tagName.toLowerCase(), "svg");
+  card.remove();
+});
+
+test("switches to night icons when the sun sets", async () => {
+  subscriptions = [];
+  const hass = createHass({ [ENTITY]: { ...weatherState(), state: "sunny" } });
+  const card = await createCard({}, hass);
+  const dayIcon = iconUrl(card);
+
+  card.hass = {
+    ...hass,
+    states: {
+      ...hass.states,
+      "sun.sun": { state: "below_horizon", attributes: {} },
+    },
+  };
+  await card.updateComplete;
+  assert.ok(iconUrl(card));
+  assert.notEqual(iconUrl(card), dayIcon, "icon did not change at night");
+  card.remove();
+});
+
+test("applies card-mod only when the config changes", async () => {
+  subscriptions = [];
+  let applied = 0;
+  customElements.define(
+    "card-mod",
+    class extends HTMLElement {
+      static applyToElement() {
+        applied++;
+      }
+    },
+  );
+  // Let cards from earlier tests, waiting for card-mod, apply first
+  await tick();
+  applied = 0;
+
+  const hass = createHass();
+  const card = await createCard({}, hass);
+  await tick();
+  assert.equal(applied, 1);
+
+  for (const temperature of [8, 9, 10]) {
+    card.hass = {
+      ...hass,
+      states: { ...hass.states, [ENTITY]: weatherState({ temperature }) },
+    };
+    await card.updateComplete;
+  }
+  await tick();
+  assert.equal(applied, 1, "card-mod re-applied on state updates");
+
+  card.setConfig({ entity: ENTITY, name: "Changed" });
+  await card.updateComplete;
+  await tick();
+  assert.equal(applied, 2);
+  card.remove();
+});

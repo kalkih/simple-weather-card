@@ -18,12 +18,9 @@ import animated_clear_night from "../icons/animated/clear-night.svg";
 import animated_cloudy from "../icons/animated/cloudy.svg";
 import animated_fog from "../icons/animated/fog.svg";
 import animated_hail from "../icons/animated/hail.svg";
-import animated_humidity from "../icons/animated/humidity.svg";
 import animated_storm from "../icons/animated/storm.svg";
-import animated_storm_night from "../icons/animated/storm_night.svg";
 import animated_lightning from "../icons/animated/lightning.svg";
 import animated_mostly_cloudy from "../icons/animated/mostly_cloudy.svg";
-import animated_mostly_cloudy_night from "../icons/animated/mostly_cloudy_night.svg";
 import animated_heavy_rain from "../icons/animated/heavy_rain.svg";
 import animated_rainy from "../icons/animated/rainy.svg";
 import animated_mixed_rain from "../icons/animated/mixed_rain.svg";
@@ -96,16 +93,15 @@ const ICONS_ANIMATED: Record<string, string> = {
   wind: animated_windy,
   windy: animated_windy,
   "windy-variant": animated_windy_variant,
-  humidity: animated_humidity,
+  humidity,
   pressure,
 };
 
 const ICONS_ANIMATED_NIGHT: Record<string, string> = {
   ...ICONS_ANIMATED,
   sunny: animated_clear_night,
-  partlycloudy: animated_mostly_cloudy_night,
-  "partly-cloudy-night": animated_mostly_cloudy_night,
-  "lightning-rainy": animated_storm_night,
+  partlycloudy: animated_cloudy,
+  "partly-cloudy-night": animated_cloudy,
 };
 
 const DIRECTION = [

@@ -1,4 +1,4 @@
-import { LitElement, html, TemplateResult } from "lit";
+import { LitElement, html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
 import WeatherEntity from "./weather";
@@ -60,6 +60,7 @@ export class SimpleWeatherCard extends LitElement {
   private _forecast: ForecastEntry[] = [];
   private _forecastSubscription?: Promise<() => void>;
   private _subscribedTo?: string;
+  private _sunState?: string;
 
   static styles = getStyles();
 
@@ -80,11 +81,17 @@ export class SimpleWeatherCard extends LitElement {
 
     this._hass = hass;
     const entityObj = hass.states[entity];
+    const sunState = hass.states["sun.sun"]?.state;
     if (entityObj && this.isConnected) {
       this._subscribeForecasts();
     }
-    if (entityObj && this.entity !== entityObj) {
+    // Also rebuild when the sun changes, so day/night icons follow it
+    if (
+      entityObj &&
+      (this.entity !== entityObj || this._sunState !== sunState)
+    ) {
       this.entity = entityObj;
+      this._sunState = sunState;
       this.weather = new WeatherEntity(hass, entityObj, this._forecast);
     }
     const newCustom: CustomMap = {};
@@ -208,32 +215,31 @@ export class SimpleWeatherCard extends LitElement {
     );
   }
 
-  protected updated(): void {
+  protected updated(changedProps: PropertyValues): void {
+    if (!changedProps.has("config")) return;
     this._applyCardMod();
     this._applyUix();
   }
 
   private _applyCardMod(): void {
-    customElements.whenDefined("card-mod").then((CardMod: unknown) => {
-      (
-        CardMod as { applyToElement: (...args: unknown[]) => void }
-      ).applyToElement(
-        this,
-        "card",
-        this.config.card_mod,
-        { config: this.config },
-        true,
-        "type-custom-simple-weather-card",
-      );
-    });
+    this._applyToElement("card-mod", this.config.card_mod);
   }
 
   private _applyUix(): void {
-    customElements.whenDefined("uix-node").then((uix: unknown) => {
-      (uix as { applyToElement: (...args: unknown[]) => void }).applyToElement(
+    this._applyToElement("uix-node", this.config.uix);
+  }
+
+  // Look the class up instead of relying on the value `whenDefined`
+  // resolves with, which is undefined in some browsers
+  private _applyToElement(tag: string, styleConfig: unknown): void {
+    customElements.whenDefined(tag).then(() => {
+      const element = customElements.get(tag) as unknown as {
+        applyToElement: (...args: unknown[]) => void;
+      };
+      element.applyToElement(
         this,
         "card",
-        this.config.uix,
+        styleConfig,
         { config: this.config },
         true,
         "type-custom-simple-weather-card",
@@ -293,7 +299,7 @@ export class SimpleWeatherCard extends LitElement {
     return this.weather?.hasState && icon
       ? html`<div
           class="weather__icon"
-          style="background-image: url(${icon})"
+          style="background-image: url('${icon}')"
         ></div>`
       : "";
   }
@@ -310,7 +316,7 @@ export class SimpleWeatherCard extends LitElement {
           <span class="weather__info__item">
             <div
               class="weather__icon weather__icon--small"
-              style="background-image: url(${this.weather?.getIcon("rainy")})"
+              style="background-image: url('${this.weather?.getIcon("rainy")}')"
             ></div>
             ${this.renderAttr("precipitation")}${
               precip && prob
@@ -333,7 +339,7 @@ export class SimpleWeatherCard extends LitElement {
           <span class="weather__info__item">
             <div
               class="weather__icon weather__icon--small"
-              style="background-image: url(${this.weather?.getIcon("windy")})"
+              style="background-image: url('${this.weather?.getIcon("windy")}')"
             ></div>
             ${this.renderAttr("wind_speed")}${
               speed && bearing ? html`(${this.renderAttr("wind_bearing")})` : ""
@@ -384,7 +390,7 @@ export class SimpleWeatherCard extends LitElement {
           icon
             ? html`<div
                 class="weather__icon weather__icon--small"
-                style="background-image: url(${this.weather?.getIcon(icon)})"
+                style="background-image: url('${this.weather?.getIcon(icon)}')"
               ></div>`
             : ""
         }
@@ -421,7 +427,7 @@ export class SimpleWeatherCard extends LitElement {
                 icon
                   ? html`<div
                       class="weather__icon weather__icon--forecast"
-                      style="background-image: url(${icon})"
+                      style="background-image: url('${icon}')"
                     ></div>`
                   : ""
               }

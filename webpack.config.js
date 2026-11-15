@@ -1,3 +1,16 @@
+// Inline SVGs as text instead of base64. It's smaller and compresses far
+// better. Only characters that break a quoted CSS url('...') are encoded.
+const svgDataUrl = (content) =>
+  "data:image/svg+xml," +
+  encodeURIComponent(content.toString().replace(/\s+/g, " ").trim())
+    .replace(/'/g, "%27")
+    .replace(/%20/g, " ")
+    .replace(/%3D/g, "=")
+    .replace(/%3A/g, ":")
+    .replace(/%2F/g, "/")
+    .replace(/%3B/g, ";")
+    .replace(/%2C/g, ",");
+
 module.exports = (env, argv) => ({
   mode: argv.mode || "production",
   devtool: argv.mode === "development" ? "inline-source-map" : false,
@@ -16,12 +29,19 @@ module.exports = (env, argv) => ({
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|svg)$/i,
+        test: /\.png$/i,
         type: "asset",
         parser: {
           dataUrlCondition: {
             maxSize: 12288,
           },
+        },
+      },
+      {
+        test: /\.svg$/i,
+        type: "asset/inline",
+        generator: {
+          dataUrl: svgDataUrl,
         },
       },
     ],
