@@ -12,8 +12,6 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
 
       - name: Enable corepack
         run: corepack enable
@@ -45,36 +43,10 @@ jobs:
       - name: Smoke test
         run: yarn test
 
-      - name: Detect prerelease
-        id: prerelease
-        run: |
-          if [[ "${{ github.event.base_ref }}" == "refs/heads/beta" ]]; then
-            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Generate changelog
-        run: |
-          CURRENT_TAG="${{ github.ref_name }}"
-          PREV_TAG=$(git tag --list 'v*' --sort=-version:refname \
-            | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
-            | grep -v "^${CURRENT_TAG}$" \
-            | head -1)
-          if [ -z "$PREV_TAG" ]; then
-            CHANGELOG=$(git log --pretty=format:"- %s" HEAD)
-          else
-            CHANGELOG=$(git log --pretty=format:"- %s" "${PREV_TAG}..HEAD")
-          fi
-          {
-            echo "CHANGELOG<<EOF"
-            echo "$CHANGELOG"
-            echo "EOF"
-          } >> "$GITHUB_ENV"
-
       - name: Create release
         uses: softprops/action-gh-release@v3
         with:
           files: dist/simple-weather-card.js
-          body: ${{ env.CHANGELOG }}
-          prerelease: ${{ steps.prerelease.outputs.is_prerelease }}
+          generate_release_notes: true
+          # Tags with a suffix, like v2.10.0-beta-1, are prereleases
+          prerelease: ${{ contains(github.ref_name, '-') }}
