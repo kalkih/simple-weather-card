@@ -41,6 +41,9 @@
     "build": "webpack",
     "watch": "webpack --watch --mode development",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "ha:up": "docker-compose -f dev/docker-compose.yml up -d",
+    "ha:down": "docker-compose -f dev/docker-compose.yml down",
+    "ha:logs": "docker-compose -f dev/docker-compose.yml logs -f"
   }
 }

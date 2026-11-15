@@ -1,0 +1,133 @@
+title: Weather card
+views:
+  - title: Basic
+    path: basic
+    cards:
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_north
+        name: All info
+        primary_info:
+          - extrema
+          - precipitation_and_probability
+          - apparent_temperature
+        secondary_info:
+          - wind
+          - humidity
+          - pressure
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: State content
+        state_content: wind
+
+      # Unknown attribute should render without crashing the card
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: Unknown attribute
+        primary_info:
+          - not_a_real_attribute
+          - humidity
+
+  - title: Forecast
+    path: forecast
+    cards:
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: Daily
+        show_forecast: true
+        forecast_type: daily
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_north
+        name: Hourly
+        show_forecast: true
+        forecast_type: hourly
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: Animated
+        show_forecast: true
+        animated_icons: true
+
+  - title: Backdrop
+    path: backdrop
+    cards:
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        backdrop:
+          bg: true
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_north
+        backdrop:
+          bg: true
+          fade: true
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: Custom colors
+        backdrop:
+          bg: true
+          day: "#20bf6b"
+          night: "#2d3436"
+          text: "#ffffff"
+
+  - title: Custom sensors
+    path: custom
+    cards:
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: Custom overrides
+        primary_info:
+          - humidity
+        custom:
+          - temp: sensor.outside_temperature
+          - humidity: sensor.outside_humidity
+
+  - title: Tap actions
+    path: actions
+    cards:
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: more-info (default)
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: perform-action
+        tap_action:
+          action: perform-action
+          perform_action: persistent_notification.create
+          data:
+            title: perform-action
+            message: Tapped the weather card
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: call-service (legacy)
+        tap_action:
+          action: call-service
+          service: persistent_notification.create
+          service_data:
+            title: call-service
+            message: Tapped the weather card
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: navigate
+        tap_action:
+          action: navigate
+          navigation_path: /dev-weather/forecast
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: confirmation
+        tap_action:
+          action: perform-action
+          perform_action: persistent_notification.create
+          data:
+            message: Confirmed
+          confirmation:
+            text: Create a notification?

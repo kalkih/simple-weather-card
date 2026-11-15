@@ -8,3 +8,7 @@ package-lock.json
 .idea/
 CLAUDE.md
 .claude/
+# Local Home Assistant test environment
+/dev/config/*
+!/dev/config/configuration.yaml
+!/dev/config/dashboards/

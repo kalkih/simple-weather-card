@@ -1,0 +1,13 @@
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: simple-weather-card-ha
+    restart: unless-stopped
+    ports:
+      - "8123:8123"
+    environment:
+      TZ: Europe/Oslo
+    volumes:
+      - ./config:/config
+      # The built card, loaded through `frontend.extra_module_url`
+      - ../dist:/config/www/simple-weather-card:ro

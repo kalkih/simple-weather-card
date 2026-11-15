@@ -1,0 +1,39 @@
+default_config:
+
+# Demo entities, including weather.demo_weather_south / _north with
+# daily and hourly forecasts, and sensors to use as custom overrides
+demo:
+
+homeassistant:
+  name: Simple Weather Card Dev
+  latitude: 59.91
+  longitude: 10.75
+  elevation: 20
+  unit_system: metric
+  time_zone: Europe/Oslo
+  auth_providers:
+    # Skip the login screen when opened locally
+    - type: trusted_networks
+      trusted_networks:
+        - 127.0.0.1
+        - ::1
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+      allow_bypass_login: true
+    - type: homeassistant
+
+frontend:
+  extra_module_url:
+    - /local/simple-weather-card/simple-weather-card.js
+
+lovelace:
+  dashboards:
+    dev-weather:
+      mode: yaml
+      title: Weather card
+      icon: mdi:weather-partly-cloudy
+      show_in_sidebar: true
+      filename: dashboards/weather.yaml
+
+logger:
+  default: warning
