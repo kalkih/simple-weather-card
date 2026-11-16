@@ -182,6 +182,12 @@ The legacy `call-service` action with `service` and `service_data` is still supp
     - low: sensor.home_low_temp
 ```
 
+## Translations
+
+The visual editor follows your Home Assistant language and is available in English and Norwegian (bokmål, also used for nynorsk). Weather conditions, wind directions and "Night" use Home Assistant's own translations.
+
+To add a language, copy [`src/translations/en.json`](src/translations/en.json) to `<language>.json`, translate the values, add it to `LANGUAGES` in [`src/localize.ts`](src/localize.ts) and open a pull request. Missing keys fall back to English.
+
 ## Problems?
 
 Make sure you have the latest version of `simple-weather-card.js`.
