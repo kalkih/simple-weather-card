@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest an idea for the card
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to do?
+      description: The problem or use case, not only the solution. "I want to see tomorrow's wind on the card" is more useful than "add a wind option".
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: How could it work?
+      description: How you imagine it, ideally with a mockup on a screenshot.
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Example configuration
+      description: How the YAML could look, if it needs a new option.
+      render: yaml

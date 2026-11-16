@@ -1,0 +1,62 @@
+name: Bug report
+description: Something doesn't work as expected in the latest release
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please check [Troubleshooting](https://github.com/I-Simen-I/simple-weather-card#troubleshooting) first; many problems are a cached old version of the card.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead. Screenshots help.
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Card configuration
+      description: The card's YAML (open the card editor and choose "Show code editor").
+      render: yaml
+    validations:
+      required: true
+
+  - type: input
+    id: card-version
+    attributes:
+      label: Card version
+      description: Shown in the browser console (Simple Weather Card vX.Y.Z), or in the Marketplace/HACS.
+      placeholder: v2.13.0
+    validations:
+      required: true
+
+  - type: input
+    id: ha-version
+    attributes:
+      label: Home Assistant version
+      description: Settings → About.
+      placeholder: "2026.11.1"
+    validations:
+      required: true
+
+  - type: input
+    id: integration
+    attributes:
+      label: Weather integration
+      description: The integration that provides the weather entity, like Met.no or OpenWeatherMap.
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser or app
+      placeholder: Chrome 140, Home Assistant app on iOS
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Browser console errors
+      description: Any errors in the browser console (F12 → Console) when the problem happens.
+      render: text
