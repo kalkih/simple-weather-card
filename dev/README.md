@@ -33,6 +33,14 @@ yarn ha:down        # stop the container
 Everything else Home Assistant writes to `config/` is ignored by git. Delete
 it to start over from a fresh install.
 
+## README images
+
+The **Screenshots** view has the cards used for `images/preview.png`,
+`forecast.png` and `backdrop.png`, rendered at a fixed time of day by
+`dev-sun-card` so they look the same whenever they're taken. Set your
+profile language to English, then take each card or stack with
+Cmd+Shift+4 and Space.
+
 ## Releasing
 
 1. Go to **Actions → Release → Run workflow** on `master`, pick the version

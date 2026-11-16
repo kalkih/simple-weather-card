@@ -170,28 +170,28 @@ views:
           confirmation:
             text: Create a notification?
 
-  # Rendered as if the sun has set, see www/dev-night-card.js
+  # Rendered as if the sun has set, see www/dev-sun-card.js
   - title: Night
     path: night
     cards:
-      - type: custom:dev-night-card
+      - type: custom:dev-sun-card
         entity: weather.demo_weather_south
         name: Sunny (clear night)
         condition: sunny
         show_forecast: true
         forecast_type: hourly
 
-      - type: custom:dev-night-card
+      - type: custom:dev-sun-card
         entity: weather.demo_weather_south
         name: Partly cloudy
         condition: partlycloudy
 
-      - type: custom:dev-night-card
+      - type: custom:dev-sun-card
         entity: weather.demo_weather_south
         name: Lightning, rainy
         condition: lightning-rainy
 
-      - type: custom:dev-night-card
+      - type: custom:dev-sun-card
         entity: weather.demo_weather_south
         name: Sunny (animated)
         condition: sunny
@@ -199,16 +199,61 @@ views:
         show_forecast: true
         forecast_type: hourly
 
-      - type: custom:dev-night-card
+      - type: custom:dev-sun-card
         entity: weather.demo_weather_south
         name: Partly cloudy (animated)
         condition: partlycloudy
         animated_icons: true
 
-      - type: custom:dev-night-card
+      - type: custom:dev-sun-card
         entity: weather.demo_weather_north
         name: Backdrop
         backdrop:
           bg: true
         show_forecast: true
         forecast_type: hourly
+
+  # The cards used for the README images, at a fixed time of day so they
+  # look the same whenever they're taken. Set the profile language to
+  # English first.
+  - title: Screenshots
+    path: screenshots
+    cards:
+      # images/preview.png
+      - type: custom:dev-sun-card
+        sun: day
+        entity: weather.demo_weather_south
+        condition: sunny
+
+      # images/forecast.png
+      - type: vertical-stack
+        cards:
+          - type: custom:dev-sun-card
+            sun: day
+            entity: weather.demo_weather_south
+            condition: sunny
+            name: Daily
+            show_forecast: true
+          - type: custom:dev-sun-card
+            sun: day
+            entity: weather.demo_weather_north
+            name: Hourly
+            show_forecast: true
+            forecast_type: hourly
+
+      # images/backdrop.png
+      - type: vertical-stack
+        cards:
+          - type: custom:dev-sun-card
+            sun: day
+            entity: weather.demo_weather_south
+            condition: sunny
+            name: Day
+            backdrop:
+              bg: true
+          - type: custom:dev-sun-card
+            entity: weather.demo_weather_south
+            condition: sunny
+            name: Night
+            backdrop:
+              bg: true

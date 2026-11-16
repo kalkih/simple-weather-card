@@ -6,7 +6,7 @@
 
 A clean, highly configurable weather card for the [Home Assistant](https://github.com/home-assistant/home-assistant) Lovelace UI, inspired by Google Material Design. Kept up to date with the latest Home Assistant standards, easy to install via HACS, and comes with a built-in UI editor so you can configure the card without writing YAML.
 
-![Preview](https://user-images.githubusercontent.com/457678/53588519-61dfdf80-3b8d-11e9-9f0d-f5995ba794ce.png)
+![Preview](/images/preview.png)
 
 ### Forecast
 
@@ -124,7 +124,7 @@ The legacy `call-service` action with `service` and `service_data` is still supp
 
 #### Standard card
 
-![Standard card example](https://user-images.githubusercontent.com/457678/53588909-517c3480-3b8e-11e9-9d63-d49fa61507e3.png)
+![Standard card example](/images/preview.png)
 
 ```yaml
 - type: custom:simple-weather-card
@@ -134,13 +134,15 @@ The legacy `call-service` action with `service` and `service_data` is still supp
 
 #### Backdrop example
 
-![Backdrop example](https://user-images.githubusercontent.com/457678/53589125-d404f400-3b8e-11e9-8b54-977971fe83ea.png)
+Day and night colors follow the sun.
+
+![Backdrop example](/images/backdrop.png)
 
 ```yaml
 - type: custom:simple-weather-card
   entity: weather.smhi
-  name: " "
-  backdrop: true
+  backdrop:
+    bg: true
 ```
 
 #### Custom backdrop example
