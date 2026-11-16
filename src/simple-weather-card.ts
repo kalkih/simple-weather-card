@@ -12,7 +12,6 @@ import {
   NormalizedConfig,
   CustomMap,
 } from "./types";
-import { version } from "./var/version";
 
 declare global {
   interface Window {
@@ -634,7 +633,7 @@ window.customCards.push({
 });
 
 console.info(
-  `%c Simple Weather Card %c ${version} `,
+  `%c Simple Weather Card %c ${__VERSION__} `,
   "background-color: #555;color: #fff;padding: 3px 2px 3px 3px;border-radius: 14px 0 0 14px;font-family: DejaVu Sans,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)",
   "background-color: #506eac;color: #fff;padding: 3px 3px 3px 2px;border-radius: 0 14px 14px 0;font-family: DejaVu Sans,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)",
 );

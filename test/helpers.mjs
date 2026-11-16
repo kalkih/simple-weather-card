@@ -5,11 +5,14 @@ import { after, before } from "node:test";
 
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 
+// What the card logs with console.info, like its version banner
+export const infoLogs = [];
+
 // Call at the top of every test file; each file runs in its own process.
 export const setupDom = () => {
   before(() => {
     GlobalRegistrator.register({ url: "http://localhost:8123/" });
-    console.info = () => {};
+    console.info = (...args) => infoLogs.push(args.join(" "));
     const bundle = readFileSync(
       new URL("../dist/simple-weather-card.js", import.meta.url),
       "utf8",

@@ -58,5 +58,6 @@ branch name: `feat/…` → Features, `fix/…` → Fixes, `chore/…`, `ci/…`
 `refactor/…` → Maintenance, `docs/…` → Maintenance. Dependabot's pull
 requests go under Dependencies.
 
-The version in `package.json` is a placeholder (`0.0.0-dev`). The real
-version comes from the tag and is set by the release workflow.
+The version in `package.json` is a placeholder (`0.0.0-dev`). The card's
+version comes from the tag: the release workflow passes it to the build as
+`CARD_VERSION`, and local builds show `dev`.

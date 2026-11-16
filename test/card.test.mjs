@@ -4,6 +4,7 @@ import { test } from "node:test";
 
 import {
   setupDom,
+  infoLogs,
   ENTITY,
   FORECAST,
   weatherState,
@@ -534,4 +535,14 @@ test("translates the wind direction", async () => {
   const card = await createCard({ primary_info: ["wind"] }, hass);
   assert.match(text(card), /\(SSV\)/);
   card.remove();
+});
+
+test("logs its version", () => {
+  // Local builds are "dev"; releases set CARD_VERSION to the tag
+  assert.ok(
+    infoLogs.some((log) =>
+      /Simple Weather Card %c (dev|v\d+\.\d+\.\d+)/.test(log),
+    ),
+    infoLogs.join("\n"),
+  );
 });

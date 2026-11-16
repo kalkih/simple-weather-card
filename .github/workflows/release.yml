@@ -63,15 +63,9 @@ jobs:
         run: |
           node .github/scripts/next-version.mjs "$BUMP" "$BETA" | tee -a "$GITHUB_OUTPUT"
 
-      - name: Set version
-        env:
-          TAG: ${{ steps.version.outputs.tag }}
-          VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          echo "export const version = '${TAG}';" > src/var/version.ts
-          jq --arg v "$VERSION" '.version = $v' package.json > tmp.json && mv tmp.json package.json
-
       - name: Build
+        env:
+          CARD_VERSION: ${{ steps.version.outputs.tag }}
         run: yarn build
 
       - name: Smoke test
