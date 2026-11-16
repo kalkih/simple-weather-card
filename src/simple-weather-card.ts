@@ -3,7 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 
 import WeatherEntity from "./weather";
 import getStyles from "./style";
-import { handleClick } from "./handleClick";
+import { ActionType, handleClick, hasAction } from "./handleClick";
 import {
   HomeAssistant,
   HassEntity,
@@ -32,6 +32,21 @@ const UNITS: Record<string, string> = {
 
 const hasValue = (val: unknown): boolean =>
   val !== undefined && val !== null && val !== "";
+
+const HOLD_TIME = 500;
+const DOUBLE_TAP_TIME = 250;
+
+// Follows the time format chosen in the user's Home Assistant profile
+const use12HourClock = (locale: HomeAssistant["locale"]): boolean => {
+  if (locale.time_format === "12") return true;
+  if (locale.time_format === "24") return false;
+  const language =
+    locale.time_format === "system" ? undefined : locale.language;
+  return (
+    new Intl.DateTimeFormat(language, { hour: "numeric" }).resolvedOptions()
+      .hour12 ?? false
+  );
+};
 
 const toArray = (
   val: string | string[] | undefined,
@@ -64,6 +79,9 @@ export class SimpleWeatherCard extends LitElement {
   private _forecastSubscription?: Promise<() => void>;
   private _subscribedTo?: string;
   private _sunState?: string;
+  private _holdTimer?: number;
+  private _held = false;
+  private _tapTimer?: number;
 
   static styles = getStyles();
 
@@ -203,6 +221,8 @@ export class SimpleWeatherCard extends LitElement {
       state_content: config.state_content ?? "state",
       custom: config.custom ?? [],
       tap_action: config.tap_action ?? { action: "more-info" },
+      hold_action: config.hold_action,
+      double_tap_action: config.double_tap_action,
       backdrop: {
         bg: config.backdrop?.bg ?? false,
         day: "#45aaf2",
@@ -213,6 +233,7 @@ export class SimpleWeatherCard extends LitElement {
       },
       show_forecast: config.show_forecast ?? false,
       forecast_type: config.forecast_type ?? "daily",
+      forecast_slots: config.forecast_slots ?? 5,
       animated_icons: config.animated_icons ?? false,
       card_mod: config.card_mod,
       uix: config.uix,
@@ -262,7 +283,10 @@ export class SimpleWeatherCard extends LitElement {
   }
 
   protected render(): TemplateResult {
-    const actionable = this.config.tap_action.action !== "none";
+    const actionable =
+      hasAction(this.config.tap_action) ||
+      hasAction(this.config.hold_action) ||
+      hasAction(this.config.double_tap_action);
     return html`
       <ha-card
         role=${actionable ? "button" : nothing}
@@ -273,8 +297,13 @@ export class SimpleWeatherCard extends LitElement {
         style="--day-color: ${this.config.backdrop.day}; --night-color: ${
           this.config.backdrop.night
         }; --text-color: ${this.config.backdrop.text};"
-        @click=${() => this.handleTap()}
+        @click=${this.handleCardClick}
         @keydown=${this.handleKeyDown}
+        @pointerdown=${this.handlePointerDown}
+        @pointerup=${this.cancelHold}
+        @pointercancel=${this.cancelHold}
+        @pointerleave=${this.cancelHold}
+        @contextmenu=${this.handleContextMenu}
       >
         <div class="weather__main">
           ${this.renderIcon()}
@@ -424,29 +453,39 @@ export class SimpleWeatherCard extends LitElement {
   }
 
   private renderForecast(): TemplateResult {
-    const isHourly = this.config.forecast_type === "hourly";
-    const entries = this._forecast.slice(0, 5);
+    const type = this.config.forecast_type;
+    const isHourly = type === "hourly";
+    const entries = this._forecast.slice(0, this.config.forecast_slots);
     const tempUnit = this.getUnit("temperature");
     const lang = this.hass.locale.language;
+    const hour12 = use12HourClock(this.hass.locale);
+    const nightLabel = this.hass.localize("ui.card.weather.night") || "Night";
+    const showLow =
+      type === "daily" ||
+      (type === "twice_daily" &&
+        entries.some((entry) => entry.templow !== undefined));
     return html`
       <div class="weather__forecast">
         ${entries.map((entry) => {
           const date = entry.datetime ? new Date(entry.datetime) : null;
-          const label = date
-            ? isHourly
-              ? date.toLocaleTimeString(lang, {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })
-              : date.toLocaleDateString(lang, { weekday: "short" })
-            : "";
           // Daily entries have no meaningful time of day, so use day icons
+          const night = type !== "daily" && !!this.weather?.isNightAt(entry);
+          let label = "";
+          if (date && isHourly) {
+            label = date.toLocaleTimeString(
+              lang,
+              hour12
+                ? { hour: "numeric", hour12 }
+                : { hour: "2-digit", minute: "2-digit", hour12 },
+            );
+          } else if (date) {
+            label =
+              type === "twice_daily" && night
+                ? nightLabel
+                : date.toLocaleDateString(lang, { weekday: "short" });
+          }
           const icon = entry.condition
-            ? this._getIcon(
-                entry.condition,
-                isHourly && this.weather?.isNightAt(entry),
-              )
+            ? this._getIcon(entry.condition, night)
             : undefined;
           return html`
             <div class="weather__forecast__day">
@@ -469,7 +508,7 @@ export class SimpleWeatherCard extends LitElement {
                 }${tempUnit}
               </span>
               ${
-                !isHourly
+                showLow
                   ? html`<span
                       class="weather__forecast__temp weather__forecast__temp--low"
                     >
@@ -496,14 +535,56 @@ export class SimpleWeatherCard extends LitElement {
     return html` ${state} ${uom ? this.getUnit(unit) : ""} `;
   }
 
-  private handleTap(): void {
-    handleClick(this, this.config);
+  private handleAction(action: ActionType): void {
+    handleClick(this, this.config, action);
+  }
+
+  private handleCardClick(): void {
+    // The click that ends a hold shouldn't also count as a tap
+    if (this._held) {
+      this._held = false;
+      return;
+    }
+    if (!hasAction(this.config.double_tap_action)) {
+      this.handleAction("tap");
+      return;
+    }
+    // Wait briefly to see whether a second tap follows
+    if (this._tapTimer !== undefined) {
+      clearTimeout(this._tapTimer);
+      this._tapTimer = undefined;
+      this.handleAction("double_tap");
+    } else {
+      this._tapTimer = window.setTimeout(() => {
+        this._tapTimer = undefined;
+        this.handleAction("tap");
+      }, DOUBLE_TAP_TIME);
+    }
+  }
+
+  private handlePointerDown(): void {
+    this._held = false;
+    if (!hasAction(this.config.hold_action)) return;
+    this._holdTimer = window.setTimeout(() => {
+      this._held = true;
+      this.handleAction("hold");
+    }, HOLD_TIME);
+  }
+
+  private cancelHold(): void {
+    clearTimeout(this._holdTimer);
+    this._holdTimer = undefined;
+  }
+
+  // Long-pressing on touch screens opens the context menu otherwise
+  private handleContextMenu(ev: Event): void {
+    if (hasAction(this.config.hold_action)) ev.preventDefault();
   }
 
   private handleKeyDown(ev: KeyboardEvent): void {
     if (ev.key !== "Enter" && ev.key !== " ") return;
     ev.preventDefault();
-    this.handleTap();
+    this.handleAction("tap");
   }
 
   private getUnit(unit = "temperature"): string {

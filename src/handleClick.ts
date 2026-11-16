@@ -1,18 +1,29 @@
-import { NormalizedConfig } from "./types";
+import { NormalizedConfig, TapAction } from "./types";
+
+export type ActionType = "tap" | "hold" | "double_tap";
+
+export const hasAction = (action?: TapAction): boolean =>
+  action !== undefined && action.action !== "none";
 
 // Hand the action over to Home Assistant, so every action type the
-// tap action editor offers (perform-action, toggle, url, assist, ...) works
-export const handleClick = (node: Element, config: NormalizedConfig): void => {
+// action editor offers (perform-action, toggle, url, assist, ...) works
+export const handleClick = (
+  node: Element,
+  config: NormalizedConfig,
+  action: ActionType = "tap",
+): void => {
+  const key = `${action}_action` as const;
+  const actionConfig = config[key];
   // Older configs may use `perform_action`, which Home Assistant doesn't know
-  const tapAction =
-    config.tap_action.action === "perform_action"
-      ? { ...config.tap_action, action: "perform-action" }
-      : config.tap_action;
+  const normalized =
+    actionConfig?.action === "perform_action"
+      ? { ...actionConfig, action: "perform-action" }
+      : actionConfig;
   node.dispatchEvent(
     new CustomEvent("hass-action", {
       bubbles: true,
       composed: true,
-      detail: { config: { ...config, tap_action: tapAction }, action: "tap" },
+      detail: { config: { ...config, [key]: normalized }, action },
     }),
   );
 };

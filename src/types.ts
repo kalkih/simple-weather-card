@@ -33,7 +33,7 @@ export interface HassConfig {
 export interface HomeAssistant {
   states: Record<string, HassEntity>;
   config: HassConfig;
-  locale: { language: string };
+  locale: { language: string; time_format?: string };
   localize: (key: string, ...args: unknown[]) => string;
   resources: Record<string, Record<string, string>>;
   connection: {
@@ -60,6 +60,8 @@ export interface ForecastEntry {
   precipitation_probability?: number;
   is_daytime?: boolean;
 }
+
+export type ForecastType = "daily" | "hourly" | "twice_daily";
 
 export interface BackdropConfig {
   bg: boolean;
@@ -100,9 +102,12 @@ export interface CardConfig {
   state_content?: string;
   custom?: Array<Record<string, string>>;
   tap_action?: TapAction;
+  hold_action?: TapAction;
+  double_tap_action?: TapAction;
   backdrop?: Partial<BackdropConfig>;
   show_forecast?: boolean;
-  forecast_type?: "daily" | "hourly";
+  forecast_type?: ForecastType;
+  forecast_slots?: number;
   animated_icons?: boolean;
   card_mod?: CardModConfig;
   uix?: UixConfig;
@@ -117,9 +122,12 @@ export interface NormalizedConfig {
   state_content: string;
   custom: Array<Record<string, string>>;
   tap_action: TapAction;
+  hold_action?: TapAction;
+  double_tap_action?: TapAction;
   backdrop: BackdropConfig;
   show_forecast: boolean;
-  forecast_type: "daily" | "hourly";
+  forecast_type: ForecastType;
+  forecast_slots: number;
   animated_icons: boolean;
   card_mod?: CardModConfig;
   uix?: UixConfig;

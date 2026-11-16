@@ -56,9 +56,12 @@ If you're migrating from the [original repository](https://github.com/kalkih/sim
 | backdrop       | [Backdrop object](#backdrop-object-options) | optional        | v2.0.0 | [Backdrop object](#backdrop-object-options).                                                 |
 | custom         | array                                       | optional        | v0.4.0 | Override weather information with custom sensors, see [Custom option](#custom-option-array). |
 | tap_action     | [action object](#action-object-options)     | optional        | v0.5.0 | Action on click/tap.                                                                         |
+| hold_action    | [action object](#action-object-options)     | optional        | v2.12.0 | Action on hold (long press).                                                                |
+| double_tap_action | [action object](#action-object-options)  | optional        | v2.12.0 | Action on double tap.                                                                       |
 | show_name      | boolean                                     | true            | v2.0.1 | Show/Hide name                                                                               |
-| show_forecast  | boolean                                     | false           | v2.5.0 | Show/Hide 5 day forecast                                                                     |
-| forecast_type  | string                                      | `daily`         | v2.6.2 | Show daily or hourly forecast                                                                |
+| show_forecast  | boolean                                     | false           | v2.5.0 | Show/Hide forecast                                                                           |
+| forecast_type  | string                                      | `daily`         | v2.6.2 | `daily`, `hourly` or `twice_daily` (day and night, v2.12.0) forecast                         |
+| forecast_slots | number                                      | 5               | v2.12.0 | Number of days, hours or day/night periods to show in the forecast                          |
 | card_mod       | object                                      | optional        | v2.1.1 | Styling with [card-mod](https://github.com/thomasloven/lovelace-card-mod).                   |
 | uix            | object                                      | optional        | v2.3.0 | Styling with UIX.                                                                            |
 
