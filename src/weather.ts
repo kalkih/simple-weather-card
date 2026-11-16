@@ -106,6 +106,11 @@ const ICONS_ANIMATED_NIGHT: Record<string, string> = {
   "partly-cloudy-night": animated_cloudy,
 };
 
+// The time zone to show times in: the server's when the user chose that in
+// their profile, otherwise the browser's
+export const getTimeZone = (hass: HomeAssistant): string | undefined =>
+  hass.locale.time_zone === "server" ? hass.config.time_zone : undefined;
+
 const DIRECTION = [
   "N",
   "NNE",
@@ -230,9 +235,17 @@ export default class WeatherEntity {
     if (!entry.datetime || !sun?.next_rising || !sun?.next_setting) {
       return false;
     }
+    const format = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hourCycle: "h23",
+      timeZone: getTimeZone(this.hass),
+    });
     const minutes = (date: string): number => {
-      const d = new Date(date);
-      return d.getHours() * 60 + d.getMinutes();
+      const parts = format.formatToParts(new Date(date));
+      const part = (type: string): number =>
+        Number(parts.find((p) => p.type === type)?.value);
+      return part("hour") * 60 + part("minute");
     };
     const time = minutes(entry.datetime);
     const sunrise = minutes(sun.next_rising as string);
