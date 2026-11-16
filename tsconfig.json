@@ -7,7 +7,8 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "lib": ["ES2020", "DOM"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"]
 }

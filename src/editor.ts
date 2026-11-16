@@ -1,6 +1,7 @@
 import { LitElement, html, TemplateResult, css, CSSResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
+import { localize } from "./localize";
 import { HomeAssistant, CardConfig } from "./types";
 
 const fireEvent = (node: EventTarget, type: string, detail?: unknown): void => {
@@ -9,148 +10,122 @@ const fireEvent = (node: EventTarget, type: string, detail?: unknown): void => {
   );
 };
 
-const INFO_OPTIONS = [
-  { value: "extrema", label: "Low / High" },
-  {
-    value: "precipitation_and_probability",
-    label: "Precipitation (Amount / Probability)",
-  },
-  { value: "precipitation", label: "Precipitation" },
-  { value: "precipitation_probability", label: "Precipitation probability" },
-  { value: "humidity", label: "Humidity" },
-  { value: "wind", label: "Wind (Speed / Bearing)" },
-  { value: "wind_speed", label: "Wind speed" },
-  { value: "wind_bearing", label: "Wind bearing" },
-  { value: "pressure", label: "Pressure" },
-  { value: "apparent_temperature", label: "Feels like" },
+type Translate = (key: string) => string;
+
+const INFO_KEYS = [
+  "extrema",
+  "precipitation_and_probability",
+  "precipitation",
+  "precipitation_probability",
+  "humidity",
+  "wind",
+  "wind_speed",
+  "wind_bearing",
+  "pressure",
+  "apparent_temperature",
 ];
 
-const CUSTOM_KEYS: { key: string; label: string }[] = [
-  { key: "temp", label: "Temperature" },
-  { key: "apparent_temperature", label: "Feels like" },
-  { key: "high", label: "High temperature" },
-  { key: "low", label: "Low temperature" },
-  { key: "state", label: "Condition / state" },
-  { key: "icon-state", label: "Icon state" },
-  { key: "precipitation", label: "Precipitation" },
-  { key: "precipitation_probability", label: "Precipitation probability" },
-  { key: "humidity", label: "Humidity" },
-  { key: "wind_speed", label: "Wind speed" },
-  { key: "wind_bearing", label: "Wind bearing" },
-  { key: "pressure", label: "Pressure" },
+const CUSTOM_KEYS = [
+  "temp",
+  "apparent_temperature",
+  "high",
+  "low",
+  "state",
+  "icon-state",
+  "precipitation",
+  "precipitation_probability",
+  "humidity",
+  "wind_speed",
+  "wind_bearing",
+  "pressure",
 ];
 
-const ENTITY_SCHEMA = [
-  {
-    name: "entity",
-    required: true,
-    selector: { entity: { domain: "weather" } },
-  },
-];
-
-const NAME_SCHEMA = [
-  { name: "show_name", selector: { boolean: {} } },
-  { name: "name", selector: { text: {} } },
-];
-
-const PRIMARY_INFO_SCHEMA = [
-  {
-    name: "primary_info",
-    selector: {
-      select: { multiple: true, mode: "list", options: INFO_OPTIONS },
-    },
-  },
-];
-
-const SECONDARY_INFO_SCHEMA = [
-  {
-    name: "secondary_info",
-    selector: {
-      select: { multiple: true, mode: "list", options: INFO_OPTIONS },
-    },
-  },
-];
-
-const STATE_CONTENT_OPTIONS = [
-  { value: "state", label: "Weather condition" },
-  ...INFO_OPTIONS,
-];
-
-const STATE_CONTENT_SCHEMA = [
-  {
-    name: "state_content",
-    selector: {
-      select: { multiple: false, mode: "list", options: STATE_CONTENT_OPTIONS },
-    },
-  },
-];
-
-const FORECAST_SCHEMA = [
-  { name: "show_forecast", selector: { boolean: {} } },
-  {
-    name: "forecast_type",
-    selector: {
-      select: {
-        options: [
-          { value: "daily", label: "Daily" },
-          { value: "hourly", label: "Hourly" },
-          { value: "twice_daily", label: "Twice daily (day and night)" },
-        ],
+const buildSchemas = (t: Translate) => {
+  const infoOptions = INFO_KEYS.map((key) => ({
+    value: key,
+    label: t(`info.${key}`),
+  }));
+  const infoSelect = (name: string) => [
+    {
+      name,
+      selector: {
+        select: { multiple: true, mode: "list", options: infoOptions },
       },
     },
-  },
-  {
-    name: "forecast_slots",
-    selector: { number: { min: 1, max: 7, mode: "box" } },
-  },
-];
-
-const ACTIONS_SCHEMA = [
-  {
-    name: "tap_action",
-    selector: { ui_action: { default_action: "more-info" } },
-  },
-  {
-    name: "hold_action",
-    selector: { ui_action: { default_action: "none" } },
-  },
-  {
-    name: "double_tap_action",
-    selector: { ui_action: { default_action: "none" } },
-  },
-];
-
-const BACKDROP_SCHEMA = [
-  { name: "bg", selector: { boolean: {} } },
-  { name: "fade", selector: { boolean: {} } },
-  { name: "day", selector: { color_rgb: {} } },
-  { name: "night", selector: { color_rgb: {} } },
-  { name: "text", selector: { color_rgb: {} } },
-];
-
-const ICONS_SCHEMA = [{ name: "animated_icons", selector: { boolean: {} } }];
-
-const LABELS: Record<string, string> = {
-  entity: "Weather entity",
-  name: "Name",
-  show_name: "Show name",
-  show_forecast: "Show forecast",
-  forecast_type: "Forecast type",
-  forecast_slots: "Number of days / hours",
-  tap_action: "Tap action",
-  hold_action: "Hold action",
-  double_tap_action: "Double tap action",
-  bg: "Show backdrop",
-  primary_info: "Primary info",
-  secondary_info: "Secondary info",
-  backdrop: "Backdrop",
-  day: "Day color",
-  night: "Night color",
-  text: "Text color",
-  fade: "Fade effect",
-  animated_icons: "Animated icons",
-  state_content: "State content",
+  ];
+  return {
+    entity: [
+      {
+        name: "entity",
+        required: true,
+        selector: { entity: { domain: "weather" } },
+      },
+    ],
+    name: [
+      { name: "show_name", selector: { boolean: {} } },
+      { name: "name", selector: { text: {} } },
+    ],
+    state: [
+      {
+        name: "state_content",
+        selector: {
+          select: {
+            multiple: false,
+            mode: "list",
+            options: [
+              { value: "state", label: t("info.state") },
+              ...infoOptions,
+            ],
+          },
+        },
+      },
+    ],
+    primary_info: infoSelect("primary_info"),
+    secondary_info: infoSelect("secondary_info"),
+    forecast: [
+      { name: "show_forecast", selector: { boolean: {} } },
+      {
+        name: "forecast_type",
+        selector: {
+          select: {
+            options: ["daily", "hourly", "twice_daily"].map((type) => ({
+              value: type,
+              label: t(`forecast_type.${type}`),
+            })),
+          },
+        },
+      },
+      {
+        name: "forecast_slots",
+        selector: { number: { min: 1, max: 7, mode: "box" } },
+      },
+    ],
+    actions: [
+      {
+        name: "tap_action",
+        selector: { ui_action: { default_action: "more-info" } },
+      },
+      {
+        name: "hold_action",
+        selector: { ui_action: { default_action: "none" } },
+      },
+      {
+        name: "double_tap_action",
+        selector: { ui_action: { default_action: "none" } },
+      },
+    ],
+    backdrop: [
+      { name: "bg", selector: { boolean: {} } },
+      { name: "fade", selector: { boolean: {} } },
+      { name: "day", selector: { color_rgb: {} } },
+      { name: "night", selector: { color_rgb: {} } },
+      { name: "text", selector: { color_rgb: {} } },
+    ],
+    icons: [{ name: "animated_icons", selector: { boolean: {} } }],
+  };
 };
+
+type Schemas = ReturnType<typeof buildSchemas>;
 
 const hexToRgb = (hex: string): [number, number, number] => {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -195,6 +170,10 @@ export class SimpleWeatherCardEditor extends LitElement {
   @property({ attribute: false }) hass!: HomeAssistant;
   @state() private _config?: CardConfig;
   @state() private _customMap: Record<string, string> = {};
+
+  // Built once per language. New schema objects on every render would make
+  // ha-form rebuild its fields, losing focus while typing.
+  private _schemaCache?: { language: string; schemas: Schemas };
 
   static styles: CSSResult = css`
     ha-expansion-panel {
@@ -284,8 +263,42 @@ export class SimpleWeatherCardEditor extends LitElement {
     });
   }
 
-  private _computeLabel(schema: { name: string; title?: string }): string {
-    return LABELS[schema.name] ?? schema.title ?? schema.name;
+  private _t = (key: string): string => localize(this.hass, key);
+
+  private _computeLabel = (schema: { name: string }): string =>
+    this._t(`fields.${schema.name}`);
+
+  private get _schemas(): Schemas {
+    const language = this.hass.locale?.language ?? "en";
+    if (this._schemaCache?.language !== language) {
+      this._schemaCache = { language, schemas: buildSchemas(this._t) };
+    }
+    return this._schemaCache.schemas;
+  }
+
+  private _section(
+    icon: string,
+    section: keyof Schemas,
+    data: unknown = this._config,
+    onChange: (ev: CustomEvent) => void = this._valueChanged,
+  ): TemplateResult {
+    return html`
+      <ha-expansion-panel outlined>
+        <span slot="header"
+          ><ha-icon icon=${icon}></ha-icon>
+          ${this._t(`sections.${section}`)}</span
+        >
+        <div class="section-content">
+          <ha-form
+            .hass=${this.hass}
+            .data=${data}
+            .schema=${this._schemas[section]}
+            .computeLabel=${this._computeLabel}
+            @value-changed=${onChange}
+          ></ha-form>
+        </div>
+      </ha-expansion-panel>
+    `;
   }
 
   protected render(): TemplateResult | string {
@@ -294,134 +307,34 @@ export class SimpleWeatherCardEditor extends LitElement {
       <ha-form
         .hass=${this.hass}
         .data=${this._config}
-        .schema=${ENTITY_SCHEMA}
+        .schema=${this._schemas.entity}
         .computeLabel=${this._computeLabel}
         @value-changed=${this._valueChanged}
       ></ha-form>
+      ${this._section("mdi:format-header-1", "name")}
+      ${this._section("mdi:text", "state")}
+      ${this._section("mdi:format-list-bulleted", "primary_info")}
+      ${this._section("mdi:format-list-bulleted", "secondary_info")}
+      ${this._section("mdi:weather-partly-cloudy", "forecast")}
+      ${this._section("mdi:gesture-tap", "actions")}
+      ${this._section(
+        "mdi:palette",
+        "backdrop",
+        this._backdropData(),
+        this._backdropChanged,
+      )}
+      ${this._section("mdi:animation", "icons")}
       <ha-expansion-panel outlined>
         <span slot="header"
-          ><ha-icon icon="mdi:format-header-1"></ha-icon> Name</span
-        >
-        <div class="section-content">
-          <ha-form
-            .hass=${this.hass}
-            .data=${this._config}
-            .schema=${NAME_SCHEMA}
-            .computeLabel=${this._computeLabel}
-            @value-changed=${this._valueChanged}
-          ></ha-form>
-        </div>
-      </ha-expansion-panel>
-      <ha-expansion-panel outlined>
-        <span slot="header"
-          ><ha-icon icon="mdi:text"></ha-icon> State info</span
-        >
-        <div class="section-content">
-          <ha-form
-            .hass=${this.hass}
-            .data=${this._config}
-            .schema=${STATE_CONTENT_SCHEMA}
-            .computeLabel=${this._computeLabel}
-            @value-changed=${this._valueChanged}
-          ></ha-form>
-        </div>
-      </ha-expansion-panel>
-      <ha-expansion-panel outlined>
-        <span slot="header"
-          ><ha-icon icon="mdi:format-list-bulleted"></ha-icon> Primary
-          info</span
-        >
-        <div class="section-content">
-          <ha-form
-            .hass=${this.hass}
-            .data=${this._config}
-            .schema=${PRIMARY_INFO_SCHEMA}
-            .computeLabel=${this._computeLabel}
-            @value-changed=${this._valueChanged}
-          ></ha-form>
-        </div>
-      </ha-expansion-panel>
-      <ha-expansion-panel outlined>
-        <span slot="header"
-          ><ha-icon icon="mdi:format-list-bulleted"></ha-icon> Secondary
-          info</span
-        >
-        <div class="section-content">
-          <ha-form
-            .hass=${this.hass}
-            .data=${this._config}
-            .schema=${SECONDARY_INFO_SCHEMA}
-            .computeLabel=${this._computeLabel}
-            @value-changed=${this._valueChanged}
-          ></ha-form>
-        </div>
-      </ha-expansion-panel>
-      <ha-expansion-panel outlined>
-        <span slot="header"
-          ><ha-icon icon="mdi:weather-partly-cloudy"></ha-icon> Forecast</span
-        >
-        <div class="section-content">
-          <ha-form
-            .hass=${this.hass}
-            .data=${this._config}
-            .schema=${FORECAST_SCHEMA}
-            .computeLabel=${this._computeLabel}
-            @value-changed=${this._valueChanged}
-          ></ha-form>
-        </div>
-      </ha-expansion-panel>
-      <ha-expansion-panel outlined>
-        <span slot="header"
-          ><ha-icon icon="mdi:gesture-tap"></ha-icon> Actions</span
-        >
-        <div class="section-content">
-          <ha-form
-            .hass=${this.hass}
-            .data=${this._config}
-            .schema=${ACTIONS_SCHEMA}
-            .computeLabel=${this._computeLabel}
-            @value-changed=${this._valueChanged}
-          ></ha-form>
-        </div>
-      </ha-expansion-panel>
-      <ha-expansion-panel outlined>
-        <span slot="header"
-          ><ha-icon icon="mdi:palette"></ha-icon> Backdrop</span
-        >
-        <div class="section-content">
-          <ha-form
-            .hass=${this.hass}
-            .data=${this._backdropData()}
-            .schema=${BACKDROP_SCHEMA}
-            .computeLabel=${this._computeLabel}
-            @value-changed=${this._backdropChanged}
-          ></ha-form>
-        </div>
-      </ha-expansion-panel>
-      <ha-expansion-panel outlined>
-        <span slot="header"
-          ><ha-icon icon="mdi:animation"></ha-icon> Icons</span
-        >
-        <div class="section-content">
-          <ha-form
-            .hass=${this.hass}
-            .data=${this._config}
-            .schema=${ICONS_SCHEMA}
-            .computeLabel=${this._computeLabel}
-            @value-changed=${this._valueChanged}
-          ></ha-form>
-        </div>
-      </ha-expansion-panel>
-      <ha-expansion-panel outlined>
-        <span slot="header"
-          ><ha-icon icon="mdi:cog"></ha-icon> Custom sensor overrides</span
+          ><ha-icon icon="mdi:cog"></ha-icon>
+          ${this._t("sections.custom")}</span
         >
         <div class="custom-content">
           ${CUSTOM_KEYS.map(
-            ({ key, label }) => html`
+            (key) => html`
               <ha-entity-picker
                 .hass=${this.hass}
-                .label=${label}
+                .label=${this._t(`custom.${key}`)}
                 .value=${this._customMap[key] ?? ""}
                 @value-changed=${(ev: CustomEvent) =>
                   this._customChanged(key, ev)}

@@ -675,3 +675,66 @@ test("translates the wind direction", async () => {
   assert.match(text(card), /\(SSV\)/);
   card.remove();
 });
+
+const createEditor = async (language) => {
+  const editor = await customElements
+    .get("simple-weather-card")
+    .getConfigElement();
+  editor.hass = { ...createHass(), locale: { language } };
+  editor.setConfig({ entity: ENTITY });
+  document.body.appendChild(editor);
+  await editor.updateComplete;
+  return editor;
+};
+
+const editorForms = (editor) => [
+  ...editor.shadowRoot.querySelectorAll("ha-form"),
+];
+
+test("translates the editor", async () => {
+  const editor = await createEditor("nb");
+  const headers = [
+    ...editor.shadowRoot.querySelectorAll('[slot="header"]'),
+  ].map((el) => el.textContent.trim());
+  assert.ok(headers.includes("Værvarsel"), headers.join(", "));
+  assert.ok(headers.includes("Overstyr med egne sensorer"));
+
+  const form = editorForms(editor).find((f) =>
+    f.schema.some((field) => field.name === "forecast_type"),
+  );
+  assert.equal(form.computeLabel({ name: "show_forecast" }), "Vis værvarsel");
+  const type = form.schema.find((field) => field.name === "forecast_type");
+  assert.deepEqual(
+    type.selector.select.options.map((o) => o.label),
+    ["Daglig", "Hver time", "To ganger daglig (dag og natt)"],
+  );
+  const pickers = [...editor.shadowRoot.querySelectorAll("ha-entity-picker")];
+  assert.equal(pickers[0].label, "Temperatur");
+  editor.remove();
+});
+
+test("falls back to the base language and then English", async () => {
+  for (const [language, expected] of [
+    ["en-GB", "Forecast"],
+    ["de", "Forecast"],
+    ["nb", "Værvarsel"],
+  ]) {
+    const editor = await createEditor(language);
+    const headers = [
+      ...editor.shadowRoot.querySelectorAll('[slot="header"]'),
+    ].map((el) => el.textContent.trim());
+    assert.ok(headers.includes(expected), `${language}: ${headers}`);
+    editor.remove();
+  }
+});
+
+test("editor keeps its schemas between renders", async () => {
+  const editor = await createEditor("nb");
+  const before = editorForms(editor).map((f) => f.schema);
+  editor.setConfig({ entity: ENTITY, name: "Changed" });
+  await editor.updateComplete;
+  const after = editorForms(editor).map((f) => f.schema);
+  assert.equal(after.length, before.length);
+  after.forEach((schema, i) => assert.equal(schema, before[i]));
+  editor.remove();
+});

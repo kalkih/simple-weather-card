@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Name",
+    "state": "State info",
+    "primary_info": "Primary info",
+    "secondary_info": "Secondary info",
+    "forecast": "Forecast",
+    "actions": "Actions",
+    "backdrop": "Backdrop",
+    "icons": "Icons",
+    "custom": "Custom sensor overrides"
+  },
+  "fields": {
+    "entity": "Weather entity",
+    "name": "Name",
+    "show_name": "Show name",
+    "state_content": "State content",
+    "primary_info": "Primary info",
+    "secondary_info": "Secondary info",
+    "show_forecast": "Show forecast",
+    "forecast_type": "Forecast type",
+    "forecast_slots": "Number of days / hours",
+    "tap_action": "Tap action",
+    "hold_action": "Hold action",
+    "double_tap_action": "Double tap action",
+    "bg": "Show backdrop",
+    "fade": "Fade effect",
+    "day": "Day color",
+    "night": "Night color",
+    "text": "Text color",
+    "animated_icons": "Animated icons"
+  },
+  "info": {
+    "state": "Weather condition",
+    "extrema": "Low / High",
+    "precipitation_and_probability": "Precipitation (Amount / Probability)",
+    "precipitation": "Precipitation",
+    "precipitation_probability": "Precipitation probability",
+    "humidity": "Humidity",
+    "wind": "Wind (Speed / Bearing)",
+    "wind_speed": "Wind speed",
+    "wind_bearing": "Wind bearing",
+    "pressure": "Pressure",
+    "apparent_temperature": "Feels like"
+  },
+  "forecast_type": {
+    "daily": "Daily",
+    "hourly": "Hourly",
+    "twice_daily": "Twice daily (day and night)"
+  },
+  "custom": {
+    "temp": "Temperature",
+    "apparent_temperature": "Feels like",
+    "high": "High temperature",
+    "low": "Low temperature",
+    "state": "Condition / state",
+    "icon-state": "Icon state",
+    "precipitation": "Precipitation",
+    "precipitation_probability": "Precipitation probability",
+    "humidity": "Humidity",
+    "wind_speed": "Wind speed",
+    "wind_bearing": "Wind bearing",
+    "pressure": "Pressure"
+  }
+}
