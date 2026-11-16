@@ -213,47 +213,65 @@ views:
         show_forecast: true
         forecast_type: hourly
 
-  # The cards used for the README images, at a fixed time of day so they
-  # look the same whenever they're taken. Set the profile language to
-  # English first.
-  - title: Screenshots
-    path: screenshots
-    cards:
-      # images/preview.png
-      - type: custom:dev-sun-card
-        sun: day
-        entity: weather.demo_weather_south
-        condition: sunny
-
-      # images/forecast.png
-      - type: vertical-stack
+  # One view with the card's main variants, for the README image
+  # (images/gallery.png). Cards are rendered at a fixed time of day by
+  # dev-sun-card, so the image looks the same whenever it's taken. Set the
+  # profile language to English first.
+  - title: Gallery
+    path: gallery
+    type: sections
+    max_columns: 2
+    sections:
+      - type: grid
         cards:
           - type: custom:dev-sun-card
             sun: day
             entity: weather.demo_weather_south
             condition: sunny
-            name: Daily
+            name: Home
+
+          - type: custom:dev-sun-card
+            sun: day
+            entity: weather.demo_weather_south
+            condition: sunny
+            name: Daily forecast
             show_forecast: true
+
           - type: custom:dev-sun-card
             sun: day
             entity: weather.demo_weather_north
-            name: Hourly
+            condition: cloudy
+            name: Hourly forecast
             show_forecast: true
             forecast_type: hourly
 
-      # images/backdrop.png
-      - type: vertical-stack
+      - type: grid
         cards:
           - type: custom:dev-sun-card
             sun: day
             entity: weather.demo_weather_south
-            condition: sunny
-            name: Day
+            condition: partlycloudy
+            name: Backdrop
+            primary_info:
+              - wind
+            secondary_info:
+              - humidity
             backdrop:
               bg: true
+
           - type: custom:dev-sun-card
-            entity: weather.demo_weather_south
-            condition: sunny
+            sun: day
+            entity: weather.demo_weather_north
+            name: Twice daily
+            show_forecast: true
+            forecast_type: twice_daily
+
+          - type: custom:dev-sun-card
+            entity: weather.demo_weather_north
+            condition: clear-night
             name: Night
+            show_forecast: true
+            forecast_type: hourly
             backdrop:
               bg: true
+              fade: true

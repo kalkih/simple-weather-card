@@ -6,7 +6,7 @@
 
 A clean, minimal weather card for [Home Assistant](https://www.home-assistant.io/) dashboards, with a forecast, day and night icons and a visual editor.
 
-![Preview](/images/preview.png)
+![Simple Weather Card in different configurations](/images/gallery.png)
 
 > A fork of [simple-weather-card](https://github.com/kalkih/simple-weather-card) by [@kalkih](https://github.com/kalkih), kept up to date with current Home Assistant releases.
 
@@ -20,8 +20,6 @@ A clean, minimal weather card for [Home Assistant](https://www.home-assistant.io
 - **Visual editor** in your Home Assistant language
 - **Custom sensors**: replace any value with one of your own sensors
 - **Sections and masonry dashboards**, keyboard support and styling with card-mod
-
-![Forecast](/images/forecast.png)
 
 ## Installation
 
@@ -183,8 +181,6 @@ forecast_slots: 7
 ### Backdrop
 
 The color follows the sun.
-
-![Backdrop](/images/backdrop.png)
 
 ```yaml
 type: custom:simple-weather-card
