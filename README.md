@@ -71,58 +71,58 @@ entity: weather.home
 
 **General**
 
-| Name             | Type    | Default      | Since  | Description                                                     |
-| ---------------- | ------- | ------------ | ------ | --------------------------------------------------------------- |
-| `type`           | string  | **required** | v0.1.0 | `custom:simple-weather-card`                                    |
-| `entity`         | string  | **required** | v0.1.0 | A `weather` entity                                              |
-| `name`           | string  | entity name  | v0.1.0 | Custom name                                                     |
-| `show_name`      | boolean | `true`       | v2.0.1 | Show the name                                                   |
-| `state_content`  | string  | `state`      | v2.8.0 | What to show below the name: `state` or a [weather attribute](#weather-attributes) |
-| `primary_info`   | list    | `extrema`    | v0.7.0 | First row on the right, one or more [weather attributes](#weather-attributes) |
-| `secondary_info` | list    | `precipitation` | v0.2.0 | Second row on the right, one or more [weather attributes](#weather-attributes) |
-| `custom`         | list    |              | v0.4.0 | Replace values with your own sensors, see [Custom sensors](#custom-sensors) |
+| Name             | Type    | Default         | Since  | Description                                                                        |
+| ---------------- | ------- | --------------- | ------ | ---------------------------------------------------------------------------------- |
+| `type`           | string  | **required**    | v0.1.0 | `custom:simple-weather-card`                                                       |
+| `entity`         | string  | **required**    | v0.1.0 | A `weather` entity                                                                 |
+| `name`           | string  | entity name     | v0.1.0 | Custom name                                                                        |
+| `show_name`      | boolean | `true`          | v2.0.1 | Show the name                                                                      |
+| `state_content`  | string  | `state`         | v2.8.0 | What to show below the name: `state` or a [weather attribute](#weather-attributes) |
+| `primary_info`   | list    | `extrema`       | v0.7.0 | First row on the right, one or more [weather attributes](#weather-attributes)      |
+| `secondary_info` | list    | `precipitation` | v0.2.0 | Second row on the right, one or more [weather attributes](#weather-attributes)     |
+| `custom`         | list    |                 | v0.4.0 | Replace values with your own sensors, see [Custom sensors](#custom-sensors)        |
 
 **Forecast**
 
-| Name             | Type    | Default | Since   | Description                                                |
-| ---------------- | ------- | ------- | ------- | ---------------------------------------------------------- |
-| `show_forecast`  | boolean | `false` | v2.5.0  | Show the forecast                                          |
+| Name             | Type    | Default | Since   | Description                                                 |
+| ---------------- | ------- | ------- | ------- | ----------------------------------------------------------- |
+| `show_forecast`  | boolean | `false` | v2.5.0  | Show the forecast                                           |
 | `forecast_type`  | string  | `daily` | v2.6.2  | `daily`, `hourly` or `twice_daily` (day and night, v2.12.0) |
-| `forecast_slots` | number  | `5`     | v2.12.0 | Number of days, hours or day/night periods to show         |
+| `forecast_slots` | number  | `5`     | v2.12.0 | Number of days, hours or day/night periods to show          |
 
 **Appearance**
 
-| Name             | Type    | Default | Since  | Description                                                                |
-| ---------------- | ------- | ------- | ------ | -------------------------------------------------------------------------- |
-| `animated_icons` | boolean | `false` | v2.8.0 | Animated weather icons                                                     |
-| `backdrop`       | object  |         | v2.0.0 | Colored background, see [Backdrop](#backdrop)                              |
-| `card_mod`       | object  |         | v2.1.1 | Styling with [card-mod](https://github.com/thomasloven/lovelace-card-mod)  |
-| `uix`            | object  |         | v2.3.0 | Styling with UIX                                                           |
+| Name             | Type    | Default | Since  | Description                                                               |
+| ---------------- | ------- | ------- | ------ | ------------------------------------------------------------------------- |
+| `animated_icons` | boolean | `false` | v2.8.0 | Animated weather icons                                                    |
+| `backdrop`       | object  |         | v2.0.0 | Colored background, see [Backdrop](#backdrop)                             |
+| `card_mod`       | object  |         | v2.1.1 | Styling with [card-mod](https://github.com/thomasloven/lovelace-card-mod) |
+| `uix`            | object  |         | v2.3.0 | Styling with UIX                                                          |
 
 **Actions**
 
-| Name                | Type   | Default     | Since   | Description                                    |
-| ------------------- | ------ | ----------- | ------- | ---------------------------------------------- |
-| `tap_action`        | object | `more-info` | v0.5.0  | Action on tap, see [Actions](#actions)         |
-| `hold_action`       | object |             | v2.12.0 | Action on hold (long press)                    |
-| `double_tap_action` | object |             | v2.12.0 | Action on double tap                           |
+| Name                | Type   | Default     | Since   | Description                            |
+| ------------------- | ------ | ----------- | ------- | -------------------------------------- |
+| `tap_action`        | object | `more-info` | v0.5.0  | Action on tap, see [Actions](#actions) |
+| `hold_action`       | object |             | v2.12.0 | Action on hold (long press)            |
+| `double_tap_action` | object |             | v2.12.0 | Action on double tap                   |
 
 #### Weather attributes
 
 Values for `state_content`, `primary_info` and `secondary_info`.
 
-| Name                            | Description                                   | Since  |
-| ------------------------------- | --------------------------------------------- | ------ |
-| `extrema`                       | Low and high temperature from the forecast    | v0.7.0 |
-| `precipitation`                 | Precipitation from the forecast               | v0.7.0 |
+| Name                            | Description                                    | Since  |
+| ------------------------------- | ---------------------------------------------- | ------ |
+| `extrema`                       | Low and high temperature from the forecast     | v0.7.0 |
+| `precipitation`                 | Precipitation from the forecast                | v0.7.0 |
 | `precipitation_probability`     | Probability of precipitation from the forecast | v0.7.0 |
-| `precipitation_and_probability` | Precipitation and probability together        | v2.7.0 |
-| `humidity`                      | Current humidity                              | v0.7.0 |
-| `pressure`                      | Current air pressure                          | v0.7.0 |
-| `wind_speed`                    | Current wind speed                            | v0.7.0 |
-| `wind_bearing`                  | Current wind direction                        | v0.7.0 |
-| `wind`                          | Wind speed and direction together             | v2.7.0 |
-| `apparent_temperature`          | Current "feels like" temperature              | v2.9.0 |
+| `precipitation_and_probability` | Precipitation and probability together         | v2.7.0 |
+| `humidity`                      | Current humidity                               | v0.7.0 |
+| `pressure`                      | Current air pressure                           | v0.7.0 |
+| `wind_speed`                    | Current wind speed                             | v0.7.0 |
+| `wind_bearing`                  | Current wind direction                         | v0.7.0 |
+| `wind`                          | Wind speed and direction together              | v2.7.0 |
+| `apparent_temperature`          | Current "feels like" temperature               | v2.9.0 |
 
 Forecast values come from the first day (or hour, with `forecast_type: hourly`). Attributes your weather integration doesn't provide are hidden.
 
@@ -143,13 +143,13 @@ Possible keys: `temp`, `apparent_temperature`, `high`, `low`, `state`, `icon-sta
 
 #### Backdrop
 
-| Name    | Type    | Default                  | Description                  |
-| ------- | ------- | ------------------------ | ---------------------------- |
-| `bg`    | boolean | `false`                  | Colored background           |
-| `fade`  | boolean | `false`                  | Fade the background out      |
-| `day`   | string  | `#45aaf2`                | Background color in the day  |
-| `night` | string  | `#a55eea`                | Background color at night    |
-| `text`  | string  | `var(--text-dark-color)` | Text color                   |
+| Name    | Type    | Default                  | Description                 |
+| ------- | ------- | ------------------------ | --------------------------- |
+| `bg`    | boolean | `false`                  | Colored background          |
+| `fade`  | boolean | `false`                  | Fade the background out     |
+| `day`   | string  | `#45aaf2`                | Background color in the day |
+| `night` | string  | `#a55eea`                | Background color at night   |
+| `text`  | string  | `var(--text-dark-color)` | Text color                  |
 
 Colors can be any CSS color, including theme variables like `var(--primary-color)`.
 
@@ -157,14 +157,14 @@ Colors can be any CSS color, including theme variables like `var(--primary-color
 
 Actions are handled by Home Assistant itself, so every [dashboard action](https://www.home-assistant.io/dashboards/actions/) works, including `confirmation`. The most common options:
 
-| Name              | Description                                                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------- |
-| `action`          | `more-info`, `toggle`, `navigate`, `url`, `perform-action`, `assist` or `none`               |
-| `entity`          | Entity for `more-info`, if not the card's weather entity                                     |
-| `navigation_path` | Path for `navigate`, like `/lovelace/weather`                                                |
-| `url_path`        | URL for `url`                                                                                |
-| `perform_action`  | Action for `perform-action`, like `light.toggle`                                             |
-| `data`, `target`  | Data and target for `perform-action`                                                         |
+| Name              | Description                                                                    |
+| ----------------- | ------------------------------------------------------------------------------ |
+| `action`          | `more-info`, `toggle`, `navigate`, `url`, `perform-action`, `assist` or `none` |
+| `entity`          | Entity for `more-info`, if not the card's weather entity                       |
+| `navigation_path` | Path for `navigate`, like `/lovelace/weather`                                  |
+| `url_path`        | URL for `url`                                                                  |
+| `perform_action`  | Action for `perform-action`, like `light.toggle`                               |
+| `data`, `target`  | Data and target for `perform-action`                                           |
 
 The legacy `call-service` action with `service` and `service_data` still works.
 
