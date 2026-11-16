@@ -33,6 +33,14 @@ yarn ha:down        # stop the container
 Everything else Home Assistant writes to `config/` is ignored by git. Delete
 it to start over from a fresh install.
 
+## README image
+
+The **Gallery** view shows the card's main variants for
+`images/gallery.png`, rendered at a fixed time of day by `dev-sun-card` so
+the image looks the same whenever it's taken. Set your profile language to
+English, collapse the sidebar, and take the two columns of cards with
+Cmd+Shift+4 (drag around them).
+
 ## Releasing
 
 1. Go to **Actions → Release → Run workflow** on `master`, pick the version
@@ -40,10 +48,10 @@ it to start over from a fresh install.
 2. The workflow works out the next version from the tags, checks and builds
    the card, and creates a **draft** release with generated release notes.
 3. Review the draft, add highlights at the top if you like, and press
-   **Publish**. The tag is created then, and HACS users get the update.
+   **Publish**. The tag is created then, and Marketplace (HACS) users get the update.
 
 Betas are tagged `vX.Y.Z-beta-N` and only reach users who enabled beta
-versions in HACS.
+versions in the Marketplace (HACS).
 
 Release notes are grouped by pull request label. Labels are set from the
 branch name: `feat/…` → Features, `fix/…` → Fixes, `chore/…`, `ci/…`,

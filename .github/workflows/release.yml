@@ -2,7 +2,7 @@ name: Release
 
 # Run from the Actions tab ("Run workflow"). Creates a draft release with
 # the built card and generated release notes. Review it and press Publish;
-# the tag is created then, and HACS users get the update.
+# the tag is created then, and Marketplace (HACS) users get the update.
 on:
   workflow_dispatch:
     inputs:
@@ -15,7 +15,7 @@ on:
           - major
         default: minor
       beta:
-        description: Beta (only for users with beta versions enabled in HACS)
+        description: Beta (only for users with beta versions enabled in the Marketplace)
         type: boolean
         default: false
 

@@ -36,7 +36,7 @@ input_number:
 frontend:
   extra_module_url:
     - /local/dev-loader.js
-    - /local/dev-night-card.js
+    - /local/dev-sun-card.js
 
 lovelace:
   dashboards:
