@@ -2,7 +2,7 @@
 
 [![Release](https://img.shields.io/github/release/I-Simen-I/simple-weather-card?style=for-the-badge)](https://github.com/I-Simen-I/simple-weather-card/releases/latest)
 [![Last commit](https://img.shields.io/github/last-commit/I-Simen-I/simple-weather-card?style=for-the-badge)](https://github.com/I-Simen-I/simple-weather-card/commits/master)
-[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
+[![Marketplace](https://img.shields.io/badge/Marketplace%20%2F%20HACS-Custom-orange.svg?style=for-the-badge)](#marketplace-recommended)
 
 A clean, minimal weather card for [Home Assistant](https://www.home-assistant.io/) dashboards, with a forecast, day and night icons and a visual editor.
 
@@ -25,11 +25,13 @@ A clean, minimal weather card for [Home Assistant](https://www.home-assistant.io
 
 Requires Home Assistant 2026.4 or newer.
 
-### HACS (recommended)
+### Marketplace (recommended)
 
-[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=I-Simen-I&repository=simple-weather-card&category=plugin)
+From Home Assistant 2026.11, HACS is built in as the **Marketplace** (Settings → Marketplace). On older versions, use [HACS](https://hacs.xyz/); the steps are the same.
 
-1. Click the button above, or in HACS add `https://github.com/I-Simen-I/simple-weather-card` as a custom repository of type **Dashboard**.
+[![Open your Home Assistant instance and open this repository in the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=I-Simen-I&repository=simple-weather-card&category=plugin)
+
+1. Click the button above, or add `https://github.com/I-Simen-I/simple-weather-card` as a custom repository of type **Dashboard**. In the Marketplace, adding custom repositories needs a connection to GitHub.
 2. Download **Simple Weather Card**.
 3. Reload your browser.
 
@@ -41,7 +43,7 @@ Requires Home Assistant 2026.4 or newer.
 
 ### Migrating from the original card
 
-1. Remove the original Simple Weather Card in HACS, or its file and resource if you installed it manually.
+1. Remove the original Simple Weather Card in the Marketplace (or HACS), or its file and resource if you installed it manually.
 2. Install this card as described above.
 3. Existing card configs keep working, with one exception: `backdrop: true` must be written as:
 
@@ -238,7 +240,7 @@ To add a language, copy [`src/translations/en.json`](src/translations/en.json) t
 
 ## Troubleshooting
 
-- **"Custom element doesn't exist: simple-weather-card"**: the card isn't loaded. Check that it's installed (HACS) or added as a resource (manual), then reload your browser.
+- **"Custom element doesn't exist: simple-weather-card"**: the card isn't loaded. Check that it's installed in the Marketplace (or HACS), or added as a resource if you installed it manually, then reload your browser.
 - **Changes don't show after an update**: your browser is using a cached copy. Reload without cache (Ctrl+Shift+R or Cmd+Shift+R), or clear the cache in the Home Assistant app.
 - **No forecast**: check that your weather integration supports the chosen `forecast_type`. Not all integrations provide hourly or twice daily forecasts.
 

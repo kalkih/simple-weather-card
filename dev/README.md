@@ -48,10 +48,10 @@ Cmd+Shift+4 (drag around them).
 2. The workflow works out the next version from the tags, checks and builds
    the card, and creates a **draft** release with generated release notes.
 3. Review the draft, add highlights at the top if you like, and press
-   **Publish**. The tag is created then, and HACS users get the update.
+   **Publish**. The tag is created then, and Marketplace (HACS) users get the update.
 
 Betas are tagged `vX.Y.Z-beta-N` and only reach users who enabled beta
-versions in HACS.
+versions in the Marketplace (HACS).
 
 Release notes are grouped by pull request label. Labels are set from the
 branch name: `feat/…` → Features, `fix/…` → Fixes, `chore/…`, `ci/…`,
