@@ -101,7 +101,7 @@ const FORECAST_SCHEMA = [
   },
   {
     name: "forecast_slots",
-    selector: { number: { min: 1, max: 12, mode: "box" } },
+    selector: { number: { min: 1, max: 7, mode: "box" } },
   },
 ];
 
