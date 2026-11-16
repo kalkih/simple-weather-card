@@ -13,9 +13,9 @@ A clean, minimal weather card for [Home Assistant](https://www.home-assistant.io
 ## Features
 
 - **Current weather** at a glance: temperature, condition and the details you choose, like low/high, precipitation, wind, humidity and pressure
-- **Forecast**: daily, hourly or twice daily (day and night), with up to 7 days or hours
+- **Forecast**: daily, hourly or twice daily (day and night), with as many days or hours as you like
 - **Day and night**: icons and the optional backdrop color follow the sun
-- **Animated icons**, if you like
+- **Animated icons** as an option
 - **Actions** on tap, hold and double tap, with every action Home Assistant supports
 - **Visual editor** in your Home Assistant language
 - **Custom sensors**: replace any value with one of your own sensors
@@ -37,7 +37,7 @@ From Home Assistant 2026.11, HACS is built in as the **Marketplace** (Settings �
 
 ### Manual
 
-1. Download `simple-weather-card.js` from the [latest release](https://github.com/I-Simen-I/simple-weather-card/releases/latest) and copy it to your `config/www` folder.
+1. Download `simple-weather-card.js` from the [latest release](https://github.com/I-Simen-I/simple-weather-card/releases/latest) and copy it to your `config/www` folder. If the folder doesn't exist, create it and restart Home Assistant, which only serves `/local/` from a folder that existed when it started.
 2. Go to **Settings → Dashboards → ⋮ → Resources** and add `/local/simple-weather-card.js` as a **JavaScript module**.
 3. Reload your browser.
 
@@ -242,13 +242,13 @@ To add a language, copy [`src/translations/en.json`](src/translations/en.json) t
 
 - **"Custom element doesn't exist: simple-weather-card"**: the card isn't loaded. Check that it's installed in the Marketplace (or HACS), or added as a resource if you installed it manually, then reload your browser.
 - **Changes don't show after an update**: your browser is using a cached copy. Reload without cache (Ctrl+Shift+R or Cmd+Shift+R), or clear the cache in the Home Assistant app.
-- **No forecast**: check that your weather integration supports the chosen `forecast_type`. Not all integrations provide hourly or twice daily forecasts.
+- **No forecast**: check that `show_forecast: true` is set, and that your weather integration supports the chosen `forecast_type`. Not all integrations provide hourly or twice daily forecasts.
 
 Still stuck? [Open an issue](https://github.com/I-Simen-I/simple-weather-card/issues).
 
 ## Development
 
-Requires Node 24 and Yarn 4 (via Corepack).
+Requires Node 24 or newer and Yarn 4 via Corepack. Node 25 and newer no longer include Corepack, so install it separately (for example `brew install corepack` or `npm install -g corepack`) and run `corepack enable`.
 
 ```bash
 yarn install     # install dependencies
@@ -257,7 +257,7 @@ yarn watch       # rebuild on changes
 yarn typecheck   # TypeScript
 yarn lint        # ESLint and Prettier
 yarn test        # smoke tests of the built card
-yarn ha:up       # local Home Assistant with demo data on http://localhost:8123
+yarn ha:up       # local Home Assistant with demo data on http://localhost:8123 (needs Docker and a build)
 ```
 
 The local test environment, the screenshots and the release process are described in [`dev/README.md`](dev/README.md).
