@@ -94,20 +94,29 @@ const FORECAST_SCHEMA = [
         options: [
           { value: "daily", label: "Daily" },
           { value: "hourly", label: "Hourly" },
+          { value: "twice_daily", label: "Twice daily (day and night)" },
         ],
       },
     },
   },
+  {
+    name: "forecast_slots",
+    selector: { number: { min: 1, max: 7, mode: "box" } },
+  },
 ];
 
-const TAP_ACTION_SCHEMA = [
+const ACTIONS_SCHEMA = [
   {
     name: "tap_action",
-    selector: {
-      ui_action: {
-        default_action: "more-info",
-      },
-    },
+    selector: { ui_action: { default_action: "more-info" } },
+  },
+  {
+    name: "hold_action",
+    selector: { ui_action: { default_action: "none" } },
+  },
+  {
+    name: "double_tap_action",
+    selector: { ui_action: { default_action: "none" } },
   },
 ];
 
@@ -127,7 +136,10 @@ const LABELS: Record<string, string> = {
   show_name: "Show name",
   show_forecast: "Show forecast",
   forecast_type: "Forecast type",
+  forecast_slots: "Number of days / hours",
   tap_action: "Tap action",
+  hold_action: "Hold action",
+  double_tap_action: "Double tap action",
   bg: "Show backdrop",
   primary_info: "Primary info",
   secondary_info: "Secondary info",
@@ -209,6 +221,7 @@ export class SimpleWeatherCardEditor extends LitElement {
       secondary_info: toArray(config.secondary_info, ["precipitation"]),
       state_content: config.state_content ?? "state",
       forecast_type: config.forecast_type ?? "daily",
+      forecast_slots: config.forecast_slots ?? 5,
     };
   }
 
@@ -359,13 +372,13 @@ export class SimpleWeatherCardEditor extends LitElement {
       </ha-expansion-panel>
       <ha-expansion-panel outlined>
         <span slot="header"
-          ><ha-icon icon="mdi:gesture-tap"></ha-icon> Tap action</span
+          ><ha-icon icon="mdi:gesture-tap"></ha-icon> Actions</span
         >
         <div class="section-content">
           <ha-form
             .hass=${this.hass}
             .data=${this._config}
-            .schema=${TAP_ACTION_SCHEMA}
+            .schema=${ACTIONS_SCHEMA}
             .computeLabel=${this._computeLabel}
             @value-changed=${this._valueChanged}
           ></ha-form>

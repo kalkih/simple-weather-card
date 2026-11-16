@@ -22,6 +22,14 @@ const FORECAST = {
     condition: "sunny",
     temperature: 5 + i / 2,
   })),
+  twice_daily: Array.from({ length: 8 }, (_, i) => ({
+    datetime: new Date(
+      Date.UTC(2026, 0, 1 + Math.floor(i / 2), i % 2 ? 18 : 6),
+    ).toISOString(),
+    is_daytime: i % 2 === 0,
+    condition: "sunny",
+    temperature: i % 2 ? 2 : 8,
+  })),
 };
 
 const weatherState = (attributes = {}) => ({
@@ -67,6 +75,7 @@ const createHass = (states = {}, forecast = FORECAST) => ({
 });
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 10));
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const createCard = async (config, hass = createHass()) => {
   const card = document.createElement("simple-weather-card");
@@ -480,4 +489,140 @@ test("editor only stores backdrop colors that were changed", async () => {
   change({ ...form.data, bg: true, day: [1, 2, 3] });
   assert.deepEqual(configs.at(-1).backdrop, { bg: true, day: "#010203" });
   editor.remove();
+});
+
+const forecastLabels = (card) =>
+  [...$$(card, ".weather__forecast__dayname")].map((el) =>
+    el.textContent.trim(),
+  );
+
+const hourlyLabels = async (locale) => {
+  subscriptions = [];
+  const card = await createCard(
+    { show_forecast: true, forecast_type: "hourly" },
+    { ...createHass(), locale },
+  );
+  const labels = forecastLabels(card);
+  card.remove();
+  return labels;
+};
+
+test("follows the user's time format in the hourly forecast", async () => {
+  const h12 = await hourlyLabels({ language: "nb", time_format: "12" });
+  assert.match(h12[0], /^\d{1,2}\s?(AM|PM|a\.m\.|p\.m\.)$/i, h12[0]);
+
+  const h24 = await hourlyLabels({ language: "en", time_format: "24" });
+  assert.match(h24[0], /^\d{2}[:.]\d{2}$/, h24[0]);
+
+  // "language" uses the convention of the user's language
+  const en = await hourlyLabels({ language: "en", time_format: "language" });
+  assert.match(en[0], /AM|PM/, en[0]);
+  const nb = await hourlyLabels({ language: "nb", time_format: "language" });
+  assert.match(nb[0], /^\d{2}[:.]\d{2}$/, nb[0]);
+});
+
+test("shows the configured number of forecast slots", async () => {
+  subscriptions = [];
+  const card = await createCard({ show_forecast: true, forecast_slots: 7 });
+  assert.equal($$(card, ".weather__forecast__day").length, 7);
+  card.setConfig({ entity: ENTITY, show_forecast: true, forecast_slots: 3 });
+  await card.updateComplete;
+  assert.equal($$(card, ".weather__forecast__day").length, 3);
+  card.remove();
+});
+
+test("renders a twice daily forecast", async () => {
+  subscriptions = [];
+  const card = await createCard({
+    show_forecast: true,
+    forecast_type: "twice_daily",
+  });
+  assert.equal(subscriptions[0].msg.forecast_type, "twice_daily");
+  const labels = forecastLabels(card);
+  assert.equal(labels.length, 5);
+  assert.equal(labels[1], "Night");
+  assert.equal(labels[3], "Night");
+  assert.notEqual(labels[0], "Night");
+
+  const icons = [...$$(card, ".weather__icon--forecast")].map((el) =>
+    el.getAttribute("style"),
+  );
+  assert.notEqual(icons[0], icons[1], "night entry uses the day icon");
+  // No low temperatures in this forecast, so no low row
+  assert.equal($$(card, ".weather__forecast__temp--low").length, 0);
+  card.remove();
+});
+
+const collectActions = () => {
+  const events = [];
+  const listener = (ev) => events.push(ev.detail);
+  document.addEventListener("hass-action", listener);
+  return {
+    events,
+    stop: () => document.removeEventListener("hass-action", listener),
+  };
+};
+
+test("fires hold_action on a long press", async () => {
+  subscriptions = [];
+  const { events, stop } = collectActions();
+  const card = await createCard({
+    hold_action: { action: "perform_action", perform_action: "light.on" },
+  });
+  const haCard = $(card, "ha-card");
+
+  haCard.dispatchEvent(new Event("pointerdown"));
+  await wait(600);
+  haCard.dispatchEvent(new Event("pointerup"));
+  haCard.click();
+  assert.equal(events.length, 1, "the click ending a hold also tapped");
+  assert.equal(events[0].action, "hold");
+  assert.equal(events[0].config.hold_action.action, "perform-action");
+
+  // A short press is still a tap
+  haCard.dispatchEvent(new Event("pointerdown"));
+  await wait(50);
+  haCard.dispatchEvent(new Event("pointerup"));
+  haCard.click();
+  assert.equal(events.length, 2);
+  assert.equal(events[1].action, "tap");
+
+  stop();
+  card.remove();
+});
+
+test("fires double_tap_action on a double tap", async () => {
+  subscriptions = [];
+  const { events, stop } = collectActions();
+  const card = await createCard({
+    double_tap_action: { action: "toggle" },
+  });
+  const haCard = $(card, "ha-card");
+
+  haCard.click();
+  haCard.click();
+  await wait(300);
+  assert.deepEqual(
+    events.map((e) => e.action),
+    ["double_tap"],
+  );
+
+  // A single tap waits to see whether a second one follows
+  haCard.click();
+  assert.equal(events.length, 1);
+  await wait(300);
+  assert.equal(events.at(-1).action, "tap");
+
+  stop();
+  card.remove();
+});
+
+test("is focusable when only a hold action is set", async () => {
+  subscriptions = [];
+  const card = await createCard({
+    tap_action: { action: "none" },
+    hold_action: { action: "more-info" },
+  });
+  assert.equal($(card, "ha-card").getAttribute("role"), "button");
+  card.remove();
 });

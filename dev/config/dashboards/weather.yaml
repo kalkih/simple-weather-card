@@ -52,6 +52,18 @@ views:
         show_forecast: true
         animated_icons: true
 
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_north
+        name: Twice daily
+        show_forecast: true
+        forecast_type: twice_daily
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: 7 days
+        show_forecast: true
+        forecast_slots: 7
+
   - title: Backdrop
     path: backdrop
     cards:
@@ -118,6 +130,18 @@ views:
         entity: weather.demo_weather_south
         name: navigate
         tap_action:
+          action: navigate
+          navigation_path: /dev-weather/forecast
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: hold and double tap
+        hold_action:
+          action: perform-action
+          perform_action: persistent_notification.create
+          data:
+            message: Held the weather card
+        double_tap_action:
           action: navigate
           navigation_path: /dev-weather/forecast
 
