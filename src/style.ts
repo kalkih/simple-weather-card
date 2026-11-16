@@ -9,7 +9,13 @@ export default function getStyles(): CSSResult {
       color: var(--primary-text-color, #000);
       font-weight: var(--swc-font-weight, 400);
       transition: background 1s;
+    }
+    ha-card[role="button"] {
       cursor: pointer;
+    }
+    ha-card:focus-visible {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
     }
     .weather__main {
       display: flex;

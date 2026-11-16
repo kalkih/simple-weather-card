@@ -1,7 +1,7 @@
 {
   "name": "simple-weather-card",
-  "version": "0.9.1",
-  "description": "A minimalistic and customizable graph card for Home Assistant Lovelace UI",
+  "version": "2.10.0",
+  "description": "A minimalistic and customizable weather card for Home Assistant",
   "keywords": [
     "home-assistant",
     "homeassistant",
@@ -13,7 +13,10 @@
     "forecast",
     "custom-cards"
   ],
-  "repository": "git@github.com:simensohol/simple-weather-card.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/I-Simen-I/simple-weather-card.git"
+  },
   "author": "Simen Søhol",
   "engines": {
     "node": ">=24.11.0"
@@ -21,11 +24,7 @@
   "packageManager": "yarn@4.12.0",
   "license": "MIT",
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.7",
-    "@eslint/js": "^10.0.1",
     "@happy-dom/global-registrator": "^21.0.4",
-    "@typescript-eslint/eslint-plugin": "^8.70.1",
-    "@typescript-eslint/parser": "^8.70.0",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.17.1",

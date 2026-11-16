@@ -222,21 +222,36 @@ export class SimpleWeatherCardEditor extends LitElement {
     });
   }
 
+  // The color pickers need RGB values, so defaults and CSS variables are
+  // shown as their resolved color
+  private _backdropData(): Record<string, unknown> {
+    const backdrop = this._config?.backdrop;
+    return {
+      ...backdrop,
+      day: hexToRgb(backdrop?.day ?? "#45aaf2"),
+      night: hexToRgb(backdrop?.night ?? "#a55eea"),
+      text: resolveTextColor(backdrop?.text),
+    };
+  }
+
   private _backdropChanged(ev: CustomEvent): void {
     const val = ev.detail.value as Record<string, unknown>;
-    const backdrop = {
+    const shown = this._backdropData();
+    const backdrop: Record<string, unknown> = {
       ...this._config?.backdrop,
       ...val,
-      ...(Array.isArray(val.day) && {
-        day: rgbToHex(val.day as [number, number, number]),
-      }),
-      ...(Array.isArray(val.night) && {
-        night: rgbToHex(val.night as [number, number, number]),
-      }),
-      ...(Array.isArray(val.text) && {
-        text: rgbToHex(val.text as [number, number, number]),
-      }),
     };
+    // ha-form sends every field, so only store colors the user changed.
+    // Otherwise defaults and CSS variables are replaced by a fixed color.
+    for (const key of ["day", "night", "text"] as const) {
+      const rgb = val[key];
+      const changed =
+        Array.isArray(rgb) && rgb.join() !== (shown[key] as number[]).join();
+      const current = this._config?.backdrop?.[key];
+      if (changed) backdrop[key] = rgbToHex(rgb as [number, number, number]);
+      else if (current !== undefined) backdrop[key] = current;
+      else delete backdrop[key];
+    }
     fireEvent(this, "config-changed", {
       config: {
         ...this._config,
@@ -363,12 +378,7 @@ export class SimpleWeatherCardEditor extends LitElement {
         <div class="section-content">
           <ha-form
             .hass=${this.hass}
-            .data=${{
-              ...this._config?.backdrop,
-              day: hexToRgb(this._config?.backdrop?.day ?? "#45aaf2"),
-              night: hexToRgb(this._config?.backdrop?.night ?? "#a55eea"),
-              text: resolveTextColor(this._config?.backdrop?.text),
-            }}
+            .data=${this._backdropData()}
             .schema=${BACKDROP_SCHEMA}
             .computeLabel=${this._computeLabel}
             @value-changed=${this._backdropChanged}

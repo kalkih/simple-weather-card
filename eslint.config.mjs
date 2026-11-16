@@ -1,27 +1,18 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+import { defineConfig } from "eslint/config";
+import importX from "eslint-plugin-import-x";
+import prettierRecommended from "eslint-plugin-prettier/recommended";
+import tseslint from "typescript-eslint";
 
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({ baseDirectory: __dirname });
-
-const config = [
+export default defineConfig(
   {
-    settings: {
-      react: {
-        version: "detect",
-      },
+    ignores: ["node_modules/", "dist/", ".yarn/", "dev/config/"],
+  },
+  tseslint.configs.recommended,
+  prettierRecommended,
+  {
+    plugins: {
+      "import-x": importX,
     },
-  },
-  {
-    ignores: ["node_modules/", "dist/"],
-  },
-  ...compat.extends("plugin:@typescript-eslint/recommended", "prettier"),
-  ...compat.plugins("prettier", "import-x"),
-  {
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-ts-comment": "off",
@@ -43,6 +34,4 @@ const config = [
       ],
     },
   },
-];
-
-export default config;
+);

@@ -131,3 +131,46 @@ views:
             message: Confirmed
           confirmation:
             text: Create a notification?
+
+  # Rendered as if the sun has set, see www/dev-night-card.js
+  - title: Night
+    path: night
+    cards:
+      - type: custom:dev-night-card
+        entity: weather.demo_weather_south
+        name: Sunny (clear night)
+        condition: sunny
+        show_forecast: true
+        forecast_type: hourly
+
+      - type: custom:dev-night-card
+        entity: weather.demo_weather_south
+        name: Partly cloudy
+        condition: partlycloudy
+
+      - type: custom:dev-night-card
+        entity: weather.demo_weather_south
+        name: Lightning, rainy
+        condition: lightning-rainy
+
+      - type: custom:dev-night-card
+        entity: weather.demo_weather_south
+        name: Sunny (animated)
+        condition: sunny
+        animated_icons: true
+        show_forecast: true
+        forecast_type: hourly
+
+      - type: custom:dev-night-card
+        entity: weather.demo_weather_south
+        name: Partly cloudy (animated)
+        condition: partlycloudy
+        animated_icons: true
+
+      - type: custom:dev-night-card
+        entity: weather.demo_weather_north
+        name: Backdrop
+        backdrop:
+          bg: true
+        show_forecast: true
+        forecast_type: hourly
