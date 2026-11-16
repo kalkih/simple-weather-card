@@ -42,15 +42,22 @@ tables.
   validation fail with "Not Found".
 - Releases: Actions → Release → Run workflow (patch/minor/major, beta). It
   creates a draft with generated notes; a summary goes above them before
-  publishing. Write release notes in English, wrapped in four backticks when
-  they contain code blocks.
+  publishing.
 - Verify claims instead of guessing (HA source in the test container, git
   history, the GitHub API). Before saying something works, test it, and say
   clearly what wasn't tested.
-- New behavior gets smoke tests; check that new tests fail against `master`
-  (build `master` in a scratch worktree and run the new test file against it).
+- New behavior gets smoke tests that fail against `master`.
 - happy-dom resolves `customElements.whenDefined()` with `undefined`; look the
   class up with `customElements.get()`.
+
+## Skills
+
+Use these instead of doing the steps by hand; they hold the details.
+
+- `/verify` – every check, plus new tests against `master`. Run it before
+  committing a change to the card and before writing a PR.
+- `/pr-text` – the PR title and description for the current branch.
+- `/release-notes` – the release summary and the version bump.
 
 ## Decisions
 
