@@ -718,6 +718,7 @@ test("falls back to the base language and then English", async () => {
     ["en-GB", "Forecast"],
     ["de", "Forecast"],
     ["nb", "Værvarsel"],
+    ["nn", "Værvarsel"],
   ]) {
     const editor = await createEditor(language);
     const headers = [
