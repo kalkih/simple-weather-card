@@ -74,6 +74,9 @@ export interface TapAction {
   navigation_path?: string;
   perform_action?: string;
   data?: Record<string, unknown>;
+  target?: Record<string, unknown>;
+  service?: string;
+  service_data?: Record<string, unknown>;
 }
 
 export interface CardModConfig {

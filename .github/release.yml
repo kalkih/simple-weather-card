@@ -1,0 +1,13 @@
+# Groups the generated release notes. Dependabot labels its pull requests
+# with "dependencies", so those are listed separately from real changes.
+changelog:
+  categories:
+    - title: Changes
+      labels:
+        - "*"
+      exclude:
+        labels:
+          - dependencies
+    - title: Dependencies
+      labels:
+        - dependencies

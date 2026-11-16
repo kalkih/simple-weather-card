@@ -4,9 +4,12 @@ on:
   push:
     branches:
       - "**"
+  pull_request:
 
 jobs:
   build:
+    # Pull requests from this repo are already built by the push event
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,3 +35,13 @@ jobs:
 
       - name: Build
         run: yarn build
+
+      - name: Smoke test
+        run: yarn test
+
+      - name: Upload build
+        uses: actions/upload-artifact@v7
+        with:
+          name: simple-weather-card
+          path: dist/simple-weather-card.js
+          if-no-files-found: error
