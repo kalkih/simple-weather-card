@@ -393,7 +393,7 @@ export class SimpleWeatherCard extends LitElement {
             ></div>
             ${this.renderAttr("wind_speed")}${
               hasValue(speed) && hasValue(bearing)
-                ? html`(${this.renderAttr("wind_bearing")})`
+                ? html`(${this.formatAttr("wind_bearing")})`
                 : ""
             }
           </span>
@@ -529,6 +529,11 @@ export class SimpleWeatherCard extends LitElement {
   }
 
   private renderAttr(attr: string, uom = true): TemplateResult | undefined {
+    const text = this.formatAttr(attr, uom);
+    return text !== undefined ? html` ${text} ` : undefined;
+  }
+
+  private formatAttr(attr: string, uom = true): string | undefined {
     const weatherValue = this.weather?.getAttribute(attr);
     const state = this.custom[attr] ? this.custom[attr].state : weatherValue;
     if (!hasValue(state)) return undefined;
@@ -548,7 +553,7 @@ export class SimpleWeatherCard extends LitElement {
     }
     // Degrees read better without a space: 21.6°C
     const separator = unit.startsWith("°") ? "" : " ";
-    return html` ${value}${unit ? separator + unit : ""} `;
+    return `${value}${unit ? separator + unit : ""}`;
   }
 
   private handleAction(action: ActionType): void {

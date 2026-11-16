@@ -164,6 +164,7 @@ test("renders every info attribute", async () => {
   assert.match(output, /80 %/, "humidity");
   assert.match(output, /1012 hPa/, "pressure");
   assert.match(output, /SSW/, "wind bearing");
+  assert.match(output, /\(SSW\)/, "no spaces inside the wind parentheses");
   card.remove();
 });
 
