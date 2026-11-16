@@ -15,8 +15,9 @@ committed; every file in `.claude/rules/` is loaded automatically).
 - `src/weather.ts` – `WeatherEntity` (attribute getters, icons, night logic,
   wind direction), `src/actions.ts` – actions, `src/localize.ts` +
   `src/translations/*.json` – editor translations (en, nb; nn uses nb).
-- `test/*.test.mjs` – Node test runner. The smoke tests load the **built**
-  bundle in happy-dom with a fake `hass`, so `yarn build` before `yarn test`.
+- `test/` – Node test runner. `card.test.mjs` and `editor.test.mjs` load the
+  **built** bundle in happy-dom with a fake `hass` from `helpers.mjs`, so
+  `yarn build` before `yarn test`.
 - `.github/workflows/` – build (typecheck, lint, build, test, artifact),
   release (manual button), labeler, HACS validation.
 - `dev/` – local Home Assistant in Docker for manual testing.

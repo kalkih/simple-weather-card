@@ -1,110 +1,28 @@
-// Smoke test of the built bundle: loads dist/simple-weather-card.js in a
-// fake DOM and renders the card against a fake Home Assistant.
+// Smoke tests of the card, loaded from the built bundle.
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { after, before, test } from "node:test";
+import { test } from "node:test";
 
-import { GlobalRegistrator } from "@happy-dom/global-registrator";
+import {
+  setupDom,
+  ENTITY,
+  FORECAST,
+  weatherState,
+  subscriptions,
+  createHass,
+  tick,
+  wait,
+  createCard,
+  $,
+  $$,
+  text,
+  activeSubscriptions,
+  iconUrl,
+  forecastLabels,
+  hourlyLabels,
+  collectActions,
+} from "./helpers.mjs";
 
-const ENTITY = "weather.home";
-
-const FORECAST = {
-  daily: Array.from({ length: 7 }, (_, i) => ({
-    datetime: new Date(Date.UTC(2026, 0, 1 + i)).toISOString(),
-    condition: "rainy",
-    temperature: 10 + i,
-    templow: 2 + i,
-    precipitation: 1.5,
-    precipitation_probability: 60,
-  })),
-  hourly: Array.from({ length: 24 }, (_, i) => ({
-    datetime: new Date(Date.UTC(2026, 0, 1, i)).toISOString(),
-    condition: "sunny",
-    temperature: 5 + i / 2,
-  })),
-  twice_daily: Array.from({ length: 8 }, (_, i) => ({
-    datetime: new Date(
-      Date.UTC(2026, 0, 1 + Math.floor(i / 2), i % 2 ? 18 : 6),
-    ).toISOString(),
-    is_daytime: i % 2 === 0,
-    condition: "sunny",
-    temperature: i % 2 ? 2 : 8,
-  })),
-};
-
-const weatherState = (attributes = {}) => ({
-  state: "rainy",
-  attributes: {
-    friendly_name: "Home",
-    temperature: 7.5,
-    temperature_unit: "°C",
-    humidity: 80,
-    pressure: 1012,
-    wind_speed: 4,
-    wind_bearing: 200,
-    ...attributes,
-  },
-});
-
-let subscriptions;
-
-const createHass = (states = {}, forecast = FORECAST) => ({
-  states: {
-    [ENTITY]: weatherState(),
-    "sun.sun": { state: "above_horizon", attributes: {} },
-    ...states,
-  },
-  config: { unit_system: {}, version: "2026.4.0" },
-  locale: { language: "en" },
-  localize: () => "",
-  resources: {},
-  connection: {
-    haVersion: "2026.4.0",
-    subscribeMessage: async (callback, msg) => {
-      const sub = { msg, active: true };
-      subscriptions.push(sub);
-      setTimeout(() => {
-        if (sub.active) callback({ forecast: forecast[msg.forecast_type] });
-      });
-      return () => {
-        sub.active = false;
-      };
-    },
-  },
-  callService: () => {},
-});
-
-const tick = () => new Promise((resolve) => setTimeout(resolve, 10));
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const createCard = async (config, hass = createHass()) => {
-  const card = document.createElement("simple-weather-card");
-  card.setConfig({ entity: ENTITY, ...config });
-  card.hass = hass;
-  document.body.appendChild(card);
-  await tick();
-  await card.updateComplete;
-  return card;
-};
-
-const $ = (card, selector) => card.shadowRoot.querySelector(selector);
-const $$ = (card, selector) => card.shadowRoot.querySelectorAll(selector);
-const text = (card) => card.shadowRoot.textContent.replace(/\s+/g, " ");
-const activeSubscriptions = () => subscriptions.filter((sub) => sub.active);
-
-before(() => {
-  GlobalRegistrator.register({ url: "http://localhost:8123/" });
-  console.info = () => {};
-  const bundle = readFileSync(
-    new URL("../dist/simple-weather-card.js", import.meta.url),
-    "utf8",
-  );
-  new Function(bundle)();
-});
-
-after(async () => {
-  await GlobalRegistrator.unregister();
-});
+setupDom();
 
 test("registers the card and the editor", async () => {
   const Card = customElements.get("simple-weather-card");
@@ -118,7 +36,7 @@ test("registers the card and the editor", async () => {
 });
 
 test("renders the current weather", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({});
   assert.ok($(card, "ha-card"), "ha-card is not rendered");
   assert.match(text(card), /7\.5°C/);
@@ -128,7 +46,7 @@ test("renders the current weather", async () => {
 });
 
 test("renders a daily forecast", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({ show_forecast: true });
   assert.equal($$(card, ".weather__forecast__day").length, 5);
   assert.equal($$(card, ".weather__forecast__temp--low").length, 5);
@@ -136,7 +54,7 @@ test("renders a daily forecast", async () => {
 });
 
 test("renders an hourly forecast", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({
     show_forecast: true,
     forecast_type: "hourly",
@@ -148,7 +66,7 @@ test("renders an hourly forecast", async () => {
 });
 
 test("renders every info attribute", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({
     primary_info: [
       "extrema",
@@ -169,7 +87,7 @@ test("renders every info attribute", async () => {
 });
 
 test("does not crash on unknown attributes", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({
     primary_info: ["not_a_real_attribute", "humidity"],
     state_content: "not_a_real_attribute",
@@ -179,7 +97,7 @@ test("does not crash on unknown attributes", async () => {
 });
 
 test("uses custom sensor overrides", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = createHass({
     "sensor.outside": {
       state: "21.3",
@@ -192,7 +110,7 @@ test("uses custom sensor overrides", async () => {
 });
 
 test("re-renders when the config changes", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({ name: "Before" });
   card.setConfig({ entity: ENTITY, name: "After" });
   await card.updateComplete;
@@ -202,7 +120,7 @@ test("re-renders when the config changes", async () => {
 });
 
 test("fires hass-action on tap", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const events = [];
   const listener = (ev) => events.push(ev.detail);
   document.addEventListener("hass-action", listener);
@@ -228,7 +146,7 @@ test("fires hass-action on tap", async () => {
 });
 
 test("manages the forecast subscription", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = createHass();
   const card = await createCard({}, hass);
   assert.equal(activeSubscriptions().length, 1);
@@ -259,11 +177,8 @@ test("manages the forecast subscription", async () => {
   card.remove();
 });
 
-const iconUrl = (card) =>
-  /url\('([^']*)'\)/.exec($(card, ".weather__icon").getAttribute("style"))?.[1];
-
 test("inlines SVG icons as valid text data URIs", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({ animated_icons: true });
   const url = iconUrl(card);
   const prefix = "data:image/svg+xml,";
@@ -275,7 +190,7 @@ test("inlines SVG icons as valid text data URIs", async () => {
 });
 
 test("switches to night icons when the sun sets", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = createHass({ [ENTITY]: { ...weatherState(), state: "sunny" } });
   const card = await createCard({}, hass);
   const dayIcon = iconUrl(card);
@@ -294,7 +209,7 @@ test("switches to night icons when the sun sets", async () => {
 });
 
 test("applies card-mod only when the config changes", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   let applied = 0;
   customElements.define(
     "card-mod",
@@ -331,7 +246,7 @@ test("applies card-mod only when the config changes", async () => {
 });
 
 test("hides missing values instead of showing 0", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = createHass(
     {
       [ENTITY]: weatherState({
@@ -356,7 +271,7 @@ test("hides missing values instead of showing 0", async () => {
 });
 
 test("shows values of 0", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = createHass(
     { [ENTITY]: weatherState({ humidity: 0, wind_speed: 0 }) },
     {
@@ -386,7 +301,7 @@ test("shows values of 0", async () => {
 });
 
 test("uses night icons for hourly forecast entries at night", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hourly = FORECAST.hourly.map((entry, i) =>
     i === 0 ? { ...entry, is_daytime: true } : entry,
   );
@@ -417,7 +332,7 @@ test("uses night icons for hourly forecast entries at night", async () => {
 });
 
 test("shows an icon for exceptional weather", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = createHass({
     [ENTITY]: { ...weatherState(), state: "exceptional" },
   });
@@ -430,7 +345,7 @@ test("shows an icon for exceptional weather", async () => {
 });
 
 test("provides sizes for masonry and sections dashboards", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({});
   assert.equal(card.getCardSize(), 2);
   assert.deepEqual(card.getGridOptions(), { columns: 12, min_columns: 6 });
@@ -440,7 +355,7 @@ test("provides sizes for masonry and sections dashboards", async () => {
 });
 
 test("can be used with the keyboard", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const events = [];
   const listener = (ev) => events.push(ev.detail);
   document.addEventListener("hass-action", listener);
@@ -463,51 +378,6 @@ test("can be used with the keyboard", async () => {
   card.remove();
 });
 
-test("editor only stores backdrop colors that were changed", async () => {
-  const editor = await customElements
-    .get("simple-weather-card")
-    .getConfigElement();
-  const configs = [];
-  editor.addEventListener("config-changed", (ev) =>
-    configs.push(ev.detail.config),
-  );
-  editor.hass = createHass();
-  editor.setConfig({ entity: ENTITY, backdrop: { bg: false } });
-  document.body.appendChild(editor);
-  await editor.updateComplete;
-
-  const form = [...editor.shadowRoot.querySelectorAll("ha-form")].find((f) =>
-    f.schema.some((field) => field.name === "bg"),
-  );
-  const change = (value) =>
-    form.dispatchEvent(new CustomEvent("value-changed", { detail: { value } }));
-
-  // Toggling the backdrop keeps the default colors
-  change({ ...form.data, bg: true });
-  assert.deepEqual(configs.at(-1).backdrop, { bg: true });
-
-  // Changing one color stores only that color
-  change({ ...form.data, bg: true, day: [1, 2, 3] });
-  assert.deepEqual(configs.at(-1).backdrop, { bg: true, day: "#010203" });
-  editor.remove();
-});
-
-const forecastLabels = (card) =>
-  [...$$(card, ".weather__forecast__dayname")].map((el) =>
-    el.textContent.trim(),
-  );
-
-const hourlyLabels = async (locale) => {
-  subscriptions = [];
-  const card = await createCard(
-    { show_forecast: true, forecast_type: "hourly" },
-    { ...createHass(), locale },
-  );
-  const labels = forecastLabels(card);
-  card.remove();
-  return labels;
-};
-
 test("follows the user's time format in the hourly forecast", async () => {
   const h12 = await hourlyLabels({ language: "nb", time_format: "12" });
   assert.match(h12[0], /^\d{1,2}\s?(AM|PM|a\.m\.|p\.m\.)$/i, h12[0]);
@@ -523,7 +393,7 @@ test("follows the user's time format in the hourly forecast", async () => {
 });
 
 test("shows the configured number of forecast slots", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({ show_forecast: true, forecast_slots: 7 });
   assert.equal($$(card, ".weather__forecast__day").length, 7);
   card.setConfig({ entity: ENTITY, show_forecast: true, forecast_slots: 3 });
@@ -533,7 +403,7 @@ test("shows the configured number of forecast slots", async () => {
 });
 
 test("renders a twice daily forecast", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({
     show_forecast: true,
     forecast_type: "twice_daily",
@@ -554,18 +424,8 @@ test("renders a twice daily forecast", async () => {
   card.remove();
 });
 
-const collectActions = () => {
-  const events = [];
-  const listener = (ev) => events.push(ev.detail);
-  document.addEventListener("hass-action", listener);
-  return {
-    events,
-    stop: () => document.removeEventListener("hass-action", listener),
-  };
-};
-
 test("fires hold_action on a long press", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const { events, stop } = collectActions();
   const card = await createCard({
     hold_action: { action: "perform_action", perform_action: "light.on" },
@@ -593,7 +453,7 @@ test("fires hold_action on a long press", async () => {
 });
 
 test("fires double_tap_action on a double tap", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const { events, stop } = collectActions();
   const card = await createCard({
     double_tap_action: { action: "toggle" },
@@ -619,7 +479,7 @@ test("fires double_tap_action on a double tap", async () => {
 });
 
 test("is focusable when only a hold action is set", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const card = await createCard({
     tap_action: { action: "none" },
     hold_action: { action: "more-info" },
@@ -629,7 +489,7 @@ test("is focusable when only a hold action is set", async () => {
 });
 
 test("shows a custom wind bearing sensor in degrees as a direction", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = createHass({
     "sensor.wind_direction": {
       state: "200",
@@ -649,7 +509,7 @@ test("shows a custom wind bearing sensor in degrees as a direction", async () =>
 });
 
 test("shows forecast times in the server time zone when chosen", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = {
     ...createHass(),
     config: { ...createHass().config, time_zone: "America/New_York" },
@@ -665,7 +525,7 @@ test("shows forecast times in the server time zone when chosen", async () => {
 });
 
 test("translates the wind direction", async () => {
-  subscriptions = [];
+  subscriptions.length = 0;
   const hass = {
     ...createHass(),
     localize: (key) =>
@@ -674,68 +534,4 @@ test("translates the wind direction", async () => {
   const card = await createCard({ primary_info: ["wind"] }, hass);
   assert.match(text(card), /\(SSV\)/);
   card.remove();
-});
-
-const createEditor = async (language) => {
-  const editor = await customElements
-    .get("simple-weather-card")
-    .getConfigElement();
-  editor.hass = { ...createHass(), locale: { language } };
-  editor.setConfig({ entity: ENTITY });
-  document.body.appendChild(editor);
-  await editor.updateComplete;
-  return editor;
-};
-
-const editorForms = (editor) => [
-  ...editor.shadowRoot.querySelectorAll("ha-form"),
-];
-
-test("translates the editor", async () => {
-  const editor = await createEditor("nb");
-  const headers = [
-    ...editor.shadowRoot.querySelectorAll('[slot="header"]'),
-  ].map((el) => el.textContent.trim());
-  assert.ok(headers.includes("Værvarsel"), headers.join(", "));
-  assert.ok(headers.includes("Overstyr med egne sensorer"));
-
-  const form = editorForms(editor).find((f) =>
-    f.schema.some((field) => field.name === "forecast_type"),
-  );
-  assert.equal(form.computeLabel({ name: "show_forecast" }), "Vis værvarsel");
-  const type = form.schema.find((field) => field.name === "forecast_type");
-  assert.deepEqual(
-    type.selector.select.options.map((o) => o.label),
-    ["Daglig", "Hver time", "To ganger daglig (dag og natt)"],
-  );
-  const pickers = [...editor.shadowRoot.querySelectorAll("ha-entity-picker")];
-  assert.equal(pickers[0].label, "Temperatur");
-  editor.remove();
-});
-
-test("falls back to the base language and then English", async () => {
-  for (const [language, expected] of [
-    ["en-GB", "Forecast"],
-    ["de", "Forecast"],
-    ["nb", "Værvarsel"],
-    ["nn", "Værvarsel"],
-  ]) {
-    const editor = await createEditor(language);
-    const headers = [
-      ...editor.shadowRoot.querySelectorAll('[slot="header"]'),
-    ].map((el) => el.textContent.trim());
-    assert.ok(headers.includes(expected), `${language}: ${headers}`);
-    editor.remove();
-  }
-});
-
-test("editor keeps its schemas between renders", async () => {
-  const editor = await createEditor("nb");
-  const before = editorForms(editor).map((f) => f.schema);
-  editor.setConfig({ entity: ENTITY, name: "Changed" });
-  await editor.updateComplete;
-  const after = editorForms(editor).map((f) => f.schema);
-  assert.equal(after.length, before.length);
-  after.forEach((schema, i) => assert.equal(schema, before[i]));
-  editor.remove();
 });

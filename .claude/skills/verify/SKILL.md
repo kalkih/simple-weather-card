@@ -20,14 +20,14 @@ Run the checks in order and stop at the first failure, showing its output.
    files changed on the branch (`git diff --name-only master -- '*.md' '*.json'`).
 
 3. **New tests must fail against `master`.** If `test/` changed on the branch,
-   build `master` in a temporary worktree and run the branch's tests against
-   it:
+   build `master` in a temporary worktree and run the branch's tests
+   (the whole `test/` folder, including `helpers.mjs`) against it:
 
    ```bash
    WT="$(mktemp -d)/master"
    git worktree add -q "$WT" master \
      && ln -s "$PWD/node_modules" "$WT/node_modules" \
-     && cp test/*.test.mjs "$WT/test/" \
+     && rm -rf "$WT/test" && cp -R test "$WT/test" \
      && (cd "$WT" && node_modules/.bin/webpack >/dev/null && node --test test/*.test.mjs)
    git worktree remove --force "$WT"
    ```
