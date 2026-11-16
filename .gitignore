@@ -12,3 +12,6 @@ CLAUDE.md
 /dev/config/*
 !/dev/config/configuration.yaml
 !/dev/config/dashboards/
+!/dev/config/www/
+/dev/config/www/*
+!/dev/config/www/dev-loader.js

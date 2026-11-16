@@ -24,7 +24,7 @@ homeassistant:
 
 frontend:
   extra_module_url:
-    - /local/simple-weather-card/simple-weather-card.js
+    - /local/dev-loader.js
 
 lovelace:
   dashboards:
