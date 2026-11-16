@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Nimi",
+    "state": "Tila",
+    "primary_info": "Ensisijaiset tiedot",
+    "secondary_info": "Toissijaiset tiedot",
+    "forecast": "Sääennuste",
+    "actions": "Toiminnot",
+    "backdrop": "Tausta",
+    "icons": "Kuvakkeet",
+    "custom": "Korvaa omilla antureilla"
+  },
+  "fields": {
+    "entity": "Sääentiteetti",
+    "name": "Nimi",
+    "show_name": "Näytä nimi",
+    "state_content": "Tilan sisältö",
+    "primary_info": "Ensisijaiset tiedot",
+    "secondary_info": "Toissijaiset tiedot",
+    "show_forecast": "Näytä sääennuste",
+    "forecast_type": "Ennusteen tyyppi",
+    "forecast_slots": "Päivien / tuntien määrä",
+    "tap_action": "Napautuksen käyttäytyminen",
+    "hold_action": "Pitkään painamisen käyttäytyminen",
+    "double_tap_action": "Kaksoisnapautuksen käyttäytyminen",
+    "bg": "Näytä tausta",
+    "fade": "Häivytystehoste",
+    "day": "Päivän väri",
+    "night": "Yön väri",
+    "text": "Tekstin väri",
+    "animated_icons": "Animoidut kuvakkeet"
+  },
+  "info": {
+    "state": "Säätila",
+    "extrema": "Alin / ylin",
+    "precipitation_and_probability": "Sade (määrä / todennäköisyys)",
+    "precipitation": "Sademäärä",
+    "precipitation_probability": "Sateen todennäköisyys",
+    "humidity": "Ilmankosteus",
+    "wind": "Tuuli (nopeus / suunta)",
+    "wind_speed": "Tuulen nopeus",
+    "wind_bearing": "Tuulen suunta",
+    "pressure": "Ilmanpaine",
+    "apparent_temperature": "Tuntuu kuin"
+  },
+  "forecast_type": {
+    "daily": "Päivittäin",
+    "hourly": "Tunneittain",
+    "twice_daily": "Kahdesti päivässä (päivä ja yö)"
+  },
+  "custom": {
+    "temp": "Lämpötila",
+    "apparent_temperature": "Tuntuu kuin",
+    "high": "Ylin lämpötila",
+    "low": "Alin lämpötila",
+    "state": "Säätila / tila",
+    "icon-state": "Kuvakkeen tila",
+    "precipitation": "Sademäärä",
+    "precipitation_probability": "Sateen todennäköisyys",
+    "humidity": "Ilmankosteus",
+    "wind_speed": "Tuulen nopeus",
+    "wind_bearing": "Tuulen suunta",
+    "pressure": "Ilmanpaine"
+  }
+}

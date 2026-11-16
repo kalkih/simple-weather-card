@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Názov",
+    "state": "Stav",
+    "primary_info": "Hlavné informácie",
+    "secondary_info": "Doplnkové informácie",
+    "forecast": "Predpoveď",
+    "actions": "Akcie",
+    "backdrop": "Pozadie",
+    "icons": "Ikony",
+    "custom": "Nahradiť vlastnými senzormi"
+  },
+  "fields": {
+    "entity": "Entita počasia",
+    "name": "Názov",
+    "show_name": "Zobraziť názov",
+    "state_content": "Obsah stavu",
+    "primary_info": "Hlavné informácie",
+    "secondary_info": "Doplnkové informácie",
+    "show_forecast": "Zobraziť predpoveď",
+    "forecast_type": "Typ predpovede",
+    "forecast_slots": "Počet dní / hodín",
+    "tap_action": "Správanie pri klepnutí",
+    "hold_action": "Správanie pri podržaní",
+    "double_tap_action": "Správanie pri dvojitom klepnutí",
+    "bg": "Zobraziť pozadie",
+    "fade": "Efekt prechodu",
+    "day": "Denná farba",
+    "night": "Nočná farba",
+    "text": "Farba textu",
+    "animated_icons": "Animované ikony"
+  },
+  "info": {
+    "state": "Počasie",
+    "extrema": "Min. / Max.",
+    "precipitation_and_probability": "Zrážky (množstvo / pravdepodobnosť)",
+    "precipitation": "Zrážky",
+    "precipitation_probability": "Pravdepodobnosť zrážok",
+    "humidity": "Vlhkosť",
+    "wind": "Vietor (rýchlosť / smer)",
+    "wind_speed": "Rýchlosť vetra",
+    "wind_bearing": "Smer vetra",
+    "pressure": "Tlak vzduchu",
+    "apparent_temperature": "Pocitová teplota"
+  },
+  "forecast_type": {
+    "daily": "Denne",
+    "hourly": "Hodinovo",
+    "twice_daily": "Dvakrát denne (deň a noc)"
+  },
+  "custom": {
+    "temp": "Teplota",
+    "apparent_temperature": "Pocitová teplota",
+    "high": "Najvyššia teplota",
+    "low": "Najnižšia teplota",
+    "state": "Počasie / stav",
+    "icon-state": "Stav ikony",
+    "precipitation": "Zrážky",
+    "precipitation_probability": "Pravdepodobnosť zrážok",
+    "humidity": "Vlhkosť",
+    "wind_speed": "Rýchlosť vetra",
+    "wind_bearing": "Smer vetra",
+    "pressure": "Tlak vzduchu"
+  }
+}

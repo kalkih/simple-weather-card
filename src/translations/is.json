@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Nafn",
+    "state": "Staða",
+    "primary_info": "Aðalupplýsingar",
+    "secondary_info": "Aukaupplýsingar",
+    "forecast": "Veðurspá",
+    "actions": "Aðgerðir",
+    "backdrop": "Bakgrunnur",
+    "icons": "Tákn",
+    "custom": "Yfirskrifa með eigin skynjurum"
+  },
+  "fields": {
+    "entity": "Veðureining",
+    "name": "Nafn",
+    "show_name": "Sýna nafn",
+    "state_content": "Innihald stöðu",
+    "primary_info": "Aðalupplýsingar",
+    "secondary_info": "Aukaupplýsingar",
+    "show_forecast": "Sýna veðurspá",
+    "forecast_type": "Tegund spár",
+    "forecast_slots": "Fjöldi daga / klukkustunda",
+    "tap_action": "Aðgerð við snertingu",
+    "hold_action": "Aðgerð við að halda inni",
+    "double_tap_action": "Aðgerð við tvísmell",
+    "bg": "Sýna bakgrunn",
+    "fade": "Dofnunaráhrif",
+    "day": "Dagslitur",
+    "night": "Næturlitur",
+    "text": "Textalitur",
+    "animated_icons": "Hreyfitákn"
+  },
+  "info": {
+    "state": "Veðurástand",
+    "extrema": "Lágt / Hátt",
+    "precipitation_and_probability": "Úrkoma (magn / líkur)",
+    "precipitation": "Úrkoma",
+    "precipitation_probability": "Líkur á úrkomu",
+    "humidity": "Rakastig",
+    "wind": "Vindur (hraði / átt)",
+    "wind_speed": "Vindhraði",
+    "wind_bearing": "Vindátt",
+    "pressure": "Loftþrýstingur",
+    "apparent_temperature": "Finnst eins og"
+  },
+  "forecast_type": {
+    "daily": "Daglega",
+    "hourly": "Á klukkutíma fresti",
+    "twice_daily": "Tvisvar á dag (dagur og nótt)"
+  },
+  "custom": {
+    "temp": "Hitastig",
+    "apparent_temperature": "Finnst eins og",
+    "high": "Hæsti hiti",
+    "low": "Lægsti hiti",
+    "state": "Veðurástand / staða",
+    "icon-state": "Staða tákns",
+    "precipitation": "Úrkoma",
+    "precipitation_probability": "Líkur á úrkomu",
+    "humidity": "Rakastig",
+    "wind_speed": "Vindhraði",
+    "wind_bearing": "Vindátt",
+    "pressure": "Loftþrýstingur"
+  }
+}

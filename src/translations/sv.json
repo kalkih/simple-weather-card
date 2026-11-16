@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Namn",
+    "state": "Tillstånd",
+    "primary_info": "Primär information",
+    "secondary_info": "Sekundär information",
+    "forecast": "Prognos",
+    "actions": "Åtgärder",
+    "backdrop": "Bakgrund",
+    "icons": "Ikoner",
+    "custom": "Ersätt med egna sensorer"
+  },
+  "fields": {
+    "entity": "Väderentitet",
+    "name": "Namn",
+    "show_name": "Visa namn",
+    "state_content": "Tillståndsinnehåll",
+    "primary_info": "Primär information",
+    "secondary_info": "Sekundär information",
+    "show_forecast": "Visa prognos",
+    "forecast_type": "Prognostyp",
+    "forecast_slots": "Antal dagar / timmar",
+    "tap_action": "Beteende vid tryck",
+    "hold_action": "Beteende vid långtryck",
+    "double_tap_action": "Beteende vid dubbeltryck",
+    "bg": "Visa bakgrund",
+    "fade": "Toningseffekt",
+    "day": "Dagfärg",
+    "night": "Nattfärg",
+    "text": "Textfärg",
+    "animated_icons": "Animerade ikoner"
+  },
+  "info": {
+    "state": "Väderförhållanden",
+    "extrema": "Låg / Hög",
+    "precipitation_and_probability": "Nederbörd (mängd / sannolikhet)",
+    "precipitation": "Nederbörd",
+    "precipitation_probability": "Sannolikhet för nederbörd",
+    "humidity": "Luftfuktighet",
+    "wind": "Vind (hastighet / riktning)",
+    "wind_speed": "Vindhastighet",
+    "wind_bearing": "Vindriktning",
+    "pressure": "Lufttryck",
+    "apparent_temperature": "Känns som"
+  },
+  "forecast_type": {
+    "daily": "Dagligen",
+    "hourly": "Varje timme",
+    "twice_daily": "Två gånger dagligen (dag och natt)"
+  },
+  "custom": {
+    "temp": "Temperatur",
+    "apparent_temperature": "Känns som",
+    "high": "Högsta temperatur",
+    "low": "Lägsta temperatur",
+    "state": "Väderförhållanden / tillstånd",
+    "icon-state": "Ikontillstånd",
+    "precipitation": "Nederbörd",
+    "precipitation_probability": "Sannolikhet för nederbörd",
+    "humidity": "Luftfuktighet",
+    "wind_speed": "Vindhastighet",
+    "wind_bearing": "Vindriktning",
+    "pressure": "Lufttryck"
+  }
+}

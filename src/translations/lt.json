@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Pavadinimas",
+    "state": "Būsena",
+    "primary_info": "Pagrindinė informacija",
+    "secondary_info": "Papildoma informacija",
+    "forecast": "Prognozė",
+    "actions": "Veiksmai",
+    "backdrop": "Fonas",
+    "icons": "Piktogramos",
+    "custom": "Pakeisti savais jutikliais"
+  },
+  "fields": {
+    "entity": "Orų subjektas",
+    "name": "Pavadinimas",
+    "show_name": "Rodyti pavadinimą",
+    "state_content": "Būsenos turinys",
+    "primary_info": "Pagrindinė informacija",
+    "secondary_info": "Papildoma informacija",
+    "show_forecast": "Rodyti prognozę",
+    "forecast_type": "Prognozės tipas",
+    "forecast_slots": "Dienų / valandų skaičius",
+    "tap_action": "Bakstelėjimo elgesys",
+    "hold_action": "Sulaikymo elgesys",
+    "double_tap_action": "Dvigubo bakstelėjimo elgesys",
+    "bg": "Rodyti foną",
+    "fade": "Išblukimo efektas",
+    "day": "Dienos spalva",
+    "night": "Nakties spalva",
+    "text": "Teksto spalva",
+    "animated_icons": "Animuotos piktogramos"
+  },
+  "info": {
+    "state": "Orų sąlygos",
+    "extrema": "Min. / Maks.",
+    "precipitation_and_probability": "Krituliai (kiekis / tikimybė)",
+    "precipitation": "Krituliai",
+    "precipitation_probability": "Kritulių tikimybė",
+    "humidity": "Drėgmė",
+    "wind": "Vėjas (greitis / kryptis)",
+    "wind_speed": "Vėjo greitis",
+    "wind_bearing": "Vėjo kryptis",
+    "pressure": "Atmosferos slėgis",
+    "apparent_temperature": "Jutiminė temperatūra"
+  },
+  "forecast_type": {
+    "daily": "Kasdienė",
+    "hourly": "Valandinė",
+    "twice_daily": "Du kartus per dieną (diena ir naktis)"
+  },
+  "custom": {
+    "temp": "Temperatūra",
+    "apparent_temperature": "Jutiminė temperatūra",
+    "high": "Aukščiausia temperatūra",
+    "low": "Žemiausia temperatūra",
+    "state": "Orų sąlygos / būsena",
+    "icon-state": "Piktogramos būsena",
+    "precipitation": "Krituliai",
+    "precipitation_probability": "Kritulių tikimybė",
+    "humidity": "Drėgmė",
+    "wind_speed": "Vėjo greitis",
+    "wind_bearing": "Vėjo kryptis",
+    "pressure": "Atmosferos slėgis"
+  }
+}

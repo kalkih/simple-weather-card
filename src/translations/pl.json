@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Nazwa",
+    "state": "Stan",
+    "primary_info": "Informacje główne",
+    "secondary_info": "Informacje dodatkowe",
+    "forecast": "Prognoza",
+    "actions": "Akcje",
+    "backdrop": "Tło",
+    "icons": "Ikony",
+    "custom": "Zastąp własnymi czujnikami"
+  },
+  "fields": {
+    "entity": "Encja pogody",
+    "name": "Nazwa",
+    "show_name": "Pokaż nazwę",
+    "state_content": "Zawartość stanu",
+    "primary_info": "Informacje główne",
+    "secondary_info": "Informacje dodatkowe",
+    "show_forecast": "Pokaż prognozę",
+    "forecast_type": "Typ prognozy",
+    "forecast_slots": "Liczba dni / godzin",
+    "tap_action": "Zachowanie po kliknięciu",
+    "hold_action": "Zachowanie po przytrzymaniu",
+    "double_tap_action": "Zachowanie po podwójnym kliknięciu",
+    "bg": "Pokaż tło",
+    "fade": "Efekt zanikania",
+    "day": "Kolor dzienny",
+    "night": "Kolor nocny",
+    "text": "Kolor tekstu",
+    "animated_icons": "Animowane ikony"
+  },
+  "info": {
+    "state": "Warunki pogodowe",
+    "extrema": "Min. / Maks.",
+    "precipitation_and_probability": "Opady (ilość / prawdopodobieństwo)",
+    "precipitation": "Opady",
+    "precipitation_probability": "Prawdopodobieństwo opadów",
+    "humidity": "Wilgotność",
+    "wind": "Wiatr (prędkość / kierunek)",
+    "wind_speed": "Prędkość wiatru",
+    "wind_bearing": "Kierunek wiatru",
+    "pressure": "Ciśnienie",
+    "apparent_temperature": "Temperatura odczuwalna"
+  },
+  "forecast_type": {
+    "daily": "Codziennie",
+    "hourly": "Co godzinę",
+    "twice_daily": "Dwa razy dziennie (dzień i noc)"
+  },
+  "custom": {
+    "temp": "Temperatura",
+    "apparent_temperature": "Temperatura odczuwalna",
+    "high": "Temperatura maksymalna",
+    "low": "Temperatura minimalna",
+    "state": "Warunki pogodowe / stan",
+    "icon-state": "Stan ikony",
+    "precipitation": "Opady",
+    "precipitation_probability": "Prawdopodobieństwo opadów",
+    "humidity": "Wilgotność",
+    "wind_speed": "Prędkość wiatru",
+    "wind_bearing": "Kierunek wiatru",
+    "pressure": "Ciśnienie"
+  }
+}

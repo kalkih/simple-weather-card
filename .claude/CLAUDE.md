@@ -14,7 +14,8 @@ committed; every file in `.claude/rules/` is loaded automatically).
   loaded eagerly into the same bundle.
 - `src/weather.ts` – `WeatherEntity` (attribute getters, icons, night logic,
   wind direction), `src/actions.ts` – actions, `src/localize.ts` +
-  `src/translations/*.json` – editor translations (en, nb; nn uses nb).
+  `src/translations/*.json` – editor translations (one file per language,
+  listed in `LANGUAGES`; nn uses nb).
 - `src/icons/` – static icons (PNG/SVG) and `animated/` SVGs, inlined into the
   bundle. File names are hyphenated, like HA's conditions (`clear-night`).
 - `test/` – Node test runner. `card.test.mjs` and `editor.test.mjs` load the

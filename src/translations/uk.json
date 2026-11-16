@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Назва",
+    "state": "Стан",
+    "primary_info": "Основна інформація",
+    "secondary_info": "Додаткова інформація",
+    "forecast": "Прогноз",
+    "actions": "Дії",
+    "backdrop": "Фон",
+    "icons": "Значки",
+    "custom": "Замінити власними датчиками"
+  },
+  "fields": {
+    "entity": "Сутність погоди",
+    "name": "Назва",
+    "show_name": "Показати назву",
+    "state_content": "Вміст стану",
+    "primary_info": "Основна інформація",
+    "secondary_info": "Додаткова інформація",
+    "show_forecast": "Показати прогноз",
+    "forecast_type": "Тип прогнозу",
+    "forecast_slots": "Кількість днів / годин",
+    "tap_action": "Поведінка при натисканні",
+    "hold_action": "Поведінка при утримуванні",
+    "double_tap_action": "Поведінка при подвійному натисканні",
+    "bg": "Показати фон",
+    "fade": "Ефект згасання",
+    "day": "Денний колір",
+    "night": "Нічний колір",
+    "text": "Колір тексту",
+    "animated_icons": "Анімовані значки"
+  },
+  "info": {
+    "state": "Погодні умови",
+    "extrema": "Мін. / Макс.",
+    "precipitation_and_probability": "Опади (кількість / ймовірність)",
+    "precipitation": "Опади",
+    "precipitation_probability": "Ймовірність опадів",
+    "humidity": "Вологість",
+    "wind": "Вітер (швидкість / напрямок)",
+    "wind_speed": "Швидкість вітру",
+    "wind_bearing": "Напрямок вітру",
+    "pressure": "Атмосферний тиск",
+    "apparent_temperature": "Відчувається як"
+  },
+  "forecast_type": {
+    "daily": "Подобовий",
+    "hourly": "Погодинний",
+    "twice_daily": "Двічі на день (день і ніч)"
+  },
+  "custom": {
+    "temp": "Температура",
+    "apparent_temperature": "Відчувається як",
+    "high": "Максимальна температура",
+    "low": "Мінімальна температура",
+    "state": "Погодні умови / стан",
+    "icon-state": "Стан значка",
+    "precipitation": "Опади",
+    "precipitation_probability": "Ймовірність опадів",
+    "humidity": "Вологість",
+    "wind_speed": "Швидкість вітру",
+    "wind_bearing": "Напрямок вітру",
+    "pressure": "Атмосферний тиск"
+  }
+}

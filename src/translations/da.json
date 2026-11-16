@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Navn",
+    "state": "Tilstand",
+    "primary_info": "Primær info",
+    "secondary_info": "Sekundær info",
+    "forecast": "Vejrudsigt",
+    "actions": "Handlinger",
+    "backdrop": "Baggrund",
+    "icons": "Ikoner",
+    "custom": "Erstat med egne sensorer"
+  },
+  "fields": {
+    "entity": "Vejrentitet",
+    "name": "Navn",
+    "show_name": "Vis navn",
+    "state_content": "Tilstandsindhold",
+    "primary_info": "Primær info",
+    "secondary_info": "Sekundær info",
+    "show_forecast": "Vis vejrudsigt",
+    "forecast_type": "Prognosetype",
+    "forecast_slots": "Antal dage / timer",
+    "tap_action": "Handling ved tryk",
+    "hold_action": "Handling ved hold",
+    "double_tap_action": "Handling ved dobbelttryk",
+    "bg": "Vis baggrund",
+    "fade": "Toningseffekt",
+    "day": "Dagfarve",
+    "night": "Natfarve",
+    "text": "Tekstfarve",
+    "animated_icons": "Animerede ikoner"
+  },
+  "info": {
+    "state": "Vejrforhold",
+    "extrema": "Lav / Høj",
+    "precipitation_and_probability": "Nedbør (mængde / sandsynlighed)",
+    "precipitation": "Nedbør",
+    "precipitation_probability": "Sandsynlighed for nedbør",
+    "humidity": "Luftfugtighed",
+    "wind": "Vind (hastighed / retning)",
+    "wind_speed": "Vindhastighed",
+    "wind_bearing": "Vindretning",
+    "pressure": "Lufttryk",
+    "apparent_temperature": "Føles som"
+  },
+  "forecast_type": {
+    "daily": "Daglig",
+    "hourly": "Time-for-time",
+    "twice_daily": "To gange dagligt (dag og nat)"
+  },
+  "custom": {
+    "temp": "Temperatur",
+    "apparent_temperature": "Føles som",
+    "high": "Højeste temperatur",
+    "low": "Laveste temperatur",
+    "state": "Vejrforhold / tilstand",
+    "icon-state": "Ikontilstand",
+    "precipitation": "Nedbør",
+    "precipitation_probability": "Sandsynlighed for nedbør",
+    "humidity": "Luftfugtighed",
+    "wind_speed": "Vindhastighed",
+    "wind_bearing": "Vindretning",
+    "pressure": "Lufttryk"
+  }
+}

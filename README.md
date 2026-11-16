@@ -234,7 +234,7 @@ double_tap_action:
 
 ## Translations
 
-The visual editor follows your Home Assistant language. It's available in English and Norwegian (bokmål, also used for nynorsk). Weather conditions, wind directions and "Night" use Home Assistant's own translations.
+The visual editor follows your Home Assistant language. It's available in Czech, Danish, English, Finnish, German, Hungarian, Icelandic, Lithuanian, Norwegian (bokmål, also used for nynorsk), Polish, Slovak, Swedish and Ukrainian. Weather conditions, wind directions and "Night" use Home Assistant's own translations.
 
 To add a language, copy [`src/translations/en.json`](src/translations/en.json) to `<language>.json`, translate the values, add it to `LANGUAGES` in [`src/localize.ts`](src/localize.ts) and open a pull request. Missing keys fall back to English.
 

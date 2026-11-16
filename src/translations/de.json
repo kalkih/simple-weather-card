@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Name",
+    "state": "Zustand",
+    "primary_info": "Primäre Infos",
+    "secondary_info": "Sekundäre Infos",
+    "forecast": "Vorhersage",
+    "actions": "Aktionen",
+    "backdrop": "Hintergrund",
+    "icons": "Symbole",
+    "custom": "Mit eigenen Sensoren überschreiben"
+  },
+  "fields": {
+    "entity": "Wetter-Entität",
+    "name": "Name",
+    "show_name": "Namen anzeigen",
+    "state_content": "Zustandsinhalt",
+    "primary_info": "Primäre Infos",
+    "secondary_info": "Sekundäre Infos",
+    "show_forecast": "Vorhersage anzeigen",
+    "forecast_type": "Vorhersagetyp",
+    "forecast_slots": "Anzahl Tage / Stunden",
+    "tap_action": "Verhalten bei Antippen",
+    "hold_action": "Verhalten bei Festhalten",
+    "double_tap_action": "Verhalten bei Doppeltippen",
+    "bg": "Hintergrund anzeigen",
+    "fade": "Überblendeffekt",
+    "day": "Tagfarbe",
+    "night": "Nachtfarbe",
+    "text": "Textfarbe",
+    "animated_icons": "Animierte Symbole"
+  },
+  "info": {
+    "state": "Wetterlage",
+    "extrema": "Tief / Hoch",
+    "precipitation_and_probability": "Niederschlag (Menge / Wahrscheinlichkeit)",
+    "precipitation": "Niederschlag",
+    "precipitation_probability": "Niederschlagswahrscheinlichkeit",
+    "humidity": "Luftfeuchtigkeit",
+    "wind": "Wind (Geschwindigkeit / Richtung)",
+    "wind_speed": "Windgeschwindigkeit",
+    "wind_bearing": "Windrichtung",
+    "pressure": "Luftdruck",
+    "apparent_temperature": "Gefühlte Temperatur"
+  },
+  "forecast_type": {
+    "daily": "Täglich",
+    "hourly": "Stündlich",
+    "twice_daily": "Zweimal täglich (Tag und Nacht)"
+  },
+  "custom": {
+    "temp": "Temperatur",
+    "apparent_temperature": "Gefühlte Temperatur",
+    "high": "Höchsttemperatur",
+    "low": "Tiefsttemperatur",
+    "state": "Wetterlage / Zustand",
+    "icon-state": "Symbolzustand",
+    "precipitation": "Niederschlag",
+    "precipitation_probability": "Niederschlagswahrscheinlichkeit",
+    "humidity": "Luftfeuchtigkeit",
+    "wind_speed": "Windgeschwindigkeit",
+    "wind_bearing": "Windrichtung",
+    "pressure": "Luftdruck"
+  }
+}

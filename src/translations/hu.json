@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Név",
+    "state": "Állapot",
+    "primary_info": "Elsődleges információ",
+    "secondary_info": "Másodlagos információ",
+    "forecast": "Előrejelzés",
+    "actions": "Műveletek",
+    "backdrop": "Háttér",
+    "icons": "Ikonok",
+    "custom": "Felülírás saját érzékelőkkel"
+  },
+  "fields": {
+    "entity": "Időjárás entitás",
+    "name": "Név",
+    "show_name": "Név megjelenítése",
+    "state_content": "Állapot tartalma",
+    "primary_info": "Elsődleges információ",
+    "secondary_info": "Másodlagos információ",
+    "show_forecast": "Előrejelzés megjelenítése",
+    "forecast_type": "Előrejelzés típusa",
+    "forecast_slots": "Napok / órák száma",
+    "tap_action": "Koppintási viselkedés",
+    "hold_action": "Tartási viselkedés",
+    "double_tap_action": "Dupla koppintási viselkedés",
+    "bg": "Háttér megjelenítése",
+    "fade": "Áttűnés effektus",
+    "day": "Nappali szín",
+    "night": "Éjszakai szín",
+    "text": "Szövegszín",
+    "animated_icons": "Animált ikonok"
+  },
+  "info": {
+    "state": "Időjárás",
+    "extrema": "Min. / Max.",
+    "precipitation_and_probability": "Csapadék (mennyiség / valószínűség)",
+    "precipitation": "Csapadék",
+    "precipitation_probability": "Csapadék valószínűsége",
+    "humidity": "Páratartalom",
+    "wind": "Szél (sebesség / irány)",
+    "wind_speed": "Szélsebesség",
+    "wind_bearing": "Szélirány",
+    "pressure": "Légnyomás",
+    "apparent_temperature": "Hőérzet"
+  },
+  "forecast_type": {
+    "daily": "Naponta",
+    "hourly": "Óránként",
+    "twice_daily": "Naponta kétszer (nappal és éjszaka)"
+  },
+  "custom": {
+    "temp": "Hőmérséklet",
+    "apparent_temperature": "Hőérzet",
+    "high": "Legmagasabb hőmérséklet",
+    "low": "Legalacsonyabb hőmérséklet",
+    "state": "Időjárás / állapot",
+    "icon-state": "Ikon állapota",
+    "precipitation": "Csapadék",
+    "precipitation_probability": "Csapadék valószínűsége",
+    "humidity": "Páratartalom",
+    "wind_speed": "Szélsebesség",
+    "wind_bearing": "Szélirány",
+    "pressure": "Légnyomás"
+  }
+}

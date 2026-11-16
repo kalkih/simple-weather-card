@@ -1,5 +1,6 @@
 // Smoke tests of the visual editor, loaded from the built bundle.
 import assert from "node:assert/strict";
+import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import {
@@ -66,7 +67,8 @@ test("translates the editor", async () => {
 test("falls back to the base language and then English", async () => {
   for (const [language, expected] of [
     ["en-GB", "Forecast"],
-    ["de", "Forecast"],
+    ["fr", "Forecast"],
+    ["de-AT", "Vorhersage"],
     ["nb", "Værvarsel"],
     ["nn", "Værvarsel"],
   ]) {
@@ -75,6 +77,19 @@ test("falls back to the base language and then English", async () => {
       ...editor.shadowRoot.querySelectorAll('[slot="header"]'),
     ].map((el) => el.textContent.trim());
     assert.ok(headers.includes(expected), `${language}: ${headers}`);
+    editor.remove();
+  }
+});
+
+test("editor uses every translation file", async () => {
+  const dir = new URL("../src/translations/", import.meta.url);
+  for (const file of readdirSync(dir)) {
+    const json = JSON.parse(readFileSync(new URL(file, dir), "utf8"));
+    const editor = await createEditor(file.replace(".json", ""));
+    const headers = [
+      ...editor.shadowRoot.querySelectorAll('[slot="header"]'),
+    ].map((el) => el.textContent.trim());
+    assert.ok(headers.includes(json.sections.forecast), `${file}: ${headers}`);
     editor.remove();
   }
 });
