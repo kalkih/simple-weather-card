@@ -15,3 +15,4 @@ CLAUDE.md
 !/dev/config/www/
 /dev/config/www/*
 !/dev/config/www/dev-loader.js
+!/dev/config/www/dev-night-card.js

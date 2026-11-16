@@ -25,6 +25,7 @@ homeassistant:
 frontend:
   extra_module_url:
     - /local/dev-loader.js
+    - /local/dev-night-card.js
 
 lovelace:
   dashboards:
