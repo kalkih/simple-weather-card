@@ -1,6 +1,6 @@
 {
   "name": "simple-weather-card",
-  "version": "2.10.0",
+  "version": "0.0.0-dev",
   "description": "A minimalistic and customizable weather card for Home Assistant",
   "keywords": [
     "home-assistant",

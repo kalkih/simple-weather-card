@@ -32,3 +32,23 @@ yarn ha:down        # stop the container
 
 Everything else Home Assistant writes to `config/` is ignored by git. Delete
 it to start over from a fresh install.
+
+## Releasing
+
+1. Go to **Actions → Release → Run workflow** on `master`, pick the version
+   bump and whether it's a beta.
+2. The workflow works out the next version from the tags, checks and builds
+   the card, and creates a **draft** release with generated release notes.
+3. Review the draft, add highlights at the top if you like, and press
+   **Publish**. The tag is created then, and HACS users get the update.
+
+Betas are tagged `vX.Y.Z-beta-N` and only reach users who enabled beta
+versions in HACS.
+
+Release notes are grouped by pull request label. Labels are set from the
+branch name: `feat/…` → Features, `fix/…` → Fixes, `chore/…`, `ci/…`,
+`refactor/…` → Maintenance, `docs/…` → Maintenance. Dependabot's pull
+requests go under Dependencies.
+
+The version in `package.json` is a placeholder (`0.0.0-dev`). The real
+version comes from the tag and is set by the release workflow.

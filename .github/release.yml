@@ -1,13 +1,21 @@
-# Groups the generated release notes. Dependabot labels its pull requests
-# with "dependencies", so those are listed separately from real changes.
+# Groups the generated release notes by pull request label. Labels are set
+# from the branch name (see labeler.yml), Dependabot sets "dependencies".
+# A pull request goes in the first category it matches.
 changelog:
   categories:
-    - title: Changes
+    - title: Features
       labels:
-        - "*"
-      exclude:
-        labels:
-          - dependencies
+        - enhancement
+    - title: Fixes
+      labels:
+        - bug
+    - title: Maintenance
+      labels:
+        - maintenance
+        - documentation
     - title: Dependencies
       labels:
         - dependencies
+    - title: Other changes
+      labels:
+        - "*"
