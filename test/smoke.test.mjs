@@ -663,3 +663,15 @@ test("shows forecast times in the server time zone when chosen", async () => {
   assert.equal(forecastLabels(card)[0], "19:00");
   card.remove();
 });
+
+test("translates the wind direction", async () => {
+  subscriptions = [];
+  const hass = {
+    ...createHass(),
+    localize: (key) =>
+      key === "ui.card.weather.cardinal_direction.ssw" ? "SSV" : "",
+  };
+  const card = await createCard({ primary_info: ["wind"] }, hass);
+  assert.match(text(card), /\(SSV\)/);
+  card.remove();
+});
