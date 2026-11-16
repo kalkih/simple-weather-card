@@ -265,8 +265,12 @@ export default class WeatherEntity {
     return this.hass.localize(string) || fallback;
   }
 
+  // Translated by Home Assistant, like its own weather card (NØ in Norwegian)
   degToDirection(deg: number): string {
-    const dir = Math.floor(deg / 22.5 + 0.5);
-    return DIRECTION[dir % 16];
+    const dir = DIRECTION[Math.floor(deg / 22.5 + 0.5) % 16];
+    return this.toLocale(
+      `ui.card.weather.cardinal_direction.${dir.toLowerCase()}`,
+      dir,
+    );
   }
 }
