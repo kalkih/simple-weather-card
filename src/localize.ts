@@ -2,9 +2,12 @@ import cs from "./translations/cs.json";
 import da from "./translations/da.json";
 import de from "./translations/de.json";
 import en from "./translations/en.json";
+import es from "./translations/es.json";
 import fi from "./translations/fi.json";
+import fr from "./translations/fr.json";
 import hu from "./translations/hu.json";
 import is from "./translations/is.json";
+import it from "./translations/it.json";
 import lt from "./translations/lt.json";
 import nb from "./translations/nb.json";
 import pl from "./translations/pl.json";
@@ -21,9 +24,12 @@ const LANGUAGES: Record<string, unknown> = {
   da,
   de,
   en,
+  es,
   fi,
+  fr,
   hu,
   is,
+  it,
   lt,
   nb,
   nn: nb,

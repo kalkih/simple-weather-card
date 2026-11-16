@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Nom",
+    "state": "État",
+    "primary_info": "Informations principales",
+    "secondary_info": "Informations secondaires",
+    "forecast": "Prévisions",
+    "actions": "Actions",
+    "backdrop": "Arrière-plan",
+    "icons": "Icônes",
+    "custom": "Remplacer par vos propres capteurs"
+  },
+  "fields": {
+    "entity": "Entité météo",
+    "name": "Nom",
+    "show_name": "Afficher le nom",
+    "state_content": "Contenu de l'état",
+    "primary_info": "Informations principales",
+    "secondary_info": "Informations secondaires",
+    "show_forecast": "Afficher les prévisions",
+    "forecast_type": "Type de prévision",
+    "forecast_slots": "Nombre de jours / heures",
+    "tap_action": "Action à l'appui",
+    "hold_action": "Action à l'appui long",
+    "double_tap_action": "Action au double appui",
+    "bg": "Afficher l'arrière-plan",
+    "fade": "Effet de fondu",
+    "day": "Couleur de jour",
+    "night": "Couleur de nuit",
+    "text": "Couleur du texte",
+    "animated_icons": "Icônes animées"
+  },
+  "info": {
+    "state": "Conditions météo",
+    "extrema": "Min / Max",
+    "precipitation_and_probability": "Précipitations (quantité / probabilité)",
+    "precipitation": "Précipitations",
+    "precipitation_probability": "Probabilité de précipitations",
+    "humidity": "Humidité",
+    "wind": "Vent (vitesse / direction)",
+    "wind_speed": "Vitesse du vent",
+    "wind_bearing": "Direction du vent",
+    "pressure": "Pression atmosphérique",
+    "apparent_temperature": "Ressenti"
+  },
+  "forecast_type": {
+    "daily": "Quotidienne",
+    "hourly": "Heure par heure",
+    "twice_daily": "Biquotidienne (jour et nuit)"
+  },
+  "custom": {
+    "temp": "Température",
+    "apparent_temperature": "Ressenti",
+    "high": "Température maximale",
+    "low": "Température minimale",
+    "state": "Conditions météo / état",
+    "icon-state": "État de l'icône",
+    "precipitation": "Précipitations",
+    "precipitation_probability": "Probabilité de précipitations",
+    "humidity": "Humidité",
+    "wind_speed": "Vitesse du vent",
+    "wind_bearing": "Direction du vent",
+    "pressure": "Pression atmosphérique"
+  }
+}

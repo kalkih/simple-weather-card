@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "name": "Nombre",
+    "state": "Estado",
+    "primary_info": "Información principal",
+    "secondary_info": "Información secundaria",
+    "forecast": "Pronóstico",
+    "actions": "Acciones",
+    "backdrop": "Fondo",
+    "icons": "Iconos",
+    "custom": "Sustituir por sensores propios"
+  },
+  "fields": {
+    "entity": "Entidad meteorológica",
+    "name": "Nombre",
+    "show_name": "Mostrar nombre",
+    "state_content": "Contenido del estado",
+    "primary_info": "Información principal",
+    "secondary_info": "Información secundaria",
+    "show_forecast": "Mostrar pronóstico",
+    "forecast_type": "Tipo de pronóstico",
+    "forecast_slots": "Número de días / horas",
+    "tap_action": "Comportamiento del toque",
+    "hold_action": "Comportamiento de mantener pulsado",
+    "double_tap_action": "Comportamiento de doble toque",
+    "bg": "Mostrar fondo",
+    "fade": "Efecto de difuminado",
+    "day": "Color de día",
+    "night": "Color de noche",
+    "text": "Color del texto",
+    "animated_icons": "Iconos animados"
+  },
+  "info": {
+    "state": "Condiciones meteorológicas",
+    "extrema": "Mín. / Máx.",
+    "precipitation_and_probability": "Precipitación (cantidad / probabilidad)",
+    "precipitation": "Precipitación",
+    "precipitation_probability": "Probabilidad de precipitación",
+    "humidity": "Humedad",
+    "wind": "Viento (velocidad / dirección)",
+    "wind_speed": "Velocidad del viento",
+    "wind_bearing": "Dirección del viento",
+    "pressure": "Presión atmosférica",
+    "apparent_temperature": "Sensación térmica"
+  },
+  "forecast_type": {
+    "daily": "Diario",
+    "hourly": "Cada hora",
+    "twice_daily": "Dos veces al día (día y noche)"
+  },
+  "custom": {
+    "temp": "Temperatura",
+    "apparent_temperature": "Sensación térmica",
+    "high": "Temperatura máxima",
+    "low": "Temperatura mínima",
+    "state": "Condiciones meteorológicas / estado",
+    "icon-state": "Estado del icono",
+    "precipitation": "Precipitación",
+    "precipitation_probability": "Probabilidad de precipitación",
+    "humidity": "Humedad",
+    "wind_speed": "Velocidad del viento",
+    "wind_bearing": "Dirección del viento",
+    "pressure": "Presión atmosférica"
+  }
+}

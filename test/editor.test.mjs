@@ -67,7 +67,7 @@ test("translates the editor", async () => {
 test("falls back to the base language and then English", async () => {
   for (const [language, expected] of [
     ["en-GB", "Forecast"],
-    ["fr", "Forecast"],
+    ["ja", "Forecast"],
     ["de-AT", "Vorhersage"],
     ["nb", "Værvarsel"],
     ["nn", "Værvarsel"],
