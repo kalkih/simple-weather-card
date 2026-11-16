@@ -121,9 +121,9 @@ test("renders the current weather", async () => {
   subscriptions = [];
   const card = await createCard({});
   assert.ok($(card, "ha-card"), "ha-card is not rendered");
-  assert.match(text(card), /7\.5 °C/);
+  assert.match(text(card), /7\.5°C/);
   assert.match(text(card), /Home/);
-  assert.match(text(card), /2 °C \/ 10 °C/, "low / high from forecast");
+  assert.match(text(card), /2°C \/ 10°C/, "low / high from forecast");
   card.remove();
 });
 
@@ -164,6 +164,7 @@ test("renders every info attribute", async () => {
   assert.match(output, /80 %/, "humidity");
   assert.match(output, /1012 hPa/, "pressure");
   assert.match(output, /SSW/, "wind bearing");
+  assert.match(output, /\(SSW\)/, "no spaces inside the wind parentheses");
   card.remove();
 });
 
@@ -186,7 +187,7 @@ test("uses custom sensor overrides", async () => {
     },
   });
   const card = await createCard({ custom: [{ temp: "sensor.outside" }] }, hass);
-  assert.match(text(card), /21\.3 °C/);
+  assert.match(text(card), /21\.3°C/);
   card.remove();
 });
 
@@ -239,7 +240,7 @@ test("manages the forecast subscription", async () => {
   };
   await card.updateComplete;
   assert.equal(subscriptions.length, 1, "resubscribed on a state update");
-  assert.match(text(card), /9 °C/);
+  assert.match(text(card), /9°C/);
 
   // Changing the forecast type replaces the subscription
   card.setConfig({ entity: ENTITY, forecast_type: "hourly" });
@@ -377,7 +378,7 @@ test("shows values of 0", async () => {
     hass,
   );
   const output = text(card);
-  assert.match(output, /0 °C \/ 0 °C/, "extrema");
+  assert.match(output, /0°C \/ 0°C/, "extrema");
   assert.match(output, /0 %/, "humidity");
   assert.match(output, /0 mm/, "precipitation");
   assert.match(output, /0 km\/h/, "wind speed");
@@ -624,5 +625,41 @@ test("is focusable when only a hold action is set", async () => {
     hold_action: { action: "more-info" },
   });
   assert.equal($(card, "ha-card").getAttribute("role"), "button");
+  card.remove();
+});
+
+test("shows a custom wind bearing sensor in degrees as a direction", async () => {
+  subscriptions = [];
+  const hass = createHass({
+    "sensor.wind_direction": {
+      state: "200",
+      attributes: { unit_of_measurement: "°" },
+    },
+  });
+  const card = await createCard(
+    {
+      primary_info: ["wind_bearing"],
+      custom: [{ wind_bearing: "sensor.wind_direction" }],
+    },
+    hass,
+  );
+  assert.match(text(card), /SSW/);
+  assert.doesNotMatch(text(card), /200/);
+  card.remove();
+});
+
+test("shows forecast times in the server time zone when chosen", async () => {
+  subscriptions = [];
+  const hass = {
+    ...createHass(),
+    config: { ...createHass().config, time_zone: "America/New_York" },
+    locale: { language: "nb", time_format: "24", time_zone: "server" },
+  };
+  const card = await createCard(
+    { show_forecast: true, forecast_type: "hourly" },
+    hass,
+  );
+  // The first entry is 00:00 UTC, which is 19:00 in New York
+  assert.equal(forecastLabels(card)[0], "19:00");
   card.remove();
 });

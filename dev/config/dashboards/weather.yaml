@@ -90,6 +90,20 @@ views:
   - title: Custom sensors
     path: custom
     cards:
+      - type: entities
+        entities:
+          - input_number.wind_direction
+
+      - type: custom:simple-weather-card
+        entity: weather.demo_weather_south
+        name: Custom wind direction
+        primary_info:
+          - wind_bearing
+        secondary_info:
+          - wind
+        custom:
+          - wind_bearing: input_number.wind_direction
+
       - type: custom:simple-weather-card
         entity: weather.demo_weather_south
         name: Custom overrides

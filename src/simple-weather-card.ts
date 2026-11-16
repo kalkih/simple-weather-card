@@ -1,7 +1,7 @@
 import { LitElement, html, nothing, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
-import WeatherEntity from "./weather";
+import WeatherEntity, { getTimeZone } from "./weather";
 import getStyles from "./style";
 import { ActionType, handleClick, hasAction } from "./handleClick";
 import {
@@ -393,7 +393,7 @@ export class SimpleWeatherCard extends LitElement {
             ></div>
             ${this.renderAttr("wind_speed")}${
               hasValue(speed) && hasValue(bearing)
-                ? html`(${this.renderAttr("wind_bearing")})`
+                ? html`(${this.formatAttr("wind_bearing")})`
                 : ""
             }
           </span>
@@ -459,6 +459,7 @@ export class SimpleWeatherCard extends LitElement {
     const tempUnit = this.getUnit("temperature");
     const lang = this.hass.locale.language;
     const hour12 = use12HourClock(this.hass.locale);
+    const timeZone = getTimeZone(this.hass);
     const nightLabel = this.hass.localize("ui.card.weather.night") || "Night";
     const showLow =
       type === "daily" ||
@@ -475,14 +476,14 @@ export class SimpleWeatherCard extends LitElement {
             label = date.toLocaleTimeString(
               lang,
               hour12
-                ? { hour: "numeric", hour12 }
-                : { hour: "2-digit", minute: "2-digit", hour12 },
+                ? { hour: "numeric", hour12, timeZone }
+                : { hour: "2-digit", minute: "2-digit", hour12, timeZone },
             );
           } else if (date) {
             label =
               type === "twice_daily" && night
                 ? nightLabel
-                : date.toLocaleDateString(lang, { weekday: "short" });
+                : date.toLocaleDateString(lang, { weekday: "short", timeZone });
           }
           const icon = entry.condition
             ? this._getIcon(entry.condition, night)
@@ -528,11 +529,31 @@ export class SimpleWeatherCard extends LitElement {
   }
 
   private renderAttr(attr: string, uom = true): TemplateResult | undefined {
+    const text = this.formatAttr(attr, uom);
+    return text !== undefined ? html` ${text} ` : undefined;
+  }
+
+  private formatAttr(attr: string, uom = true): string | undefined {
     const weatherValue = this.weather?.getAttribute(attr);
     const state = this.custom[attr] ? this.custom[attr].state : weatherValue;
     if (!hasValue(state)) return undefined;
-    const unit = this.custom[attr]?.unit ?? INFO[attr]?.unit;
-    return html` ${state} ${uom ? this.getUnit(unit) : ""} `;
+    let value = state;
+    let unit = uom
+      ? this.getUnit(this.custom[attr]?.unit ?? INFO[attr]?.unit)
+      : "";
+    // Custom wind bearing sensors usually report degrees
+    if (
+      attr === "wind_bearing" &&
+      this.custom[attr] &&
+      this.weather &&
+      Number.isFinite(Number(state))
+    ) {
+      value = this.weather.degToDirection(Number(state));
+      unit = "";
+    }
+    // Degrees read better without a space: 21.6°C
+    const separator = unit.startsWith("°") ? "" : " ";
+    return `${value}${unit ? separator + unit : ""}`;
   }
 
   private handleAction(action: ActionType): void {

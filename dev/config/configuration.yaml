@@ -22,6 +22,17 @@ homeassistant:
       allow_bypass_login: true
     - type: homeassistant
 
+# Test sensor for `custom: wind_bearing`, in degrees like most wind sensors
+input_number:
+  wind_direction:
+    name: Wind direction
+    min: 0
+    max: 359
+    step: 1
+    initial: 200
+    unit_of_measurement: "°"
+    icon: mdi:compass
+
 frontend:
   extra_module_url:
     - /local/dev-loader.js
