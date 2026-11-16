@@ -6,7 +6,7 @@ package-lock.json
 .DS_Store
 ._*
 .idea/
-CLAUDE.local.md
+.claude/rules/personal.md
 .claude/settings.local.json
 # Local Home Assistant test environment
 /dev/config/*

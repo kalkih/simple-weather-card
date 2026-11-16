@@ -5,8 +5,8 @@ one file, `dist/simple-weather-card.js`, through the Marketplace/HACS. Fork of
 kalkih/simple-weather-card. Code, commits, PRs, README and release notes are in
 English.
 
-Personal, machine-specific notes go in `CLAUDE.local.md` in the project root
-(not committed).
+Personal, machine-specific notes go in `.claude/rules/personal.md` (not
+committed; every file in `.claude/rules/` is loaded automatically).
 
 ## Layout
 
