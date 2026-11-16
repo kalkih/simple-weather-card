@@ -49,16 +49,18 @@ If you're migrating from the [original repository](https://github.com/kalkih/sim
 | type           | string                                      | **required**    | v0.1.0 | `custom:simple-weather-card`                                                                 |
 | entity         | string                                      | **required**    | v0.1.0 | The entity_id from an entity within the `weather` domain.                                    |
 | name           | string                                      | optional        | v0.1.0 | Set a custom name.                                                                           |
-| state_content  | string                                      | `state`         | v2.8.1 | State card information.                                                                      |
-| animated_icons | boolean                                     | false           | v2.8.1 | Enable/Disable animated icons.                                                               |
+| state_content  | string                                      | `state`         | v2.8.0 | State card information.                                                                      |
+| animated_icons | boolean                                     | false           | v2.8.0 | Enable/Disable animated icons.                                                               |
 | primary_info   | array/string                                | `extrema`       | v0.7.0 | Primary card information, one or more [weather attributes](#weather-attributes)              |
 | secondary_info | array/string                                | `precipitation` | v0.2.0 | Secondary card information, one or more [weather attributes](#weather-attributes)            |
 | backdrop       | [Backdrop object](#backdrop-object-options) | optional        | v2.0.0 | [Backdrop object](#backdrop-object-options).                                                 |
 | custom         | array                                       | optional        | v0.4.0 | Override weather information with custom sensors, see [Custom option](#custom-option-array). |
 | tap_action     | [action object](#action-object-options)     | optional        | v0.5.0 | Action on click/tap.                                                                         |
-| show_name      | boolean                                     | true            | v2.1.0 | Show/Hide name                                                                               |
+| show_name      | boolean                                     | true            | v2.0.1 | Show/Hide name                                                                               |
 | show_forecast  | boolean                                     | false           | v2.5.0 | Show/Hide 5 day forecast                                                                     |
-| forecast_type  | string                                      | `daily`         | v2.6.0 | Show daily or hourly forecast                                                                |
+| forecast_type  | string                                      | `daily`         | v2.6.2 | Show daily or hourly forecast                                                                |
+| card_mod       | object                                      | optional        | v2.1.1 | Styling with [card-mod](https://github.com/thomasloven/lovelace-card-mod).                   |
+| uix            | object                                      | optional        | v2.3.0 | Styling with UIX.                                                                            |
 
 #### Weather attributes
 
