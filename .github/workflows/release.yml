@@ -1,9 +1,25 @@
 name: Release
 
+# Run from the Actions tab ("Run workflow"). Creates a draft release with
+# the built card and generated release notes. Review it and press Publish;
+# the tag is created then, and HACS users get the update.
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: minor
+      beta:
+        description: Beta (only for users with beta versions enabled in HACS)
+        type: boolean
+        default: false
+
+concurrency: release
 
 jobs:
   release:
@@ -11,7 +27,16 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Only release from master
+        if: github.ref != 'refs/heads/master'
+        run: |
+          echo "::error::Releases can only be made from master"
+          exit 1
+
       - uses: actions/checkout@v7
+        with:
+          # Tags are needed to work out the next version
+          fetch-depth: 0
 
       - name: Enable corepack
         run: corepack enable
@@ -30,12 +55,21 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Set version
+      - name: Determine version
+        id: version
+        env:
+          BUMP: ${{ inputs.bump }}
+          BETA: ${{ inputs.beta }}
         run: |
-          TAG="${{ github.ref_name }}"
-          PKG_VERSION="${TAG#v}"
+          node .github/scripts/next-version.mjs "$BUMP" "$BETA" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Set version
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
           echo "export const version = '${TAG}';" > src/var/version.ts
-          jq --arg v "$PKG_VERSION" '.version = $v' package.json > tmp.json && mv tmp.json package.json
+          jq --arg v "$VERSION" '.version = $v' package.json > tmp.json && mv tmp.json package.json
 
       - name: Build
         run: yarn build
@@ -43,10 +77,29 @@ jobs:
       - name: Smoke test
         run: yarn test
 
-      - name: Create release
+      # Generated here instead of by the release action, to control which
+      # tag the notes start from: the last stable for a stable release, so
+      # betas in between don't hide changes
+      - name: Generate release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          PREVIOUS: ${{ steps.version.outputs.previous }}
+        run: |
+          args=(-f tag_name="$TAG" -f target_commitish="$GITHUB_SHA")
+          if [ -n "$PREVIOUS" ]; then
+            args+=(-f previous_tag_name="$PREVIOUS")
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/releases/generate-notes" "${args[@]}" \
+            --jq .body > release-notes.md
+
+      - name: Create draft release
         uses: softprops/action-gh-release@v3
         with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          name: ${{ steps.version.outputs.tag }}
+          body_path: release-notes.md
+          draft: true
+          prerelease: ${{ inputs.beta }}
           files: dist/simple-weather-card.js
-          generate_release_notes: true
-          # Tags with a suffix, like v2.10.0-beta-1, are prereleases
-          prerelease: ${{ contains(github.ref_name, '-') }}

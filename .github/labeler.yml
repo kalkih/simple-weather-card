@@ -1,0 +1,13 @@
+# Labels pull requests from the branch name, which sorts them into the
+# categories of the generated release notes (see release.yml)
+enhancement:
+  - head-branch: ["^feat", "^feature"]
+
+bug:
+  - head-branch: ["^fix", "^bugfix"]
+
+maintenance:
+  - head-branch: ["^chore", "^ci", "^build", "^refactor", "^maintenance"]
+
+documentation:
+  - head-branch: ["^docs"]

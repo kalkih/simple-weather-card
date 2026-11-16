@@ -1,0 +1,16 @@
+name: Label pull requests
+
+# pull_request_target runs with write access, so this workflow must never
+# check out or run code from the pull request
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/labeler@v7
