@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn build)",
+      "Bash(yarn test)",
+      "Bash(yarn lint)",
+      "Bash(yarn typecheck)",
+      "Bash(yarn watch)",
+      "Bash(yarn prettier *)",
+      "Bash(yarn ha:up)",
+      "Bash(yarn ha:down)",
+      "Bash(yarn ha:logs)",
+      "Bash(docker exec simple-weather-card-ha python3 *)",
+      "Bash(docker exec -i simple-weather-card-ha python3 *)",
+      "Bash(docker restart simple-weather-card-ha)",
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git show *)",
+      "Bash(git fetch *)",
+      "Bash(git tag *)",
+      "Bash(node --test *)",
+      "Bash(curl -s https://api.github.com/*)"
+    ]
+  }
+}
