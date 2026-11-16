@@ -3,7 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 
 import WeatherEntity, { getTimeZone } from "./weather";
 import getStyles from "./style";
-import { ActionType, handleClick, hasAction } from "./handleClick";
+import { ActionType, fireAction, hasAction } from "./actions";
 import {
   HomeAssistant,
   HassEntity,
@@ -12,7 +12,6 @@ import {
   NormalizedConfig,
   CustomMap,
 } from "./types";
-import { version } from "./var/version";
 
 declare global {
   interface Window {
@@ -557,7 +556,7 @@ export class SimpleWeatherCard extends LitElement {
   }
 
   private handleAction(action: ActionType): void {
-    handleClick(this, this.config, action);
+    fireAction(this, this.config, action);
   }
 
   private handleCardClick(): void {
@@ -634,7 +633,7 @@ window.customCards.push({
 });
 
 console.info(
-  `%c Simple Weather Card %c ${version} `,
+  `%c Simple Weather Card %c ${__VERSION__} `,
   "background-color: #555;color: #fff;padding: 3px 2px 3px 3px;border-radius: 14px 0 0 14px;font-family: DejaVu Sans,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)",
   "background-color: #506eac;color: #fff;padding: 3px 3px 3px 2px;border-radius: 0 14px 14px 0;font-family: DejaVu Sans,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)",
 );

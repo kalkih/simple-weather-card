@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Troubleshooting
+    url: https://github.com/I-Simen-I/simple-weather-card#troubleshooting
+    about: Common problems, like the card not loading or not updating after an update.
+  - name: Configuration options
+    url: https://github.com/I-Simen-I/simple-weather-card#configuration
+    about: Every option the card supports, with examples.

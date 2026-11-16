@@ -1,3 +1,5 @@
+import webpack from "webpack";
+
 // Inline SVGs as text instead of base64. It's smaller and compresses far
 // better. Only characters that break a quoted CSS url('...') are encoded.
 const svgDataUrl = (content) =>
@@ -11,7 +13,7 @@ const svgDataUrl = (content) =>
     .replace(/%3B/g, ";")
     .replace(/%2C/g, ",");
 
-module.exports = (env, argv) => ({
+export default (env, argv) => ({
   mode: argv.mode || "production",
   devtool: argv.mode === "development" ? "inline-source-map" : false,
   entry: "./src/simple-weather-card.ts",
@@ -21,6 +23,12 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: [".ts", ".js"],
   },
+  plugins: [
+    // The release workflow sets CARD_VERSION to the tag being released
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(process.env.CARD_VERSION || "dev"),
+    }),
+  ],
   module: {
     rules: [
       {

@@ -32,18 +32,20 @@ class DevSunCard extends HTMLElement {
     const sun = hass.states["sun.sun"];
     const states = {
       ...hass.states,
-      // Night: the sun set an hour ago and rises in eight hours.
-      // Day: the sun rose an hour ago and sets in eight hours.
+      // Day or night lasts 22 hours, centered on now, so forecast hours
+      // from earlier today count too (the demo's hourly forecast starts at
+      // 16:00). Day: the sun sets in 11 hours and rose 11 hours ago (next
+      // rise in 13). Night: the other way around.
       "sun.sun": {
         ...sun,
         state: this._night ? "below_horizon" : "above_horizon",
         attributes: {
           ...sun?.attributes,
           next_setting: new Date(
-            now + (this._night ? 23 : 8) * HOUR,
+            now + (this._night ? 13 : 11) * HOUR,
           ).toISOString(),
           next_rising: new Date(
-            now + (this._night ? 8 : 23) * HOUR,
+            now + (this._night ? 11 : 13) * HOUR,
           ).toISOString(),
         },
       },
