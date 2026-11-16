@@ -1,4 +1,4 @@
-import { LitElement, html, PropertyValues, TemplateResult } from "lit";
+import { LitElement, html, nothing, PropertyValues, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
 import WeatherEntity from "./weather";
@@ -29,6 +29,9 @@ const UNITS: Record<string, string> = {
   celsius: "°C",
   fahrenheit: "°F",
 };
+
+const hasValue = (val: unknown): boolean =>
+  val !== undefined && val !== null && val !== "";
 
 const toArray = (
   val: string | string[] | undefined,
@@ -67,6 +70,17 @@ export class SimpleWeatherCard extends LitElement {
   static async getConfigElement(): Promise<HTMLElement> {
     await import(/* webpackMode: "eager" */ "./editor");
     return document.createElement("simple-weather-card-editor");
+  }
+
+  // Masonry dashboards, in units of 50px
+  getCardSize(): number {
+    return this.config.show_forecast ? 4 : 2;
+  }
+
+  // Sections dashboards. Rows are left to the default, which sizes the
+  // card to its content.
+  getGridOptions(): { columns: number; min_columns: number } {
+    return { columns: 12, min_columns: 6 };
   }
 
   static getStubConfig(hass: HomeAssistant): Partial<CardConfig> {
@@ -248,8 +262,11 @@ export class SimpleWeatherCard extends LitElement {
   }
 
   protected render(): TemplateResult {
+    const actionable = this.config.tap_action.action !== "none";
     return html`
       <ha-card
+        role=${actionable ? "button" : nothing}
+        tabindex=${actionable ? "0" : nothing}
         ?bg=${this.config.backdrop.bg}
         ?fade=${this.config.backdrop.fade}
         ?night=${this.weather?.isNight}
@@ -257,6 +274,7 @@ export class SimpleWeatherCard extends LitElement {
           this.config.backdrop.night
         }; --text-color: ${this.config.backdrop.text};"
         @click=${() => this.handleTap()}
+        @keydown=${this.handleKeyDown}
       >
         <div class="weather__main">
           ${this.renderIcon()}
@@ -279,11 +297,14 @@ export class SimpleWeatherCard extends LitElement {
     `;
   }
 
-  private _getIcon(iconName: string): string {
+  private _getIcon(
+    iconName: string,
+    night = this.weather?.isNight ?? false,
+  ): string {
     if (this.config.animated_icons) {
-      return this.weather?.getAnimatedIcon(iconName) ?? "";
+      return this.weather?.getAnimatedIcon(iconName, night) ?? "";
     }
-    return this.weather?.getIcon(iconName) ?? "";
+    return this.weather?.getIcon(iconName, night) ?? "";
   }
 
   private _getStateIcon(): string | undefined {
@@ -311,7 +332,7 @@ export class SimpleWeatherCard extends LitElement {
     const prob =
       this.custom.precipitation_probability?.state ??
       this.weather?.getAttribute("precipitation_probability");
-    return precip || prob
+    return hasValue(precip) || hasValue(prob)
       ? html`
           <span class="weather__info__item">
             <div
@@ -319,7 +340,7 @@ export class SimpleWeatherCard extends LitElement {
               style="background-image: url('${this.weather?.getIcon("rainy")}')"
             ></div>
             ${this.renderAttr("precipitation")}${
-              precip && prob
+              hasValue(precip) && hasValue(prob)
                 ? html` / ${this.renderAttr("precipitation_probability")}`
                 : ""
             }
@@ -334,7 +355,7 @@ export class SimpleWeatherCard extends LitElement {
     const bearing =
       this.custom.wind_bearing?.state ??
       this.weather?.getAttribute("wind_bearing");
-    return speed || bearing
+    return hasValue(speed) || hasValue(bearing)
       ? html`
           <span class="weather__info__item">
             <div
@@ -342,7 +363,9 @@ export class SimpleWeatherCard extends LitElement {
               style="background-image: url('${this.weather?.getIcon("windy")}')"
             ></div>
             ${this.renderAttr("wind_speed")}${
-              speed && bearing ? html`(${this.renderAttr("wind_bearing")})` : ""
+              hasValue(speed) && hasValue(bearing)
+                ? html`(${this.renderAttr("wind_bearing")})`
+                : ""
             }
           </span>
         `
@@ -352,10 +375,11 @@ export class SimpleWeatherCard extends LitElement {
   private renderExtrema(): TemplateResult | string {
     const high = this.custom.high?.state ?? this.weather?.high;
     const low = this.custom.low?.state ?? this.weather?.low;
-    return high || low
+    return hasValue(high) || hasValue(low)
       ? html`
           <span class="weather__info__item">
-            ${this.renderAttr("low")} ${high && low ? " / " : ""}
+            ${this.renderAttr("low")}
+            ${hasValue(high) && hasValue(low) ? " / " : ""}
             ${this.renderAttr("high")}
           </span>
         `
@@ -383,7 +407,7 @@ export class SimpleWeatherCard extends LitElement {
     if (attr === "wind") return this.renderWind();
     const icon = INFO[attr]?.icon;
     const value = this.custom[attr]?.state ?? this.weather?.getAttribute(attr);
-    if (value === undefined || value === "") return "";
+    if (!hasValue(value)) return "";
     return html`
       <span class="weather__info__item">
         ${
@@ -417,8 +441,12 @@ export class SimpleWeatherCard extends LitElement {
                 })
               : date.toLocaleDateString(lang, { weekday: "short" })
             : "";
+          // Daily entries have no meaningful time of day, so use day icons
           const icon = entry.condition
-            ? this._getIcon(entry.condition)
+            ? this._getIcon(
+                entry.condition,
+                isHourly && this.weather?.isNightAt(entry),
+              )
             : undefined;
           return html`
             <div class="weather__forecast__day">
@@ -463,13 +491,19 @@ export class SimpleWeatherCard extends LitElement {
   private renderAttr(attr: string, uom = true): TemplateResult | undefined {
     const weatherValue = this.weather?.getAttribute(attr);
     const state = this.custom[attr] ? this.custom[attr].state : weatherValue;
-    if (!state && state !== 0) return undefined;
+    if (!hasValue(state)) return undefined;
     const unit = this.custom[attr]?.unit ?? INFO[attr]?.unit;
     return html` ${state} ${uom ? this.getUnit(unit) : ""} `;
   }
 
   private handleTap(): void {
     handleClick(this, this.config);
+  }
+
+  private handleKeyDown(ev: KeyboardEvent): void {
+    if (ev.key !== "Enter" && ev.key !== " ") return;
+    ev.preventDefault();
+    this.handleTap();
   }
 
   private getUnit(unit = "temperature"): string {

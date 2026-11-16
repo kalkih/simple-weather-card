@@ -45,6 +45,7 @@ const ICONS: Record<string, string> = {
   hail: mixed_rain,
   lightning,
   "lightning-rainy": storm,
+  exceptional: storm,
   "partly-cloudy-day": mostly_cloudy,
   "partly-cloudy-night": mostly_cloudy_night,
   partlycloudy: mostly_cloudy,
@@ -79,6 +80,7 @@ const ICONS_ANIMATED: Record<string, string> = {
   hail: animated_hail,
   lightning: animated_lightning,
   "lightning-rainy": animated_storm,
+  exceptional: animated_storm,
   "partly-cloudy-day": animated_mostly_cloudy,
   "partly-cloudy-night": animated_mostly_cloudy,
   partlycloudy: animated_mostly_cloudy,
@@ -171,31 +173,32 @@ export default class WeatherEntity {
     return this.forecast[0]?.templow;
   }
 
-  get wind_speed(): number {
-    return this.attr.wind_speed ?? 0;
+  get wind_speed(): number | undefined {
+    return this.attr.wind_speed;
   }
 
-  get pressure(): number {
-    return this.attr.pressure ?? 0;
+  get pressure(): number | undefined {
+    return this.attr.pressure;
   }
 
-  get wind_bearing(): string {
+  get wind_bearing(): string | undefined {
     const bearing = this.attr.wind_bearing;
-    return bearing !== undefined
-      ? this.degToDirection(bearing)
-      : this.toLocale("state.default.unknown");
+    return bearing != null ? this.degToDirection(bearing) : undefined;
   }
 
-  get precipitation(): number {
-    return Math.round((this.forecast[0]?.precipitation ?? 0) * 100) / 100;
+  get precipitation(): number | undefined {
+    const precipitation = this.forecast[0]?.precipitation;
+    return precipitation != null
+      ? Math.round(precipitation * 100) / 100
+      : undefined;
   }
 
-  get precipitation_probability(): number {
-    return this.forecast[0]?.precipitation_probability ?? 0;
+  get precipitation_probability(): number | undefined {
+    return this.forecast[0]?.precipitation_probability;
   }
 
-  get humidity(): number {
-    return this.attr.humidity ?? 0;
+  get humidity(): number | undefined {
+    return this.attr.humidity;
   }
 
   get isNight(): boolean {
@@ -203,22 +206,40 @@ export default class WeatherEntity {
   }
 
   get icon(): string | undefined {
-    const state = this.entity.state.toLowerCase();
-    return this.isNight ? ICONS_NIGHT[state] : ICONS[state];
+    return this.getIcon(this.entity.state.toLowerCase(), this.isNight);
   }
 
   get iconAnimated(): string | undefined {
-    const state = this.entity.state.toLowerCase();
-    const map = this.isNight ? ICONS_ANIMATED_NIGHT : ICONS_ANIMATED;
-    return map[state];
+    return this.getAnimatedIcon(this.entity.state.toLowerCase(), this.isNight);
   }
 
-  getIcon(icon: string): string {
-    return ICONS[icon];
+  getIcon(icon: string, night = false): string {
+    return (night ? ICONS_NIGHT : ICONS)[icon];
   }
 
-  getAnimatedIcon(icon: string): string {
-    return ICONS_ANIMATED[icon];
+  getAnimatedIcon(icon: string, night = false): string {
+    return (night ? ICONS_ANIMATED_NIGHT : ICONS_ANIMATED)[icon];
+  }
+
+  // Whether a forecast entry is at night. Uses `is_daytime` when the
+  // integration provides it, otherwise the time of day of the next sunrise
+  // and sunset (which shift only minutes from day to day).
+  isNightAt(entry: ForecastEntry): boolean {
+    if (entry.is_daytime !== undefined) return !entry.is_daytime;
+    const sun = this.hass.states["sun.sun"]?.attributes;
+    if (!entry.datetime || !sun?.next_rising || !sun?.next_setting) {
+      return false;
+    }
+    const minutes = (date: string): number => {
+      const d = new Date(date);
+      return d.getHours() * 60 + d.getMinutes();
+    };
+    const time = minutes(entry.datetime);
+    const sunrise = minutes(sun.next_rising as string);
+    const sunset = minutes(sun.next_setting as string);
+    return sunrise < sunset
+      ? time < sunrise || time >= sunset
+      : time >= sunset && time < sunrise;
   }
 
   getAttribute(attr: string): string | number | undefined {

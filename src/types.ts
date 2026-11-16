@@ -58,6 +58,7 @@ export interface ForecastEntry {
   apparent_temperature?: number;
   precipitation?: number;
   precipitation_probability?: number;
+  is_daytime?: boolean;
 }
 
 export interface BackdropConfig {
