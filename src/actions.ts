@@ -7,7 +7,7 @@ export const hasAction = (action?: TapAction): boolean =>
 
 // Hand the action over to Home Assistant, so every action type the
 // action editor offers (perform-action, toggle, url, assist, ...) works
-export const handleClick = (
+export const fireAction = (
   node: Element,
   config: NormalizedConfig,
   action: ActionType = "tap",

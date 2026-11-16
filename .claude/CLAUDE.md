@@ -13,7 +13,7 @@ committed; every file in `.claude/rules/` is loaded automatically).
 - `src/simple-weather-card.ts` – the card. `src/editor.ts` – visual editor,
   loaded eagerly into the same bundle.
 - `src/weather.ts` – `WeatherEntity` (attribute getters, icons, night logic,
-  wind direction), `src/handleClick.ts` – actions, `src/localize.ts` +
+  wind direction), `src/actions.ts` – actions, `src/localize.ts` +
   `src/translations/*.json` – editor translations (en, nb; nn uses nb).
 - `test/*.test.mjs` – Node test runner. The smoke tests load the **built**
   bundle in happy-dom with a fake `hass`, so `yarn build` before `yarn test`.

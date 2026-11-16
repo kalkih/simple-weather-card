@@ -3,7 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 
 import WeatherEntity, { getTimeZone } from "./weather";
 import getStyles from "./style";
-import { ActionType, handleClick, hasAction } from "./handleClick";
+import { ActionType, fireAction, hasAction } from "./actions";
 import {
   HomeAssistant,
   HassEntity,
@@ -557,7 +557,7 @@ export class SimpleWeatherCard extends LitElement {
   }
 
   private handleAction(action: ActionType): void {
-    handleClick(this, this.config, action);
+    fireAction(this, this.config, action);
   }
 
   private handleCardClick(): void {
