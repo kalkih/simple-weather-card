@@ -17,6 +17,9 @@
       "Bash(git log *)",
       "Bash(git diff *)",
       "Bash(git show *)",
+      "Bash(git fetch *)",
+      "Bash(git tag *)",
+      "Bash(node --test *)",
       "Bash(curl -s https://api.github.com/*)"
     ]
   }
